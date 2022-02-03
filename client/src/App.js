@@ -1,28 +1,24 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import axios from 'axios'
+import { Link, Outlet } from "react-router-dom";
 
-class App extends Component {
-  state = {
-    response: {}
-  };
-  
-  componentDidMount() {
-    axios.get('/api/v1/say-something').then((res) => {
-      const response = res.data;
-      this.setState({response});
-    });
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <h1>Hello from the frontend!</h1>
-        <h1>{this.state.response.body}</h1>
-      </div>
-    );
-  }
+function App() {
+  return (
+    <div>
+      <h1>Inventory</h1>
+      <nav
+        style={{
+          borderBottom: "solid 1px",
+          paddingBottom: "1rem"
+        }}
+      >
+        <Link to="/home">Home</Link> |{" "}
+        <Link to="/about">About</Link>
+      </nav>
+      <Outlet />
+    </div>
+  );
 }
 
 export default App;
