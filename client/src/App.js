@@ -1,14 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import { Link, Outlet } from "react-router-dom";
-import UserLogin from './Components/UserLogin';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
 
 const navbarLinks = {
   padding: 20,
   fontSize: 18,
-  textAlign: 'center',
   textDecoration: "none",
   color: 'white',
 }
@@ -21,22 +19,18 @@ const navbar = {
   padding: 10,
 }
 
-const app = {
-}
-
-
 function App() {
   return (
-    <div style = {app}>
+    <div>
       <div style={navbar}>
           <Navbar sticky="top">
             <NavbarBrand href='/'>Inventory Manager</NavbarBrand>
-            <Link to="/home" style={navbarLinks}>Home</Link>
-            <Link to="/about" style={navbarLinks}>About</Link>
+            <Link to="/home" style={navbarLinks}>Placeholder</Link>
+            <Link to="/about" style={navbarLinks}>placeholder</Link>
+            <Link to="/login" style={navbarLinks}>Login</Link>
           </Navbar>
       </div>
       <Outlet />
-      <UserLogin />
     </div>
   );
 }
