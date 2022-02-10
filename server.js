@@ -3,6 +3,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv')
+
+//config dotenv to access .env with DB address
+dotenv.config()
 
 // Create a new express application named 'app'
 const app = express();
@@ -24,11 +29,19 @@ app.use(bodyParser.urlencoded({
 
 // Configure the CORs middleware
 app.use(cors());
+app.use(express.json())
 
+//connect to DB
+mongoose.connect(process.env.URI)
+//display message when connected
+const connection = mongoose.connection
+connection.once('open', () => {
+    console.log("DB connected.");
+})
 // Require Route
-const api = require('./routes/routes');
-// Configure app to use route
-app.use('/api/v1/', api);
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to from server." });
+  });
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
