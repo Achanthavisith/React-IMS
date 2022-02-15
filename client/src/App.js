@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { Link, Outlet } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
+import './Components/ImageBackgroundHeader'
+import ImageBackgroundHeader from './Components/ImageBackgroundHeader';
+import AddProductsInputs from './Components/AddProductsInput';
+import DisplayProduct from './Components/DisplayProducts';
 
 const navbarLinks = {
   padding: 20,
@@ -21,6 +25,8 @@ const navbar = {
 
 function App() {
   return (
+    <body>
+    
     <div>
       <div style={navbar}>
           <Navbar sticky="top">
@@ -29,9 +35,13 @@ function App() {
             <Link to="/about" style={navbarLinks}>placeholder</Link>
             <Link to="/login" style={navbarLinks}>Login</Link>
           </Navbar>
+        
       </div>
+      <ImageBackgroundHeader></ImageBackgroundHeader>
+      <AddProductsInputs></AddProductsInputs>
       <Outlet />
     </div>
+    </body>
   );
 }
 

@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    MDBNavbar,
-    MDBNavbarNav,
-    MDBNavbarItem,
-    MDBNavbarLink,
-    MDBNavbarToggler,
-    MDBContainer,
-    MDBIcon
-} from 'mdb-react-ui-kit';
+
 
 export default function ImageBackgroundHeader() {
     return (
@@ -21,7 +13,7 @@ export default function ImageBackgroundHeader() {
                 <div className='mask' style={{}}>
                 <div className='d-flex justify-content-center align-items-center h-100'>
                     <div className='text-white' style={{ backgroundColor: 'darkgrey' }}>
-                            <h1 className='mb-3'>Heading</h1>
+                            <h1 className='mb-3 '>Heading</h1>
                             <h4 className='mb-3'>Subheading</h4>
                             <a className='btn btn-outline-light btn-lg' href='#!' role='button'>
                                 Click here to take you to the login page
