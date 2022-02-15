@@ -1,7 +1,7 @@
 import { Button, Form } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import './AddProductsInput.css';
+import './DisplayProducts.css';
 export default function DisplayProduct() {
 
   const [listOfProducts, setListOfProduts] = useState([]);
