@@ -32,6 +32,7 @@ export default function Manage() {
         }
             
         setValidated(true);
+
         if(form.checkValidity() === true){
             event.preventDefault(); 
             const product = { 
@@ -63,6 +64,7 @@ export default function Manage() {
                             name="product" 
                             placeholder="Product" 
                             className="form-control"
+                            value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
                             />
@@ -78,6 +80,7 @@ export default function Manage() {
                             name="quantity" 
                             placeholder="quantity" 
                             className="form-control"
+                            value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
                             required
                             />
@@ -92,6 +95,7 @@ export default function Manage() {
                             required
                             as="select"
                             type="select"
+                            value={category}
                             className="form-control"
                             onChange={(e) => setCategory(e.target.value)}
                         >
