@@ -5,6 +5,10 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv')
+const ProductModel = require("./models/Products");
+
+
+
 
 //config dotenv to access .env with DB address
 dotenv.config()
@@ -32,16 +36,41 @@ app.use(cors());
 app.use(express.json())
 
 //connect to DB
-mongoose.connect(process.env.URI)
+mongoose.connect(process.env.URI).then(() => {console.log('DB connected');}).catch(err => {console.log('not connected', err);})
 //display message when connected
 const connection = mongoose.connection
 connection.once('open', () => {
     console.log("DB connected.");
 })
+//createing insert for database
+app.post("/addProduct", async (req, res) => {
+ const name = req.body.name;
+const quantity = req.body.quantity;
+const category = req.body.category;
+    const product = new ProductModel({name: name, quantity: quantity, category: category});
+    await product.save();
+    res.send("inserted data: Success");
+
+});
+
+/*app.get("/displayProduct", async (req, res) => {
+    ProductModel.find({},(err,result) => {
+        if(err) {
+            res.send(err);
+        }
+        else{
+            res.send(result);
+        }
+        });
+    });
+    */
+
+
 // Require Route
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to from server." });
   });
+  
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
@@ -59,5 +88,8 @@ app.get('*', (req, res) => {
     });
 });
 
+
+
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
+
