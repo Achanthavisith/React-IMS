@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/addProduct
+Content-Type: application/json
+
+{
+    "name": "test2",
+    "quantity": 100,
+    "category": "test"
+}

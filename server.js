@@ -5,9 +5,10 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv')
+const routerUrls = require('./routes/routes')
 
 //config dotenv to access .env with DB address
-dotenv.config()
+dotenv.config();
 
 // Create a new express application named 'app'
 const app = express();
@@ -29,7 +30,7 @@ app.use(bodyParser.urlencoded({
 
 // Configure the CORs middleware
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
 //connect to DB
 mongoose.connect(process.env.URI)
@@ -37,7 +38,7 @@ mongoose.connect(process.env.URI)
 const connection = mongoose.connection
 connection.once('open', () => {
     console.log("DB connected.");
-})
+});
 // Require Route
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to from server." });
@@ -58,6 +59,8 @@ app.get('*', (req, res) => {
         msg: 'Catch All'
     });
 });
+
+app.use('/api', routerUrls);
 
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
