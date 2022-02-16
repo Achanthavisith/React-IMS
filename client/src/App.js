@@ -6,7 +6,7 @@ import { Navbar, NavbarBrand } from 'react-bootstrap'
 import './Components/ImageBackgroundHeader'
 import ImageBackgroundHeader from './Components/ImageBackgroundHeader';
 import AddProductsInputs from './Components/AddProductsInput';
-import DisplayProduct from './Components/DisplayProducts';
+
 
 const navbarLinks = {
   padding: 20,
@@ -25,8 +25,8 @@ const navbar = {
 
 function App() {
   return (
-    <body>
-    
+  
+    <React.Fragment>
     <div>
       <div style={navbar}>
           <Navbar sticky="top">
@@ -41,7 +41,7 @@ function App() {
       <AddProductsInputs></AddProductsInputs>
       <Outlet />
     </div>
-    </body>
+    </React.Fragment>
   );
 }
 

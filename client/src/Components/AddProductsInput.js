@@ -6,7 +6,7 @@ export default function AddProductsInputs() {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [category, setCategory] = useState("");
-  const [listOfProducts, setListOfProduts] = useState([]);
+ 
 
   const AddProduct = () => {
       Axios.post("http://localhost:3000/addProduct" , {
