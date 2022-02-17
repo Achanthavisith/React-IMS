@@ -11,7 +11,17 @@ import Manage from './routes/manage';
 import About from './routes/about';
 import Login from './routes/login';
 import reportWebVitals from './reportWebVitals';
+import * as serviceWorker from "./serviceWorker";
 
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById("root")
+);
+serviceWorker.unregister();
+/*
+OLD CODE BEFORE USER AUTH LOGIN STUFF
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -26,7 +36,7 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
+*/
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

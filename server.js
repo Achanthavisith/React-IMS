@@ -6,7 +6,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv')
 const routerUrls = require('./controllers/routes')
-
+const cookieSession = require("cookie-session");
+var corsOptions = {
+    origin: "http://localhost:5001"
+  };
 //config dotenv to access .env with DB address
 dotenv.config();
 
@@ -27,22 +30,73 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    name: "bezkoder-session",
+    secret: "COOKIE_SECRET", // should use as secret environment variable
+    httpOnly: true
+  })
+);
 
 // Configure the CORs middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
-
-//connect to DB
-mongoose.connect(process.env.URI)
-//display message when connected
-const connection = mongoose.connection
-connection.once('open', () => {
-    console.log("DB connected.");
-});
+// connecting to Data base
+const db = require("./models");
+const Role = db.role;
+db.mongoose
+  .connect(process.env.URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Successfully connect to MongoDB.");
+    initial();
+  })
+  .catch(err => {
+    console.error("Connection error", err);
+    process.exit();
+  });
+function initial() {
+  Role.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new Role({
+        name: "user"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+        console.log("added 'user' to roles collection");
+      });
+      new Role({
+        name: "moderator"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+        console.log("added 'moderator' to roles collection");
+      });
+      new Role({
+        name: "admin"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+        console.log("added 'admin' to roles collection");
+      });
+    }
+  });
+}
 // Require Route
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to from server." });
   });
+
+  // routes
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
