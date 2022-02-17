@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import { Link, Outlet } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
-import './Components/ImageBackgroundHeader'
-import ImageBackgroundHeader from './Components/ImageBackgroundHeader';
 import AddProductsInputs from './Components/AddProductsInput';
 
 
@@ -31,14 +29,11 @@ function App() {
       <div style={navbar}>
           <Navbar sticky="top">
             <NavbarBrand href='/'>Inventory Manager</NavbarBrand>
-            <Link to="/home" style={navbarLinks}>Placeholder</Link>
+            <Link to="/manage" style={navbarLinks}>Manage</Link>
             <Link to="/about" style={navbarLinks}>placeholder</Link>
             <Link to="/login" style={navbarLinks}>Login</Link>
           </Navbar>
-        
       </div>
-      <ImageBackgroundHeader></ImageBackgroundHeader>
-      <AddProductsInputs></AddProductsInputs>
       <Outlet />
     </div>
     </React.Fragment>

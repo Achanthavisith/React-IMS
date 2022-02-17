@@ -7,7 +7,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import Home from './routes/home';
+import Manage from './routes/manage';
 import About from './routes/about';
 import Login from './routes/login';
 import reportWebVitals from './reportWebVitals';
@@ -17,7 +17,7 @@ ReactDOM.render(
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
-        <Route path="home" element={<Home />} />
+        <Route path="manage" element={<Manage />}/>
         <Route path="about" element={<About />} />
         <Route path="login" element={<Login />} />
       </Route>
