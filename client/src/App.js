@@ -4,8 +4,6 @@ import './App.css';
 import { Link, Outlet } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
-import AddProductsInputs from './Components/AddProductsInput';
-
 
 const navbarLinks = {
   padding: 20,
@@ -30,9 +28,9 @@ function App() {
       <div style={navbar}>
           <Navbar sticky="top">
             <NavbarBrand href='/'>Inventory Manager</NavbarBrand>
-            <Link to="/manage" style={navbarLinks}>Manage</Link>
-            <Link to="/about" style={navbarLinks}>placeholder</Link>
+            <Link to="/home" style={navbarLinks}>Home</Link>
             <Link to="/login" style={navbarLinks}>Login</Link>
+            <Link to="/register" style={navbarLinks}>Register</Link>
           </Navbar>
       </div>
       <Outlet />
