@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv')
 const routerUrls = require('./controllers/routes')
+const product = require('./models/productModel')
 
 //config dotenv to access .env with DB address
 dotenv.config();
@@ -54,11 +55,11 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
 };
 
 // Catch any bad requests
-app.get('*', (req, res) => {
-    res.status(200).json({
-        msg: 'Catch All'
-    });
-});
+// app.get('*', (req, res) => {
+//     res.status(200).json({
+//         msg: 'Catch All'
+//     });
+// });
 
 app.use('/api', routerUrls);
 

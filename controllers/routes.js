@@ -31,4 +31,25 @@ router.post('/addUser', (req, res) => {
     });
 });
 
+//get products
+router.get("/products", async (req, res) => {
+	const products = await productModel.find()
+	res.send(products)
+})
+
+//get users
+router.get("/users", async (req, res) => {
+	const users = await userModel.find()
+	res.send(users)
+})
+
+//get specific user param
+router.get("/user", async (req, res) => {
+    const filter = req.body.email
+	const user = await userModel.find({email: filter})
+    res.send(user)
+})
+
+
+
 module.exports = router;
