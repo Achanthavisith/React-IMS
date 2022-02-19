@@ -31,10 +31,25 @@ export default function Login() {
                 password, 
                 role: "user", 
             };
-            
+
             await axios.post("http://localhost:5000/api/addUser", user)
-            .then((res) => console.log(res));
-            clearState();  
+            .then (response => {
+                alert('user created: ' +  user.email);
+            }).catch((err)=> {
+
+                alert('user already registered: ' + user.email);
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                 if (err.response) {
+                   console.log(err.response.data);
+                   console.log('status code: ' + err.response.status);
+                 }
+               })
+            clearState();
+            
+            // await axios.post("http://localhost:5000/api/addUser", user)
+            // .then((res) => console.log(res));
+            // clearState();  
             
     };
 

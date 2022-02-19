@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const productModel = require('../models/productModel')
@@ -23,12 +24,21 @@ router.post('/addUser', (req, res) => {
         password: req.body.password,
         role: req.body.role,
     });
-    newUser.save()
-    .then(data => {
-        res.json(data)
-    }).catch((err) => {
-        res.json(err)
-    });
+    //check if user already exists
+    userModel.findOne({email: newUser.email} , (err, existingUser) => {
+        if (existingUser == null) {
+            newUser.save()
+            .then(data => {
+                res.json(data)
+            }).catch((err) => {
+                 res.json(err)
+            });
+        } else {
+            return res.status(400).json({
+                message: 'user exists'
+            })
+        }
+    })
 });
 
 //get products
