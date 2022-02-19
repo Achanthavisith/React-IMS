@@ -1,8 +1,20 @@
-POST http://localhost:5000/api/addProduct
-Content-Type: application/json
+# POST http://localhost:5000/api/addProduct
+# Content-Type: application/json
 
-{
-    "name": "test2",
-    "quantity": 100,
-    "category": "test"
-}
+# {
+#     "name": "yo",
+#     "quantity": 100,
+#     "category": "test"
+# }
+
+# POST http://localhost:5000/api/addUser
+# Content-Type: application/json
+
+# {
+#     "email": "test2@email.com",
+#     "password": 100,
+#     "role": "admin"
+# }
+
+GET http://localhost:5000/getProducts
+

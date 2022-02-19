@@ -40,7 +40,6 @@ export default function Manage() {
                 quantity, 
                 category, 
             }; 
-            console.log(product);
             alert('Product Created: ' + name);
         
             await axios.post("http://localhost:5000/api/addProduct", 

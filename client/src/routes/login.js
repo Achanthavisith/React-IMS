@@ -1,4 +1,6 @@
 import { Button, Form } from 'react-bootstrap';
+import { useState } from 'react';
+import axios from 'axios';
 
 export default function Login() {
 
@@ -10,6 +12,33 @@ export default function Login() {
         marginTop: ' 200px'
     }
 
+    const [toggle, setToggle] = useState(false)
+
+     //set states
+     const [email, setEmail] = useState("");
+     const [password, setPassword] = useState("");
+
+     const clearState = () => {
+        setEmail("");
+        setPassword("");
+    };
+
+    const register = async (event) => { 
+            event.preventDefault(); 
+            const user = { 
+                email, 
+                password, 
+                role: "user", 
+            }; 
+            alert('Product Created: ' + email);
+        
+            await axios.post("http://localhost:5000/api/addUser", 
+                user)
+            .then((res) => console.log(res));
+            clearState();
+    };
+
+    
     return (
         <div style={loginStyle}>
             <Form className="container">
@@ -21,6 +50,8 @@ export default function Login() {
                         name="email" 
                         placeholder="Email" 
                         className="form-control"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         />
                 </Form.Group>
 
@@ -31,12 +62,21 @@ export default function Login() {
                         name="password" 
                         placeholder="Password" 
                         className="form-control"
-
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         />
                 </Form.Group>
-                
-                <Button className="form-control mb-3">Login</Button>
-                <Form.Text style={{fontSize: 15, fontWeight: 'bold'}}>Not a user?</Form.Text>
+
+                {toggle ? (<Button className="form-control mb-3" onClick={register}>Register</Button>) 
+                : 
+                (<Button className="form-control mb-3">Login</Button>)
+                }
+
+                {toggle ? (<Button style={{fontSize: 15, fontWeight: 'bold'}} onClick={(e) => setToggle(false)}>Sign in</Button>) 
+                : 
+                (<Button style={{fontSize: 15, fontWeight: 'bold'}} onClick={(e) => setToggle(true)}>Not a user?</Button>)
+                }
+
             </Form>
         </div>
     );
