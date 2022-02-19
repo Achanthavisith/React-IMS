@@ -25,17 +25,17 @@ export default function Login() {
 
     const register = async (event) => { 
             event.preventDefault(); 
+            
             const user = { 
                 email, 
                 password, 
                 role: "user", 
-            }; 
-            alert('Product Created: ' + email);
-        
-            await axios.post("http://localhost:5000/api/addUser", 
-                user)
+            };
+            
+            await axios.post("http://localhost:5000/api/addUser", user)
             .then((res) => console.log(res));
-            clearState();
+            clearState();  
+            
     };
 
     
