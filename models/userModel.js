@@ -12,6 +12,7 @@ const UserModel = new mongoose.Schema({
     role: {
         type: 'String',
         required: true,
+        enum: ['admin', 'user', "manager"]
     }
 });
 

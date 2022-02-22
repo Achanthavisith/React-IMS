@@ -1,4 +1,3 @@
-const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const productModel = require('../models/productModel')
@@ -10,6 +9,7 @@ router.post('/addProduct', (req, res) => {
         quantity: req.body.quantity,
         category: req.body.category,
     });
+    //save product
     newProduct.save()
     .then(data => {
         res.json(data)
@@ -27,13 +27,15 @@ router.post('/addUser', (req, res) => {
     //check if user already exists
     userModel.findOne({email: newUser.email} , (err, existingUser) => {
         if (existingUser == null) {
+            //save if user is new
             newUser.save()
             .then(data => {
                 res.json(data)
             }).catch((err) => {
-                 res.json(err)
+                res.json(err)
             });
         } else {
+            //return a status code for frontend
             return res.status(400).json({
                 message: 'user exists'
             })
