@@ -10,12 +10,22 @@ router.post('/addProduct', (req, res) => {
         category: req.body.category,
     });
     //save product
-    newProduct.save()
-    .then(data => {
-        res.json(data)
-    }).catch((err) => {
-        res.json(err)
-    });
+    productModel.findOne({name: newProduct.name} , (err, existing) => {
+        if (existing == null) {
+            //save if user is new
+            newProduct.save()
+            .then(data => {
+                res.json(data)
+            }).catch((err) => {
+                res.json(err)
+            });
+        } else {
+            //return a status code for frontend
+            return res.status(400).json({
+                message: 'already exists'
+            })
+        }
+    })
 });
 
 router.post('/addUser', (req, res) => {
@@ -25,8 +35,8 @@ router.post('/addUser', (req, res) => {
         role: req.body.role,
     });
     //check if user already exists
-    userModel.findOne({email: newUser.email} , (err, existingUser) => {
-        if (existingUser == null) {
+    userModel.findOne({email: newUser.email} , (err, existing) => {
+        if (existing == null) {
             //save if user is new
             newUser.save()
             .then(data => {
@@ -37,7 +47,7 @@ router.post('/addUser', (req, res) => {
         } else {
             //return a status code for frontend
             return res.status(400).json({
-                message: 'user exists'
+                message: 'already exists'
             })
         }
     })

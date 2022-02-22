@@ -40,11 +40,14 @@ export default function Manage() {
                 quantity, 
                 category, 
             }; 
-            alert('Product Created: ' + name);
         
             await axios.post("http://localhost:5000/api/addProduct", 
                 product)
-            .then((res) => console.log(res));
+            .then((res) => {
+                alert('Product Created: ' + name);
+            }).catch((err) => {
+                alert('product already exists')
+            })
 
             setValidated(false);
             clearState();
