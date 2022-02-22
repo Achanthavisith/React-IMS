@@ -43,7 +43,7 @@ connection.once('open', () => {
 // Require Route
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to from server." });
-  });
+});
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function Login() {
 
+    //styles
     const loginStyle = {
         font: '15px arial sans',
         margin: 'auto',
@@ -12,51 +13,64 @@ export default function Login() {
         marginTop: ' 200px'
     }
 
+    //boolean use state
     const [toggle, setToggle] = useState(false)
 
      //set states
-     const [email, setEmail] = useState("");
-     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-     const clearState = () => {
+     //set states back to empty method
+    const clearState = () => {
         setEmail("");
         setPassword("");
     };
 
-    const register = async (event) => { 
-            event.preventDefault(); 
-            
-            const user = { 
-                email, 
-                password, 
-                role: "user", 
-            };
 
+    //handlesubmit
+    const onSubmit = async (event) => { 
+        event.preventDefault(); 
+            
+        //user schema
+        const user = { 
+            email, 
+            password, 
+            role: "user", 
+        };
+
+        //if register is clicked when submitted
+        if (toggle === true) {
+            //call api to post user
             await axios.post("http://localhost:5000/api/addUser", user)
             .then (response => {
-                alert('user created: ' +  user.email);
+                //crude validation to check if submitted email is empty
+                if (user.email === "") {
+                    alert("Fields are required")
+                } else {
+                    alert('User created: ' +  user.email);
+                }
             }).catch((err)=> {
-
+                //backend returns status(400) alert with user exists error
                 alert('user already registered: ' + user.email);
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                 if (err.response) {
-                   console.log(err.response.data);
-                   console.log('status code: ' + err.response.status);
-                 }
-               })
-            clearState();
-            
-            // await axios.post("http://localhost:5000/api/addUser", user)
-            // .then((res) => console.log(res));
-            // clearState();  
-            
+
+                if (err.response) {
+                    //console messages if any
+                    console.log(err.response.data);
+                    console.log('status code: ' + err.response.status);
+                }
+            })
+            //clear states
+            clearState(); 
+            }
+
+            if (toggle === false) {
+                console.log('button clicked');
+            }
     };
 
-    
     return (
         <div style={loginStyle}>
-            <Form className="container">
+            <Form className="container" onSubmit={onSubmit}>
                 <h2>User login:</h2>
                 <Form.Group className="mb-3">
                     <Form.Label>Email: </Form.Label>
@@ -82,9 +96,9 @@ export default function Login() {
                         />
                 </Form.Group>
 
-                {toggle ? (<Button className="form-control mb-3" onClick={register}>Register</Button>) 
+                {toggle ? (<Button className="form-control mb-3" type="submit">Register</Button>) 
                 : 
-                (<Button className="form-control mb-3">Login</Button>)
+                (<Button className="form-control mb-3" type="submit">Login</Button>)
                 }
 
                 {toggle ? (<Button style={{fontSize: 15, fontWeight: 'bold'}} onClick={(e) => setToggle(false)}>Sign in</Button>) 
@@ -95,4 +109,4 @@ export default function Login() {
             </Form>
         </div>
     );
-  }
+}

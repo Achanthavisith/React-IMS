@@ -114,4 +114,4 @@ export default function Manage() {
                 </div>
         </div>
     );
-  }
+}
