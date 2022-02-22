@@ -5,8 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv')
-const routerUrls = require('./controllers/routes')
-const product = require('./models/productModel')
+const routerUrls = require('./client/src/controllers/routes')
 
 //config dotenv to access .env with DB address
 dotenv.config();
