@@ -14,7 +14,7 @@ export default function Login() {
     }
 
     //boolean use state
-    const [toggle, setToggle] = useState(false)
+    const [toggle, setToggle] = useState(false);
 
      //set states
     const [email, setEmail] = useState("");

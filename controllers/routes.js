@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const productModel = require('../models/productModel')
 const userModel = require('../models/userModel')
+const categoryModel = require('../models/categoryModel')
 
+//add product route
 router.post('/addProduct', (req, res) => {
     const newProduct = new productModel({
         name: req.body.name,
@@ -28,6 +30,7 @@ router.post('/addProduct', (req, res) => {
     })
 });
 
+//add user route
 router.post('/addUser', (req, res) => {
     const newUser = new userModel({
         email: req.body.email,
@@ -52,6 +55,36 @@ router.post('/addUser', (req, res) => {
         }
     })
 });
+
+//add category route
+router.post('/addCategory', (req, res) => {
+    const newCategory = new categoryModel({
+        category: req.body.category
+    });
+    //check if user already exists
+    categoryModel.findOne({category: newCategory.category}, (err, existing) => {
+        if (existing == null) {
+            //save if category is new
+            newCategory.save()
+            .then(data => {
+                res.json(data)
+            }).catch((err) => {
+                res.json(err)
+            });
+        } else {
+            //return a status code for frontend
+            return res.status(400).json({
+                message: 'already exists'
+            })
+        }
+    })
+});
+
+//get categories
+router.get("/categories", async (req, res) => {
+	const category = await categoryModel.find()
+	res.send(category)
+})
 
 //get products
 router.get("/products", async (req, res) => {
