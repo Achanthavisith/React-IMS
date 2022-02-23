@@ -105,7 +105,6 @@ export default function Login() {
                 : 
                 (<Button style={{fontSize: 15, fontWeight: 'bold'}} onClick={(e) => setToggle(true)}>Not a user?</Button>)
                 }
-
             </Form>
         </div>
     );
