@@ -1,5 +1,8 @@
+import PostProducts from "../components/PostProducts";
+import { PostProduct } from "../components/PostProduct";
 export default function About() {
     return (
-        <h2>what</h2>
+        <PostProducts></PostProducts>
+       
     );
 }

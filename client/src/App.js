@@ -26,7 +26,7 @@ function App() {
           <Navbar sticky="top">
             <NavbarBrand href='/'>Inventory Manager</NavbarBrand>
             <Link to="/manage" style={navbarLinks}>Manage</Link>
-            <Link to="/about" style={navbarLinks}>placeholder</Link>
+            <Link to="/about" style={navbarLinks}>Products</Link>
             <Link to="/login" style={navbarLinks}>Login</Link>
           </Navbar>
       </div>
