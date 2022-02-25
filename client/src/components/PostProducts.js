@@ -2,6 +2,7 @@
 import { Component } from 'react';
 import axios from 'axios';
 import { PostProduct } from './PostProduct';
+import SingleClickProductName from './SingleClickProductName';
 
 
 
@@ -10,7 +11,9 @@ export default class PostProducts extends Component {
         super(props);
         this.state = { 
             PostProducts: [],
+            selectedPostName: null,
         };
+       
     }
 
     componentDidMount() {
@@ -26,18 +29,31 @@ export default class PostProducts extends Component {
                     });
     }
     
+    onPostClickHandler = (name) =>  {
+        console.log(name);
+        this.setState({
+            selectedPostName: name,
+        })
+    }
 
 render() {
  const PostProducts = this.state.PostProducts.map((post) => {
-     return <PostProduct  key={post.id}  post = {post} />;
+     return (<PostProduct
+     key={post.id}  
+     post = {post}  
+     postclicked = {this.onPostClickHandler.bind(this, post.name,)} 
+     />);
     });
 
 
     return (
         <div>
-<h1 ClassName = 'font-bold text-xl my-3 '>Products Within System</h1>
+<h1 className = 'font-bold text-xl my-3 '>Products Within System</h1>
 <div>{PostProducts}</div>
-
+{this.state.selectedPostName && (
+<div>
+    <h2 className=' font-bold'>This is the Product you have clicked!</h2><SingleClickProductName id={this.state.selectedPostName}/> </div>
+)}
         </div>
     );
 }
