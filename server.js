@@ -3,6 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv')
+const routerUrls = require('./controllers/routes')
+const product = require('./models/productModel')
+
+//config dotenv to access .env with DB address
+dotenv.config();
 
 // Create a new express application named 'app'
 const app = express();
@@ -24,11 +31,19 @@ app.use(bodyParser.urlencoded({
 
 // Configure the CORs middleware
 app.use(cors());
+app.use(express.json());
 
+//connect to DB
+mongoose.connect(process.env.URI)
+//display message when connected
+const connection = mongoose.connection
+connection.once('open', () => {
+    console.log("DB connected.");
+});
 // Require Route
-const api = require('./routes/routes');
-// Configure app to use route
-app.use('/api/v1/', api);
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to from server." });
+});
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
@@ -40,11 +55,13 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
 };
 
 // Catch any bad requests
-app.get('*', (req, res) => {
-    res.status(200).json({
-        msg: 'Catch All'
-    });
-});
+// app.get('*', (req, res) => {
+//     res.status(200).json({
+//         msg: 'Catch All'
+//     });
+// });
+
+app.use('/api', routerUrls);
 
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));

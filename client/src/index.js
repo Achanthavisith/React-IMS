@@ -7,17 +7,19 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import Home from './routes/home';
-import About from './routes/about';
+import Manage from './routes/manage';
+import Admin from './routes/admin';
+import Login from './routes/login';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
     <Routes>
+      <Route path="login" element={<Login />} />
       <Route path="/" element={<App />}>
-        <Route path="home" element={<Home />} />
-        <Route path="about" element={<About />} />
+        <Route path="manage" element={<Manage />}/>
+        <Route path="admin" element={<Admin />} />
       </Route>
     </Routes>
   </BrowserRouter>
