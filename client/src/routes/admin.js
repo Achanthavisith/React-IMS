@@ -1,5 +1,5 @@
 export default function Admin() {
     return (
-        <PostProducts></PostProducts>
+        <div></div>
     );
 }

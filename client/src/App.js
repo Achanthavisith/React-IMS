@@ -4,6 +4,7 @@ import { Link, Outlet, Navigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
 import auth from './context/auth'
+import PostProducts from './components/PostProducts'
 
 const navbarLinks = {
   padding: 20,
@@ -38,6 +39,9 @@ function App() {
         </RequireAuth>
       </div>
       <Outlet />
+      <div>
+      <PostProducts></PostProducts>
+      </div>
     </div>
   );
 }
