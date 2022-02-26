@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const productModel = require('../models/productModel')
-const userModel = require('../models/userModel')
-const categoryModel = require('../models/categoryModel')
+const productModel = require('../models/productModel');
+const userModel = require('../models/userModel');
+const categoryModel = require('../models/categoryModel');
 
 //add product route
 router.post('/addProduct', (req, res) => {
@@ -99,10 +99,17 @@ router.get("/users", async (req, res) => {
 })
 
 //get specific user param
-router.get("/user", async (req, res) => {
-    const filter = req.body.email
-	const user = await userModel.find({email: filter})
-    res.send(user)
+router.post("/login", async (req, res) => {
+    const user = await userModel.findOne({
+        email: req.body.email,
+        password: req.body.password,
+    })
+
+    if(user) {
+        return res.status(200).json({status: 'ok', user: true, role: user.role});
+    } else{
+        res.status(400).json({status: 'error', user:false});
+    }
 })
 
 

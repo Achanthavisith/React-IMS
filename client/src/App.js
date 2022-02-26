@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, Navigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
+import auth from './context/auth'
 
 const navbarLinks = {
   padding: 20,
@@ -19,16 +20,22 @@ const navbar = {
   padding: 10,
 }
 
+function RequireAuth({ children, redirectTo }) {
+  let isAuthenticated = auth.isAuthenticated();
+  return isAuthenticated ? children : <Navigate to={redirectTo} />;
+}
+
 function App() {
   return (
     <div>
       <div style={navbar}>
-          <Navbar sticky="top">
-            <NavbarBrand href='/'>Inventory Manager</NavbarBrand>
+        <RequireAuth redirectTo='/login'>
+        <Navbar sticky="top">
+            <NavbarBrand as={Link} to='/'>Inventory Manager</NavbarBrand>
             <Link to="/manage" style={navbarLinks}>Manage</Link>
-            <Link to="/about" style={navbarLinks}>placeholder</Link>
-            <Link to="/login" style={navbarLinks}>Login</Link>
+            <Link to="/admin" style={navbarLinks}>Admin</Link>
           </Navbar>
+        </RequireAuth>
       </div>
       <Outlet />
     </div>

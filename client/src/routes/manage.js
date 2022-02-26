@@ -49,7 +49,7 @@ export default function Manage() {
     //useeffect to render our collections data
     useEffect(() => {
         getCategories();
-    }, []);
+    }, [toggle]);
 
 
     //sumbit handler for add product form
@@ -112,7 +112,7 @@ export default function Manage() {
             <div style={loginStyle}>
                     {toggle ? 
                         ( 
-                            <Form noValidate validated={categoryValidated} onSubmit={addCategorySubmit}>
+                        <Form noValidate validated={categoryValidated} onSubmit={addCategorySubmit}>
                                 <Form.Group className="mb-3">
                                 <Form.Label>New Category: </Form.Label>
                                 <Form.Control 
@@ -129,7 +129,7 @@ export default function Manage() {
                                 </Form.Control.Feedback>
                                 <Button className="mb-3" size="sm" variant="secondary" type="submit">Add new category</Button>
                                 </Form.Group>
-                            </Form>
+                        </Form>
                         ) 
                     : 
                         (
