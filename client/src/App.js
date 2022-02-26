@@ -34,7 +34,7 @@ function App() {
             <NavbarBrand as={Link} to='/'>Inventory Manager</NavbarBrand>
             <Link to="/manage" style={navbarLinks}>Manage</Link>
             <Link to="/admin" style={navbarLinks}>Admin</Link>
-          </Navbar>
+        </Navbar>
         </RequireAuth>
       </div>
       <Outlet />
