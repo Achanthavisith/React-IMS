@@ -6,15 +6,20 @@ import SingleClickProductName from './SingleClickProductName';
 
 
 
+
 export default class PostProducts extends Component { 
+ 
     constructor(props) {
         super(props);
+       
         this.state = { 
             PostProducts: [],
             selectedPostName: null,
+            products: [],
         };
        
     }
+    
 
     componentDidMount() {
         axios.get("http://localhost:5000/api/products",)
@@ -36,25 +41,52 @@ export default class PostProducts extends Component {
         })
     }
 
+    // this will work in deleteing just need to figure out the route to get the specific deleteProduct back end work and it will delete with axios
+    onPostDeleteHandler = (id, e) => {
+        
+        if(window.confirm('Are you sure you want to delete')) {
+            axios.delete("http://localhost:5000/api/products" ,)
+            .then((response) => {
+                this.getPostProducts();
+            });
+        }
+    };
+
 render() {
  const PostProducts = this.state.PostProducts.map((post) => {
      return (<PostProduct
      key={post.id}  
      post = {post}  
-     postclicked = {this.onPostClickHandler.bind(this, post.name,)} 
+     postclicked = {this.onPostClickHandler.bind(
+         this, 
+        post.name,
+        )} 
+        postDeleted = {this.onPostDeleteHandler.bind(
+            post._id,
+        )}
      />);
     });
 
 
     return (
-        <div>
-<h1 className = 'font-bold text-xl my-3 '>Products Within System</h1>
-<div>{PostProducts}</div>
+        <div  >
+           
+
+<h1 class = 'font-bold text-xl my-3 '>Products Within System</h1>
 {this.state.selectedPostName && (
 <div>
-    <h2 className=' font-bold'>This is the Product you have clicked!</h2><SingleClickProductName id={this.state.selectedPostName}/> </div>
+    <h2 class='font-bold'>This is the Product you have clicked!</h2><SingleClickProductName id={this.state.selectedPostName}/> </div>
 )}
+<div >
+{PostProducts}
+
+</div>
+
+
+
+
         </div>
+        // need to change the class in div for postproucts to align the cards next to each other using "d-flex justify-content-center" aligns the way I want but doenst show all elemetns 
     );
 }
 }

@@ -1,6 +1,7 @@
 import  axios  from "axios";
 
 import { Component } from "react";
+import { PostProduct } from "./PostProduct";
 
 
 export default class SingleClickProductName extends Component{
@@ -18,7 +19,8 @@ componentDidMount() {
 
     render() {
         return(
-        <div class="d-flex  p-2 flex-column">
+            
+        <div class="d-flex  p-2 flex-column" >
         <div>Name: </div>
         <div>Quantitiy: </div>
         <div>Category: </div>
