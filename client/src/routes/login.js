@@ -1,6 +1,8 @@
 import { Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import auth from '../context/auth'
 
 export default function Login() {
 
@@ -20,13 +22,14 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+
      //set states back to empty method
     const clearState = () => {
         setEmail("");
         setPassword("");
     };
 
-
+    const navigate = useNavigate();
     //handlesubmit
     const onSubmit = async (event) => { 
         event.preventDefault(); 
@@ -65,6 +68,22 @@ export default function Login() {
 
             if (toggle === false) {
                 console.log('button clicked');
+
+                await axios.post('http://localhost:5000/api/login', user)
+                .then (response => {
+                    alert('user logged in successfully: ' + user.email);
+                    console.log(response.data);
+                    auth.login(() => {
+                        navigate('/');
+                    })
+                }).catch((err) => {
+                    if (err.response) {
+                        alert('Please Check your login credentials.');
+                        //console messages if any
+                        console.log(err.response.data);
+                        console.log('status code: ' + err.response.status);
+                    }
+                })
             }
     };
 
@@ -75,7 +94,7 @@ export default function Login() {
                 <Form.Group className="mb-3">
                     <Form.Label>Email: </Form.Label>
                     <Form.Control 
-                        type="text" 
+                        type="email" 
                         name="email" 
                         placeholder="Email" 
                         className="form-control"

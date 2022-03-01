@@ -8,7 +8,7 @@ import {
   Route
 } from "react-router-dom";
 import Manage from './routes/manage';
-import About from './routes/about';
+import Admin from './routes/admin';
 import Login from './routes/login';
 import reportWebVitals from './reportWebVitals';
 
@@ -16,10 +16,10 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
     <Routes>
+      <Route path="login" element={<Login />} />
       <Route path="/" element={<App />}>
         <Route path="manage" element={<Manage />}/>
-        <Route path="about" element={<About />} />
-        <Route path="login" element={<Login />} />
+        <Route path="admin" element={<Admin />} />
       </Route>
     </Routes>
   </BrowserRouter>
