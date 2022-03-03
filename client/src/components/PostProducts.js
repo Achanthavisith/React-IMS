@@ -59,7 +59,7 @@ render() {
      post = {post}  
      postclicked = {this.onPostClickHandler.bind(
          this, 
-        post.name,
+        post.id,
         )} 
         postDeleted = {this.onPostDeleteHandler.bind(
             post._id,

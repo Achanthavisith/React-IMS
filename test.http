@@ -16,12 +16,19 @@
 #     "role": "admin"
 # }
 
-POST http://localhost:5000/api/addCategory
-Content-Type: application/json
-
-{
-    "category": "Misc"
-}
+#POST http://localhost:5000/api/addCategory
+#Content-Type: application/json
+#
+#{
+#    "category": "Misc"
+#}
 
 # GET http://localhost:5000/getProducts
 
+ 
+ POST http://localhost:5000/api/products/delete
+ Content-Type: application/json
+
+{
+     "name": "test2"
+}

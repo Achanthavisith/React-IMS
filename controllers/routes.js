@@ -3,6 +3,7 @@ const router = express.Router();
 const productModel = require('../models/productModel');
 const userModel = require('../models/userModel');
 const categoryModel = require('../models/categoryModel');
+const { findOne } = require('../models/productModel');
 
 //add product route
 router.post('/addProduct', (req, res) => {
@@ -114,5 +115,14 @@ router.post("/login", async (req, res) => {
 
 
 
+router.delete("/products/delete", async (req, res) => {
+     const product = await productModel.findByIdAndDelete(
+         {
+             name: req.body.name,
+            
+         }
+     )
+     res.send(product)
+})
 
 module.exports = router;
