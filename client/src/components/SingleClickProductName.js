@@ -4,6 +4,7 @@ import { Component } from "react";
 import { PostProduct } from "./PostProduct";
 
 
+
 export default class SingleClickProductName extends Component{
     constructor(props) {
         super(props);
@@ -12,7 +13,10 @@ export default class SingleClickProductName extends Component{
 componentDidMount() { 
     // need to add the correct api routing for the following of produvt names so after click we can get info for what you chose
     // the routing here returns all products after you clikc but wanting just the info of the one specifc product clicked 
-    axios.get('http://localhost:5000/api/products/',).then(response => {
+    const name = this.props.name;
+
+
+    axios.get('http://localhost:5000/api/products/name', name ).then((response) => {
         console.log(response.data);
     })
 }
