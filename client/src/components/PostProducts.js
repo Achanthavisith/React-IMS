@@ -45,7 +45,8 @@ export default class PostProducts extends Component {
     onPostDeleteHandler = (id, e) => {
         
         if(window.confirm('Are you sure you want to delete')) {
-            axios.delete("http://localhost:5000/api/products" ,)
+            
+            axios.delete("http://localhost:5000/api/products/delete" ,)
             .then((response) => {
                 this.getPostProducts();
             });
@@ -55,11 +56,11 @@ export default class PostProducts extends Component {
 render() {
  const PostProducts = this.state.PostProducts.map((post) => {
      return (<PostProduct
-     key={post.id}  
+     key={post.name}  
      post = {post}  
      postclicked = {this.onPostClickHandler.bind(
          this, 
-        post.id,
+        post.name,
         )} 
         postDeleted = {this.onPostDeleteHandler.bind(
             post._id,

@@ -26,9 +26,9 @@
 # GET http://localhost:5000/getProducts
 
  
- POST http://localhost:5000/api/products/delete
- Content-Type: application/json
-
-{
-     "name": "test2"
-}
+ #DELETE  http://localhost:5000/api/products/delete
+ #Content-Type: application/json
+#
+#{
+#     "name": "test2"
+#}

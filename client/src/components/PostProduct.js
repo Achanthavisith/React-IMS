@@ -11,7 +11,7 @@ export function PostProduct(props) {
     
     return (
         
-            //<div  class ="row">
+        //<div  class ="row">
         <div  class="col-sm-6">
           <div  style = {card}  class="card ">
             <div  class="card-body ">
