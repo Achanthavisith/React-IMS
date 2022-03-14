@@ -17,6 +17,7 @@ componentDidMount() {
 
 
     axios.get('http://localhost:5000/api/products/name', name ).then((response) => {
+
         console.log(response.data);
     })
 }
@@ -24,8 +25,8 @@ componentDidMount() {
     render() {
         return(
             
-        <div class="d-flex  p-2 flex-column" >
-        <div>Name: </div>
+        <div className="d-flex  p-2 flex-column" >
+        <div>Name:  </div>
         <div>Quantitiy: </div>
         <div>Category: </div>
 
