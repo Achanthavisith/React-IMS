@@ -124,12 +124,12 @@ router.post("/login", async (req, res) => {
 
 
 router.delete("/products/delete", async (req, res) => {
-     const product = await productModel.findOneAndRemove(
-         {
-             name: req.body.name,
+    const product = await productModel.findOneAndRemove(
+        {
+            name: req.body.name,
             
-         }
-     )
+        }
+    )
 })
 
 module.exports = router;

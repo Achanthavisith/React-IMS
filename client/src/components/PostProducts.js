@@ -8,16 +8,16 @@ import SingleClickProductName from './SingleClickProductName';
 
 
 export default class PostProducts extends Component { 
- 
+
     constructor(props) {
         super(props);
-       
+    
         this.state = { 
             PostProducts: [],
             selectedPostName: null,
             products: [],
         };
-       
+    
     }
     
 
@@ -39,44 +39,44 @@ export default class PostProducts extends Component {
         this.setState({
             selectedPostName: name,
         })
+        axios.get("http://localhost:5000/api/products/name", name).then((response) => {
+        })
     }
 
     // this will work in deleteing just need to figure out the route to get the specific deleteProduct back end work and it will delete with axios
-    onPostDeleteHandler = (id, e) => {
-        
+    onPostDeleteHandler = (name, e) => {
+        console.log(name);
+
         if(window.confirm('Are you sure you want to delete')) {
-            
-            axios.delete("http://localhost:5000/api/products/delete" ,)
-            .then((response) => {
-                this.getPostProducts();
-            });
+            axios.delete("http://localhost:5000/api/products/delete", { data: { name: name }});
         }
     };
 
 render() {
- const PostProducts = this.state.PostProducts.map((post) => {
-     return (<PostProduct
-     key={post.name}  
-     post = {post}  
-     postclicked = {this.onPostClickHandler.bind(
-         this, 
+const PostProducts = this.state.PostProducts.map((post) => {
+    return (<PostProduct
+    key={post.name}  
+    post = {post}  
+    postclicked = {this.onPostClickHandler.bind(
+        this, 
         post.name,
         )} 
-        postDeleted = {this.onPostDeleteHandler.bind(
-            post._id,
+    postDeleted = {this.onPostDeleteHandler.bind(
+            this,
+            post.name,
         )}
-     />);
+    />);
     });
 
 
     return (
         <div  >
-           
 
-<h1 class = 'font-bold text-xl my-3 '>Products Within System</h1>
+
+<h1 className = 'font-bold text-xl my-3 '>Products Within System</h1>
 {this.state.selectedPostName && (
 <div>
-    <h2 class='font-bold'>This is the Product you have clicked!</h2><SingleClickProductName id={this.state.selectedPostName}/> </div>
+    <h2 className='font-bold'>This is the Product you have clicked!</h2><SingleClickProductName id={this.state.selectedPostName}/> </div>
 )}
 <div >
 {PostProducts}
