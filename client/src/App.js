@@ -40,7 +40,7 @@ function App() {
       </div>
       <Outlet />
       <div>
-      <PostProducts></PostProducts>
+      
       </div>
     </div>
   );
