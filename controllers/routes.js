@@ -95,7 +95,7 @@ router.get("/products", async (req, res) => {
 
 //get users
 router.get("/users", async (req, res) => {
-	const users = await userModel.find()
+	const users = await userModel.find({}, 'email')
 	res.send(users)
 })
 
@@ -115,7 +115,7 @@ router.post("/login", async (req, res) => {
     })
 
     if(user) {
-        return res.status(200).json({status: 'ok', user: true, role: user.role});
+        return res.status(200).json({status: 'ok', user: user.email, role: user.role});
     } else{
         res.status(400).json({status: 'error', user:false});
     }
