@@ -16,10 +16,10 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
     <Routes>
-      <Route path="login" element={<Login />} />
       <Route path="/" element={<App />}>
         <Route path="manage" element={<Manage />}/>
         <Route path="admin" element={<Admin />} />
+        <Route path="login" element={<Login />} />
       </Route>
     </Routes>
   </BrowserRouter>
