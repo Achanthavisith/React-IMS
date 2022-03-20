@@ -5,7 +5,6 @@ import { UserContext } from '../context/context';
 export default function Admin() {
     const {user} = useContext(UserContext);
     return (
-        <div>Holding place</div>
         <div>
             <div>
                 {user ? 
@@ -14,7 +13,6 @@ export default function Admin() {
                     {user.role === 'admin' ? 
                     (<div>
                         Hello Admin
-                        
                     </div>)
                     :
                     (<div>
@@ -28,7 +26,6 @@ export default function Admin() {
                 </div>)
                 }
             </div>
-        
         </div>
     );
 }
