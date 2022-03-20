@@ -1,5 +1,7 @@
 
 
+import '../components/PostProduct.css'
+
 export function PostProduct(props) {
     const card = {
         border: '2px solid #2F4F4F',
@@ -10,7 +12,16 @@ export function PostProduct(props) {
     }
     
     return (
-        
+    
+            <tr>
+              <td>{props.post.name}</td>
+              <td>{props.post.quantity}</td>
+              <td>{props.post.category}</td>
+              
+            </tr>
+  
+
+        /*
         //<div  class ="row">
         <div  className="col-sm-6">
           <div  style = {card}  className="card ">
@@ -29,7 +40,7 @@ export function PostProduct(props) {
             </div>
           </div>
         </div>
-        
+        */
         
     );
     

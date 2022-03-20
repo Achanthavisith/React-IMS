@@ -6,7 +6,47 @@ import SingleClickProductName from './SingleClickProductName';
 
 import '../components/PostProduct.css'
 
+const PostProducts = () => {
+    const PostProducts = this.state.PostProducts.map((post) => {
+        return (<PostProduct
+        key={post.name}  
+        post = {post}  
+        postclicked = {this.onPostClickHandler.bind(
+            this, 
+            post.name,
+            )} 
+        postDeleted = {this.onPostDeleteHandler.bind(
+                this,
+                post.name,
+            )}
+        />);
+        });
+    return(
+        
+        <div className="product-container"> 
+      <table>
 
+        <thead>
+          <tr>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Category</th>
+          <th>Test</th>
+          </tr>
+        </thead>
+          <tbody>
+        
+{PostProducts}
+</tbody>
+        </table>
+        
+        </div>
+
+
+
+    )
+}
+/*
 export default class PostProducts extends Component { 
 
     
@@ -107,3 +147,4 @@ const PostProducts = this.state.PostProducts.map((post) => {
     );
 }
 }
+*/

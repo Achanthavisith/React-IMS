@@ -39,7 +39,7 @@ function App() {
       <Outlet />
       </UserContext.Provider>
       <div>
-      <PostProducts></PostProducts>
+      
       </div>
     </div>
   );

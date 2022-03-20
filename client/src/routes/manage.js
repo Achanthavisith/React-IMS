@@ -1,6 +1,10 @@
 import { Form, Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PostProducts from '../components/PostProducts';
+import '../components/PostProduct.css'
+import ReadOnlyRow from '../components/ReadOnlyRow';
+import EditableRow from '../components/EditableRow';
 
 const loginStyle = {
     font: '15px arial sans',
@@ -16,15 +20,88 @@ export default function Manage() {
     const [quantity, setQuantity] = useState("");
     const [category, setCategory] = useState("");
     const [newCategory, setNewCategory] = useState("");
+    const [product, setProducts] = useState("");
+    const [addFormData, setAddFormData] = useState({
+        name:"",
+        quantity:"",
+        category:""
+    });
+    const [editFormData, setEditFormData] = useState({
+        name:"",
+        quantity:"",
+        category:""
+    });
+    
+    const [editProductName, setEditedProductName] = useState(null);
+
+
+    const handleAddFormChange = (event) => {
+        event.preventDefault();
+        
+        const fieldName = event.target.getAttrribute('name');
+        const fieldValue = event.target.value;
+
+        const newFormData = { ...addFormData};
+        newFormData[fieldName] = fieldValue;
+
+        setAddFormData(newFormData);
+    };
+
+const handleEditFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttrribute('_id');
+    const fieldValue = event.target.value;
+
+    const newFormData = {...editFormData};
+    newFormData[fieldName] = fieldValue;
+
+    setEditFormData(newFormData);
+}
+
+    const handleEditFormSubmit = (event) => {
+        event.preventDefault();
+
+        const editedProduct = {
+            name: editFormData.name,
+            quantity: editFormData.quantity,
+            category: editFormData.category,
+        }
+        const newProduct = [...products];
+
+        const index = products.findIndex((product) => product._id === editProductName)
+        newProduct[index] = editedProduct;
+        
+        setProducts(newProduct);
+        setEditedProductName(null);
+
+    }
+
+ const handleEditClick = (event, product)=> {
+     event.preventDefault();
+     setEditedProductName(product.name);
+
+     const formValues = { 
+        name: product.name,
+        quantity: product.quantity,
+        category: product.category,
+     }
+     setEditFormData(formValues);
+ };
+
+ 
 
     //empty state array to house our categories collections data
     const [categories, setCategories] = useState([]);
+    const [products, setAllProducts] = useState([]);
     
     //validated booleans for add forms
     const [validated, setValidated] = useState(false);
     const [categoryValidated, setCategoryValidated] = useState(false);
     //keep track of our buttons
     const [toggle, setToggle] = useState(false);
+
+    
 
     const clearState = () => {
         setName("");
@@ -45,16 +122,31 @@ export default function Manage() {
         })
         .catch(error => console.error(error));
     }
+    //get products data from mongodb input to array
+    const getProducts = () => {
+        axios.get("http://localhost:5000/api/products")
+        .then((response) => {
+            const data = response.data;
+            setAllProducts(data);
+        })
+        .catch(error => console.error(error));
+    }
 
     //useeffect to render our collections data
     useEffect(() => {
         getCategories();
     }, [toggle]);
 
+    useEffect(() => {
+        getProducts();
+    }, [toggle]);
+
 
     //sumbit handler for add product form
     const handleSubmit = async (event) => { 
+        
         const form = event.currentTarget;
+ 
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -77,7 +169,25 @@ export default function Manage() {
             })
             setValidated(false);
             clearState();
+          
         };
+        event.preventDefault();
+        
+        const fieldName = event.target.name;
+        const fieldValue = event.target.value;
+
+        const newFormData = { ...addFormData};
+        newFormData[fieldName] = fieldValue;
+
+        setAddFormData(newFormData);
+        event.preventDefault();
+    const newProduct = {
+        name: addFormData.name,
+        quantity: addFormData.quantity,
+        category: addFormData.category,
+    };
+    const newProducts = [...products, newProduct];
+    setAllProducts(newProducts);
     };
 
     //newcategory form submit handler
@@ -107,6 +217,7 @@ export default function Manage() {
     };
 
     return (
+        <React.Fragment>
         <div>
             <h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
             <div style={loginStyle}>
@@ -143,6 +254,7 @@ export default function Manage() {
                                     className="form-control"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                   // onChange={handleAddFormChange}
                                     required
                                     />
                                 <Form.Control.Feedback type="invalid">
@@ -159,6 +271,7 @@ export default function Manage() {
                                     className="form-control"
                                     value={quantity}
                                     onChange={(e) => setQuantity(e.target.value)}
+                                   // onChange={handleAddFormChange}
                                     required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -176,6 +289,7 @@ export default function Manage() {
                                     value={category}
                                     className="form-control"
                                     onChange={(e) => setCategory(e.target.value)}
+                                    //onChange={handleAddFormChange}
                                 >
                                     <option value="" >- - -</option>
                                     {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
@@ -196,6 +310,44 @@ export default function Manage() {
                     }
 
                 </div>
+              
         </div>
+        <div className="product-container"> 
+        <form onSubmit={handleEditFormSubmit}>
+        <table>
+
+          <thead>
+            <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Category</th>
+            <th>Admin Buttons</th>
+            </tr>
+          </thead>
+            <tbody>
+                {products.map((product) =>(
+                    <React.Fragment>
+                        {editProductName === product.name ? (
+                            <EditableRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>
+                         ) : (
+                            <ReadOnlyRow product={product} handleEditClick = {handleEditClick}/>
+                         )}
+                
+               
+                </React.Fragment>
+                ))}
+              
+    
+            </tbody>
+          </table>
+          </form>
+          
+          </div>
+
+
+        </React.Fragment>
+      
+    
     );
+    
 }
