@@ -1,10 +1,11 @@
 import { Form, Button } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import PostProducts from '../components/PostProducts';
 import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
+import editProductContext from '../context/editProductContext';
 
 const loginStyle = {
     font: '15px arial sans',
@@ -21,6 +22,10 @@ export default function Manage() {
     const [category, setCategory] = useState("");
     const [newCategory, setNewCategory] = useState("");
     const [product, setProducts] = useState("");
+    const [isUpdate, setIsUpdate] = useState(false);
+
+
+// set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
         name:"",
         quantity:"",
@@ -31,14 +36,36 @@ export default function Manage() {
         quantity:"",
         category:""
     });
-    
-    const [editProductName, setEditedProductName] = useState(null);
 
 
+    //Setting state and giving a provider
+
+    const [editProductName, setEditedProductName] = useState();
+
+
+
+
+
+
+    //Used to update table when the form is submitted 
+
+ function onUpdate() {
+     console.log("Its works/ Updated");
+     if (isUpdate === true){
+         setIsUpdate(false);
+
+     }
+     else{
+         setIsUpdate(true);
+     }
+     setIsUpdate(true);
+
+ }
+ 
     const handleAddFormChange = (event) => {
         event.preventDefault();
         
-        const fieldName = event.target.getAttrribute('name');
+        const fieldName = event.target.getAttribute('name');
         const fieldValue = event.target.value;
 
         const newFormData = { ...addFormData};
@@ -48,9 +75,9 @@ export default function Manage() {
     };
 
 const handleEditFormChange = (event) => {
-    event.preventDefault();
+   // event.preventDefault();
 
-    const fieldName = event.target.getAttrribute('_id');
+    const fieldName = event.target.getAttribute('name');
     const fieldValue = event.target.value;
 
     const newFormData = {...editFormData};
@@ -69,7 +96,7 @@ const handleEditFormChange = (event) => {
         }
         const newProduct = [...products];
 
-        const index = products.findIndex((product) => product._id === editProductName)
+        const index = products.findIndex((product) => product.name === editProductName)
         newProduct[index] = editedProduct;
         
         setProducts(newProduct);
@@ -100,6 +127,7 @@ const handleEditFormChange = (event) => {
     const [categoryValidated, setCategoryValidated] = useState(false);
     //keep track of our buttons
     const [toggle, setToggle] = useState(false);
+    const [refresh,setRefresh] = useState(false);
 
     
 
@@ -122,6 +150,7 @@ const handleEditFormChange = (event) => {
         })
         .catch(error => console.error(error));
     }
+
     //get products data from mongodb input to array
     const getProducts = () => {
         axios.get("http://localhost:5000/api/products")
@@ -139,7 +168,11 @@ const handleEditFormChange = (event) => {
 
     useEffect(() => {
         getProducts();
-    }, [toggle]);
+    }, [setAllProducts]);
+    
+
+
+
 
 
     //sumbit handler for add product form
@@ -188,6 +221,7 @@ const handleEditFormChange = (event) => {
     };
     const newProducts = [...products, newProduct];
     setAllProducts(newProducts);
+    
     };
 
     //newcategory form submit handler
@@ -299,7 +333,7 @@ const handleEditFormChange = (event) => {
                                 </Form.Control.Feedback>
                             </Form.Group>
             
-                            <Button className="mb-3" type="submit">ADD</Button>
+                            <Button className="mb-3" type="submit"  onClick={onUpdate}>ADD</Button>
                         </Form>
                         )
                     }
@@ -321,12 +355,12 @@ const handleEditFormChange = (event) => {
             <th>Product Name</th>
             <th>Quantity</th>
             <th>Category</th>
-            <th>Admin Buttons</th>
+           <th>Admin Buttons</th>
             </tr>
           </thead>
             <tbody>
                 {products.map((product) =>(
-                    <React.Fragment>
+                    <React.Fragment key =  {product.name}>
                         {editProductName === product.name ? (
                             <EditableRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>
                          ) : (

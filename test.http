@@ -25,10 +25,23 @@
 
 # GET http://localhost:5000/getProducts
 
+
+#PUT http://localhost:5000/api/products/update
+#Content-Type: application/json
+##
+#{
+  # 
+  # "name": "Test Product",
+  #  "quantity": 12,
+  #  "category": "bulk",
+   # 
+   # 
+#}
+
  
 DELETE  http://localhost:5000/api/products/delete
 Content-Type: application/json
 
 {
-    "name": "test"
+   "name": "34545"
 }
