@@ -18,7 +18,7 @@ export default class PostProducts extends Component {
             selectedPostName: null,
             products: [],
         };
-        
+        this.componentDidMount();
     }
     
 
