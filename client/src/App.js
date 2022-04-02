@@ -25,6 +25,8 @@ const navbar = {
 function App() {
   const [user, setUser] = useState(null);
   const providerValue = useMemo(() => ({user, setUser}), [user, setUser]);
+
+
   return (
     <div>
       <div style={navbar}>
@@ -36,7 +38,7 @@ function App() {
         </Navbar>
       </div>
       <UserContext.Provider value={providerValue}>
-      <Outlet />
+        <Outlet />
       </UserContext.Provider>
       <div>
       

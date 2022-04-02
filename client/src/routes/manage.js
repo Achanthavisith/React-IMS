@@ -1,10 +1,13 @@
 import { Form, Button } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import PostProducts from '../components/PostProducts';
 import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
+import { UserContext } from '../context/context';
+
+
 
 const loginStyle = {
     font: '15px arial sans',
@@ -31,6 +34,8 @@ export default function Manage() {
         quantity:"",
         category:""
     });
+    //user context
+    const {user} = useContext(UserContext);
     
     const [editProductName, setEditedProductName] = useState(null);
 
@@ -47,17 +52,17 @@ export default function Manage() {
         setAddFormData(newFormData);
     };
 
-const handleEditFormChange = (event) => {
-    event.preventDefault();
+    const handleEditFormChange = (event) => {
+        event.preventDefault();
 
-    const fieldName = event.target.getAttrribute('_id');
-    const fieldValue = event.target.value;
+        const fieldName = event.target.getAttrribute('_id');
+        const fieldValue = event.target.value;
 
-    const newFormData = {...editFormData};
-    newFormData[fieldName] = fieldValue;
+        const newFormData = {...editFormData};
+        newFormData[fieldName] = fieldValue;
 
-    setEditFormData(newFormData);
-}
+        setEditFormData(newFormData);
+    }
 
     const handleEditFormSubmit = (event) => {
         event.preventDefault();
@@ -77,19 +82,17 @@ const handleEditFormChange = (event) => {
 
     }
 
- const handleEditClick = (event, product)=> {
-     event.preventDefault();
-     setEditedProductName(product.name);
+    const handleEditClick = (event, product)=> {
+        event.preventDefault();
+        setEditedProductName(product.name);
 
-     const formValues = { 
-        name: product.name,
-        quantity: product.quantity,
-        category: product.category,
-     }
-     setEditFormData(formValues);
- };
-
- 
+        const formValues = { 
+            name: product.name,
+            quantity: product.quantity,
+            category: product.category,
+        }
+        setEditFormData(formValues);
+    };
 
     //empty state array to house our categories collections data
     const [categories, setCategories] = useState([]);
@@ -217,137 +220,135 @@ const handleEditFormChange = (event) => {
     };
 
     return (
+        
         <React.Fragment>
-        <div>
-            <h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
-            <div style={loginStyle}>
-                    {toggle ? 
-                        ( 
-                        <Form noValidate validated={categoryValidated} onSubmit={addCategorySubmit}>
-                                <Form.Group className="mb-3">
-                                <Form.Label>New Category: </Form.Label>
-                                <Form.Control 
-                                type = "text"
-                                name="category" 
-                                placeholder="category" 
-                                className="form-control mb-3"
-                                value={newCategory}
-                                onChange={(e) => setNewCategory(e.target.value)}
-                                required
-                                />
-                                <Form.Control.Feedback type="invalid" className="mb-3">
-                                    Please provide a category name.
-                                </Form.Control.Feedback>
-                                <Button className="mb-3" size="sm" variant="secondary" type="submit">Add new category</Button>
-                                </Form.Group>
-                        </Form>
-                        ) 
-                    : 
-                        (
-                        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Product Name: </Form.Label>
-                                <Form.Control 
+        {user ? 
+        (<div>
+            {user.role === 'admin' ? 
+                (<div><h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
+                    <div style={loginStyle}>
+                        {toggle ? 
+                            ( 
+                            <Form noValidate validated={categoryValidated} onSubmit={addCategorySubmit}>
+                                    <Form.Group className="mb-3">
+                                    <Form.Label>New Category: </Form.Label>
+                                    <Form.Control 
                                     type = "text"
-                                    name="product" 
-                                    placeholder="Product" 
-                                    className="form-control"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                   // onChange={handleAddFormChange}
+                                    name="category" 
+                                    placeholder="category" 
+                                    className="form-control mb-3"
+                                    value={newCategory}
+                                    onChange={(e) => setNewCategory(e.target.value)}
                                     required
                                     />
-                                <Form.Control.Feedback type="invalid">
-                                        Please provide a product name.
-                                </Form.Control.Feedback>
-                            </Form.Group>
-            
-                            <Form.Group className="mb-3">
-                                <Form.Label>Quantity: </Form.Label>
-                                <Form.Control 
-                                    type = "number"
-                                    name="quantity" 
-                                    placeholder="quantity" 
-                                    className="form-control"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                   // onChange={handleAddFormChange}
-                                    required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Please provide a quantity.
-                                </Form.Control.Feedback>
-                            </Form.Group>
-            
-                            <Form.Group className="mb-3">
-                                <Form.Label>Category:</Form.Label>
-                                <Form.Control 
-                                    required
-                                    as="select"
-                                    id="category"
-                                    type="select"
-                                    value={category}
-                                    className="form-control"
-                                    onChange={(e) => setCategory(e.target.value)}
-                                    //onChange={handleAddFormChange}
-                                >
-                                    <option value="" >- - -</option>
-                                    {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
-                                </Form.Control>
-                                <Form.Control.Feedback type="invalid">
-                                    Please select a category.
-                                </Form.Control.Feedback>
-                            </Form.Group>
-            
-                            <Button className="mb-3" type="submit">ADD</Button>
-                        </Form>
-                        )
-                    }
-
-                    {toggle ? (<Button className="mb-3" size="sm" onClick={(e) => setToggle(false)}>Add product</Button>) 
-                    : 
-                    (<Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(true)}>Need a new Category?</Button>)
-                    }
-
-                </div>
-              
-        </div>
-        <div className="product-container"> 
-        <form onSubmit={handleEditFormSubmit}>
-        <table>
-
-          <thead>
-            <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Category</th>
-            <th>Admin Buttons</th>
-            </tr>
-          </thead>
-            <tbody>
-                {products.map((product) =>(
-                    <React.Fragment>
-                        {editProductName === product.name ? (
-                            <EditableRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>
-                         ) : (
-                            <ReadOnlyRow product={product} handleEditClick = {handleEditClick}/>
-                         )}
+                                    <Form.Control.Feedback type="invalid" className="mb-3">
+                                        Please provide a category name.
+                                    </Form.Control.Feedback>
+                                    <Button className="mb-3" size="sm" variant="secondary" type="submit">Add new category</Button>
+                                    </Form.Group>
+                            </Form>
+                            ) 
+                        : 
+                            (
+                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Product Name: </Form.Label>
+                                    <Form.Control 
+                                        type = "text"
+                                        name="product" 
+                                        placeholder="Product" 
+                                        className="form-control"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                       // onChange={handleAddFormChange}
+                                        required
+                                        />
+                                    <Form.Control.Feedback type="invalid">
+                                            Please provide a product name.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
                 
-               
-                </React.Fragment>
-                ))}
-              
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Quantity: </Form.Label>
+                                    <Form.Control 
+                                        type = "number"
+                                        name="quantity" 
+                                        placeholder="quantity" 
+                                        className="form-control"
+                                        value={quantity}
+                                        onChange={(e) => setQuantity(e.target.value)}
+                                       // onChange={handleAddFormChange}
+                                        required
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a quantity.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Category:</Form.Label>
+                                    <Form.Control 
+                                        required
+                                        as="select"
+                                        id="category"
+                                        type="select"
+                                        value={category}
+                                        className="form-control"
+                                        onChange={(e) => setCategory(e.target.value)}
+                                        //onChange={handleAddFormChange}
+                                    >
+                                        <option value="" >- - -</option>
+                                        {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
+                                    </Form.Control>
+                                    <Form.Control.Feedback type="invalid">
+                                        Please select a category.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                
+                                <Button className="mb-3" type="submit">ADD</Button>
+                            </Form>
+                            )
+                        }
     
-            </tbody>
-          </table>
-          </form>
-          
-          </div>
-
-
+                        {toggle ? (<Button className="mb-3" size="sm" onClick={(e) => setToggle(false)}>Add product</Button>) 
+                        : 
+                        (<Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(true)}>Need a new Category?</Button>)
+                        }
+    
+                        </div>
+                    </div>) 
+                : 
+                <div>cannot manage/not an admin.</div>}
+        </div>)
+        :
+        (<div>
+            not logged in.
+        </div>)}
+        <div className="product-container"> 
+            <form onSubmit={handleEditFormSubmit}>
+                <table>
+                    <thead>
+                        <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                        <th>Admin Buttons</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {products.map((product) =>(
+                                <React.Fragment>
+                                    {editProductName === product.name ? (
+                                        <EditableRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>
+                                    ) : (
+                                        <ReadOnlyRow product={product} handleEditClick = {handleEditClick}/>
+                                    )}
+                                </React.Fragment>
+                            ))}
+                    </tbody>
+                </table>
+            </form>
+        </div>
         </React.Fragment>
-      
-    
     );
-    
 }
