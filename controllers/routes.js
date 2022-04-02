@@ -124,7 +124,7 @@ router.post("/login", async (req, res) => {
 
 
 router.delete("/products/delete", async (req, res) => {
-    const product = await productModel.findOneAndRemove(
+    const product = await productModel.deleteOne(
         {
             name: req.body.name,
             
@@ -132,4 +132,27 @@ router.delete("/products/delete", async (req, res) => {
     )
 })
 
+router.put("/products/update", async (req, res) => {
+/*
+    const product = await productModel.findOneAndUpdate(
+        {
+            
+            name: req.body.name,
+            quantity: req.body.quantity,
+            category: req.body.category,
+
+        }
+    )
+*/
+
+    const filter = { name: req.body.name  };
+    const update = { quantity: req.body.quantity, category: req.body.category };
+    
+    
+    let doc = await productModel.findOneAndUpdate(filter, update, {
+
+      new: true
+    });
+})
+    
 module.exports = router;

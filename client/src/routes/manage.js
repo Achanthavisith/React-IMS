@@ -24,6 +24,10 @@ export default function Manage() {
     const [category, setCategory] = useState("");
     const [newCategory, setNewCategory] = useState("");
     const [product, setProducts] = useState("");
+    const [isUpdate, setIsUpdate] = useState(false);
+
+
+// set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
         name:"",
         quantity:"",
@@ -40,10 +44,34 @@ export default function Manage() {
     const [editProductName, setEditedProductName] = useState(null);
 
 
+    //Setting state and giving a provider
+
+    const [editProductName, setEditedProductName] = useState();
+
+
+
+
+
+
+    //Used to update table when the form is submitted 
+
+ function onUpdate() {
+     console.log("Its works/ Updated");
+     if (isUpdate === true){
+         setIsUpdate(false);
+
+     }
+     else{
+         setIsUpdate(true);
+     }
+     setIsUpdate(true);
+
+ }
+ 
     const handleAddFormChange = (event) => {
         event.preventDefault();
         
-        const fieldName = event.target.getAttrribute('name');
+        const fieldName = event.target.getAttribute('name');
         const fieldValue = event.target.value;
 
         const newFormData = { ...addFormData};
@@ -74,7 +102,7 @@ export default function Manage() {
         }
         const newProduct = [...products];
 
-        const index = products.findIndex((product) => product._id === editProductName)
+        const index = products.findIndex((product) => product.name === editProductName)
         newProduct[index] = editedProduct;
         
         setProducts(newProduct);
@@ -103,6 +131,7 @@ export default function Manage() {
     const [categoryValidated, setCategoryValidated] = useState(false);
     //keep track of our buttons
     const [toggle, setToggle] = useState(false);
+    const [refresh,setRefresh] = useState(false);
 
     
 
@@ -125,6 +154,7 @@ export default function Manage() {
         })
         .catch(error => console.error(error));
     }
+
     //get products data from mongodb input to array
     const getProducts = () => {
         axios.get("http://localhost:5000/api/products")
@@ -142,7 +172,11 @@ export default function Manage() {
 
     useEffect(() => {
         getProducts();
-    }, [toggle]);
+    }, [setAllProducts]);
+    
+
+
+
 
 
     //sumbit handler for add product form
@@ -191,6 +225,7 @@ export default function Manage() {
     };
     const newProducts = [...products, newProduct];
     setAllProducts(newProducts);
+    
     };
 
     //newcategory form submit handler
