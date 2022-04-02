@@ -1,5 +1,5 @@
 import { Button, Form } from 'react-bootstrap';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { UserContext } from '../context/context';
 
@@ -16,7 +16,6 @@ export default function Login() {
 
     //boolean use state
     const [toggle, setToggle] = useState(false);
-
      //set states
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -72,6 +71,7 @@ export default function Login() {
                 .then (response => {
                     alert('user logged in successfully: ' + user.email);
                     setUser(response.data);
+                    localStorage.setItem("user", JSON.stringify(response.data));
                 }).catch((err) => {
                     if (err.response) {
                         alert('Please Check your login credentials.');
@@ -83,10 +83,15 @@ export default function Login() {
             }
     };
 
+    function logOut() {
+        setUser(null);
+        localStorage.clear();
+    }
+
     return (
         <div style={loginStyle}>
             {user ? 
-            ((<Button className="form-control mb-3 btn-danger" style={{fontSize: 15, fontWeight: 'bold'}} onClick={(e) => setUser(null)}>Logout</Button>))
+            ((<Button className="form-control mb-3 btn-danger" style={{fontSize: 15, fontWeight: 'bold'}} onClick={logOut}>Logout</Button>))
             :
             (<Form className="container" onSubmit={onSubmit}>
                 <h2>User login:</h2>

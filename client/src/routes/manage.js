@@ -7,8 +7,6 @@ import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
 import { UserContext } from '../context/context';
 
-
-
 const loginStyle = {
     font: '15px arial sans',
     margin: 'auto',
@@ -18,16 +16,17 @@ const loginStyle = {
 };
 
 export default function Manage() {
+    //user context
+    const {user} = useContext(UserContext);
     //set states
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState("");
     const [category, setCategory] = useState("");
     const [newCategory, setNewCategory] = useState("");
     const [product, setProducts] = useState("");
+    const [editProductName, setEditedProductName] = useState();
     const [isUpdate, setIsUpdate] = useState(false);
-
-
-// set state of editing and adding into the 
+    // set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
         name:"",
         quantity:"",
@@ -38,36 +37,28 @@ export default function Manage() {
         quantity:"",
         category:""
     });
-    //user context
-    const {user} = useContext(UserContext);
-    
-    const [editProductName, setEditedProductName] = useState(null);
-
-
-    //Setting state and giving a provider
-
-    const [editProductName, setEditedProductName] = useState();
-
-
-
-
-
+    //empty state array to house our categories collections data
+    const [categories, setCategories] = useState([]);
+    const [products, setAllProducts] = useState([]);
+    //validated booleans for add forms
+    const [validated, setValidated] = useState(false);
+    const [categoryValidated, setCategoryValidated] = useState(false);
+    //keep track of our buttons
+    const [toggle, setToggle] = useState(false);
+    const [refresh,setRefresh] = useState(false);
 
     //Used to update table when the form is submitted 
+    function onUpdate() {
+        console.log("Its works/ Updated");
+        if (isUpdate === true){
+            setIsUpdate(false);
+        }
+        else{
+            setIsUpdate(true);
+        }
+        setIsUpdate(true);
+    }
 
- function onUpdate() {
-     console.log("Its works/ Updated");
-     if (isUpdate === true){
-         setIsUpdate(false);
-
-     }
-     else{
-         setIsUpdate(true);
-     }
-     setIsUpdate(true);
-
- }
- 
     const handleAddFormChange = (event) => {
         event.preventDefault();
         
@@ -122,19 +113,6 @@ export default function Manage() {
         setEditFormData(formValues);
     };
 
-    //empty state array to house our categories collections data
-    const [categories, setCategories] = useState([]);
-    const [products, setAllProducts] = useState([]);
-    
-    //validated booleans for add forms
-    const [validated, setValidated] = useState(false);
-    const [categoryValidated, setCategoryValidated] = useState(false);
-    //keep track of our buttons
-    const [toggle, setToggle] = useState(false);
-    const [refresh,setRefresh] = useState(false);
-
-    
-
     const clearState = () => {
         setName("");
         setQuantity("");
@@ -175,15 +153,11 @@ export default function Manage() {
     }, [setAllProducts]);
     
 
-
-
-
-
     //sumbit handler for add product form
     const handleSubmit = async (event) => { 
         
         const form = event.currentTarget;
- 
+
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -206,26 +180,24 @@ export default function Manage() {
             })
             setValidated(false);
             clearState();
-          
         };
         event.preventDefault();
         
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
-
         const newFormData = { ...addFormData};
         newFormData[fieldName] = fieldValue;
 
         setAddFormData(newFormData);
         event.preventDefault();
-    const newProduct = {
-        name: addFormData.name,
-        quantity: addFormData.quantity,
-        category: addFormData.category,
-    };
-    const newProducts = [...products, newProduct];
-    setAllProducts(newProducts);
-    
+
+        const newProduct = {
+            name: addFormData.name,
+            quantity: addFormData.quantity,
+            category: addFormData.category,
+        };
+        const newProducts = [...products, newProduct];
+        setAllProducts(newProducts);
     };
 
     //newcategory form submit handler
@@ -259,8 +231,9 @@ export default function Manage() {
         <React.Fragment>
         {user ? 
         (<div>
-            {user.role === 'admin' ? 
-                (<div><h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
+            {user.role === 'admin' && 'manager' ? 
+                (<div>
+                    <h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
                     <div style={loginStyle}>
                         {toggle ? 
                             ( 

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import './App.css';
 import { Link, Outlet} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,6 +24,11 @@ const navbar = {
 
 function App() {
   const [user, setUser] = useState(null);
+    useEffect(() => {
+      const currentUser = localStorage.getItem("user");
+      setUser(JSON.parse(currentUser));
+    },[]);
+
   const providerValue = useMemo(() => ({user, setUser}), [user, setUser]);
 
 
@@ -34,7 +39,7 @@ function App() {
             <NavbarBrand as={Link} to='/'>Inventory Manager</NavbarBrand>
             <Link to="/manage" style={navbarLinks}>Manage</Link>
             <Link to="/admin" style={navbarLinks}>Admin</Link>
-            <Link to="/login" style={navbarLinks}>Login</Link>
+            <Link to="/login" style={navbarLinks}>Login/Logout</Link>
         </Navbar>
       </div>
       <UserContext.Provider value={providerValue}>
