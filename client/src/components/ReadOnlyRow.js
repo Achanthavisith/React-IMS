@@ -13,7 +13,7 @@ const ReadOnlyRow = ({product, handleEditClick}) => {
                         Edit
                     </button>
                 </td>
-              </tr>
+            </tr>
         
     );
 }
