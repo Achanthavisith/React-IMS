@@ -3,7 +3,6 @@ import './App.css';
 import { Link, Outlet} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
-import PostProducts from './components/PostProducts'
 import { UserContext } from './context/context';
 
 const navbarLinks = {

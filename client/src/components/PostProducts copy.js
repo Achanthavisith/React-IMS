@@ -1,8 +1,4 @@
-import { useState } from 'react';
-import { Component } from 'react';
-import axios from 'axios';
 import { PostProduct } from './PostProduct';
-import SingleClickProductName from './SingleClickProductName';
 
 import '../components/PostProduct.css'
 

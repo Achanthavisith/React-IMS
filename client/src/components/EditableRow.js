@@ -3,9 +3,6 @@ import '../components/PostProduct.css';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
 
-
-
-
 const EditableRow = ({editFormData, handleEditFormChange}) => {
     // Making non required for delete, but required for update
     async function onSave() {

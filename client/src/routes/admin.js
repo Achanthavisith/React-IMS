@@ -1,4 +1,3 @@
-import PostProducts from "../components/PostProducts";
 import { useContext } from "react";
 import { UserContext } from '../context/context';
 
