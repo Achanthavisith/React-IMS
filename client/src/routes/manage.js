@@ -25,7 +25,7 @@ export default function Manage() {
     const [newCategory, setNewCategory] = useState("");
     const [product, setProducts] = useState("");
     const [editProductName, setEditedProductName] = useState();
-    const [isUpdate, setIsUpdate] = useState(false);
+    const [filter, setFilter] = useState("");
     // set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
         name:"",
@@ -45,19 +45,7 @@ export default function Manage() {
     const [categoryValidated, setCategoryValidated] = useState(false);
     //keep track of our buttons
     const [toggle, setToggle] = useState(false);
-    const [refresh,setRefresh] = useState(false);
-
-    //Used to update table when the form is submitted 
-    function onUpdate() {
-        console.log("Its works/ Updated");
-        if (isUpdate === true){
-            setIsUpdate(false);
-        }
-        else{
-            setIsUpdate(true);
-        }
-        setIsUpdate(true);
-    }
+    const [refresh, setRefresh] = useState(0);
 
     const handleAddFormChange = (event) => {
         event.preventDefault();
@@ -85,7 +73,6 @@ export default function Manage() {
 
     const handleEditFormSubmit = (event) => {
         event.preventDefault();
-
         const editedProduct = {
             name: editFormData.name,
             quantity: editFormData.quantity,
@@ -98,7 +85,7 @@ export default function Manage() {
         
         setProducts(newProduct);
         setEditedProductName(null);
-
+        setRefresh(refresh + 1);
     }
 
     const handleEditClick = (event, product)=> {
@@ -150,12 +137,12 @@ export default function Manage() {
 
     useEffect(() => {
         getProducts();
-    }, [setAllProducts]);
+    }, [refresh,]);
     
 
     //sumbit handler for add product form
     const handleSubmit = async (event) => { 
-        
+        event.preventDefault();
         const form = event.currentTarget;
 
         if (form.checkValidity() === false) {
@@ -181,7 +168,6 @@ export default function Manage() {
             setValidated(false);
             clearState();
         };
-        event.preventDefault();
         
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
@@ -189,7 +175,6 @@ export default function Manage() {
         newFormData[fieldName] = fieldValue;
 
         setAddFormData(newFormData);
-        event.preventDefault();
 
         const newProduct = {
             name: addFormData.name,
@@ -198,6 +183,7 @@ export default function Manage() {
         };
         const newProducts = [...products, newProduct];
         setAllProducts(newProducts);
+        setRefresh(refresh + 1);
     };
 
     //newcategory form submit handler
@@ -312,7 +298,6 @@ export default function Manage() {
                                         Please select a category.
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                
                                 <Button className="mb-3" type="submit">ADD</Button>
                             </Form>
                             )
@@ -326,13 +311,19 @@ export default function Manage() {
                         </div>
                     </div>) 
                 : 
-                <div>cannot manage/not an admin.</div>}
+                <div className="py-1 m-3">cannot manage/not an admin.</div>}
         </div>)
         :
-        (<div>
-            not logged in.
+        (<div className="py-1 m-3">
+            Logged out.
         </div>)}
         <div className="product-container"> 
+                    <div className = "py-2">
+                        <h6>Category filter:</h6> {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)} 
+                        <br></br>
+                        <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setFilter("")}>Remove Filter</Button>
+                    </div>
+
             <form onSubmit={handleEditFormSubmit}>
                 <table>
                     <thead>
@@ -344,7 +335,9 @@ export default function Manage() {
                         </tr>
                     </thead>
                     <tbody>
-                            {products.map((product) =>(
+                            {products.filter(product => {
+                                return product.category.toLowerCase().includes(filter.toLowerCase());
+                            }).map((product) => (
                                 <React.Fragment>
                                     {editProductName === product.name ? (
                                         <EditableRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>

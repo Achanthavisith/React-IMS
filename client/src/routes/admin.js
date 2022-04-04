@@ -8,7 +8,7 @@ export default function Admin() {
         <div>
             <div>
                 {user ? 
-                (<div>
+                (<div className="py-1 m-3">
                     Logged in: {JSON.stringify(user.user)}
                     {user.role === 'admin' ? 
                     (<div>
@@ -21,7 +21,7 @@ export default function Admin() {
                     }
                 </div>)
                 :
-                (<div>
+                (<div className="py-1 m-3">
                     Logged out.
                 </div>)
                 }

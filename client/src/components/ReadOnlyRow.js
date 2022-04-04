@@ -12,7 +12,9 @@ const ReadOnlyRow = ({product, handleEditClick}) => {
                 <td>{product.quantity}</td>
                 <td>{product.category}</td>
                 <td>
-                    {user.role === 'admin' && 'manager' ? 
+                    {user ? 
+                    (<div>
+                        {user.role === 'admin' && 'manager' ? 
                     (<div>
                         <button type = "button" onClick={(event) => handleEditClick(event, product)}>
                             Edit
@@ -20,9 +22,14 @@ const ReadOnlyRow = ({product, handleEditClick}) => {
                     </div>)
                     :
                     (<div>
-                        unavailable
+                        N/A
                     </div>)
-                }
+                    }
+                    </div>) 
+                    : 
+                    (<div>
+                        N/A
+                    </div>)}
                 </td>
             </tr>
         

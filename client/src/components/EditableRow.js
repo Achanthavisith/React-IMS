@@ -30,14 +30,10 @@ const EditableRow = ({editFormData, handleEditFormChange}) => {
             name: editFormData.name
         };
           */
-    
-
-    
             if(window.confirm('Are you sure you want to delete')) {
                   //  console.log(product);
-                await axios.delete("http://localhost:5000/api/products/delete", {data: {name: editFormData.name}} )
+                await axios.delete("http://localhost:5000/api/products/delete", {data: {name: editFormData.name}})
             }
-            
         };
 
     //Setting states
@@ -78,7 +74,6 @@ useEffect(() => {
                     value={category}
                     className="form-control"
                     onChange={(e) => setCategory(e.target.value)}
-                    required 
                     >
                     <option value="" >- - -</option>
                     {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category} </option>)}
