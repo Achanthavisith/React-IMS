@@ -65,8 +65,6 @@ export default function Login() {
             }
 
             if (toggle === false) {
-                console.log('button clicked');
-
                 await axios.post('http://localhost:5000/api/login', user)
                 .then (response => {
                     alert('user logged in successfully: ' + user.email);
