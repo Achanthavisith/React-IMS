@@ -1,5 +1,3 @@
-
-
 import '../components/PostProduct.css'
 
 export function PostProduct(props) {

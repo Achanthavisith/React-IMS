@@ -1,9 +1,5 @@
 import  axios  from "axios";
-
 import { Component } from "react";
-import { PostProduct } from "./PostProduct";
-
-
 
 export default class SingleClickProductName extends Component{
     constructor(props) {
