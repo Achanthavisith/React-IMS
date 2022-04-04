@@ -2,9 +2,6 @@ import  axios  from "axios";
 import { Component } from "react";
 
 export default class SingleClickProductName extends Component{
-    constructor(props) {
-        super(props);
-    }
 
 componentDidMount() { 
     // need to add the correct api routing for the following of produvt names so after click we can get info for what you chose

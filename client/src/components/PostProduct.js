@@ -1,14 +1,7 @@
 import '../components/PostProduct.css'
 
 export function PostProduct(props) {
-    const card = {
-        border: '2px solid #2F4F4F',
-        font: '30px arial',
-        backgroundColor: '#D2691E',
-        margin: 20,
-        padding: 10,
-    }
-    
+
     return (
     
             <tr>
