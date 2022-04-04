@@ -121,8 +121,7 @@ router.post("/login", async (req, res) => {
     }
 })
 
-
-
+//delete specific product
 router.delete("/products/delete", async (req, res) => {
     const product = await productModel.deleteOne(
         {
@@ -132,27 +131,24 @@ router.delete("/products/delete", async (req, res) => {
     )
 })
 
+//update a product
 router.put("/products/update", async (req, res) => {
-/*
-    const product = await productModel.findOneAndUpdate(
-        {
-            
-            name: req.body.name,
-            quantity: req.body.quantity,
-            category: req.body.category,
-
-        }
-    )
-*/
-
     const filter = { name: req.body.name  };
     const update = { quantity: req.body.quantity, category: req.body.category };
     
     
     let doc = await productModel.findOneAndUpdate(filter, update, {
-
-      new: true
+        new: true
     });
 })
-    
+
+//delete category
+router.delete("/categories/delete", async (req, res) => {
+    const category = await categoryModel.deleteOne(
+        {
+            category: req.body.category
+        }
+    )
+})
+
 module.exports = router;
