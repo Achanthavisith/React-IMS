@@ -64,7 +64,7 @@ export default function Manage() {
     const handleEditFormChange = (event) => {
         event.preventDefault();
 
-        const fieldName = event.target.getAttrribute('_id');
+        const fieldName = event.target.getAttribute('name');
         const fieldValue = event.target.value;
 
         const newFormData = {...editFormData};
