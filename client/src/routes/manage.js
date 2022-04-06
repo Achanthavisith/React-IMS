@@ -1,7 +1,6 @@
 import { Form, Button } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import PostProducts from '../components/PostProducts';
 import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
@@ -28,6 +27,11 @@ export default function Manage() {
     const [editProductName, setEditedProductName] = useState();
     const [filter, setFilter] = useState("");
     // set state of editing and adding into the 
+    const [addFormData, setAddFormData] = useState({
+        name:"",
+        quantity:"",
+        category:""
+    });
     const [editFormData, setEditFormData] = useState({
         name:"",
         quantity:"",
@@ -149,6 +153,13 @@ export default function Manage() {
             setValidated(false);
             clearState();
         };
+        const fieldName = event.target.name;
+        const fieldValue = event.target.value;
+        const newFormData = { ...addFormData};
+        newFormData[fieldName] = fieldValue;
+
+        setAddFormData(newFormData);
+
         setRefresh(refresh + 1);
     };
 
