@@ -20,19 +20,21 @@ const PostProducts = () => {
     return(
         
         <div className="product-container"> 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Category</th>
-                        <th>Test</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {PostProducts}
-                </tbody>
-            </table>
+      <table>
+
+        <thead>
+          <tr>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Category</th>
+          <th>Test</th>
+          </tr>
+        </thead>
+          <tbody>
+        
+{PostProducts}
+</tbody>
+        </table>
         
         </div>
 

@@ -16,7 +16,7 @@ const ReadOnlyRow = ({product, handleEditClick}) => {
                     (<div>
                         {user.role === 'admin' && 'manager' ? 
                     (<div>
-                        <button type = "button" className="btn-primary btn-sm m-1 rounded" onClick={(event) => handleEditClick(event, product)}>
+                        <button type = "button" onClick={(event) => handleEditClick(event, product)}>
                             Edit
                         </button>
                     </div>)
