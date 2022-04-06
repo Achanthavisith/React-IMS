@@ -29,7 +29,7 @@ const EditableRow = ({editFormData, handleEditFormChange}) => {
             })}
         };
 
-    async function  onDelete() {
+    async function onDelete() {
         if(window.confirm('Are you sure you want to delete')) {
                 await axios.delete("http://localhost:5000/api/products/delete", {data: {name: editFormData.name}})
             }
@@ -80,7 +80,6 @@ useEffect(() => {
                     <td>
                 <button type = "submit" className="m-1 btn-primary btn-sm" onClick= {onSave}> Save</button>
                 <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Delete</button>
-                <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Done</button>
                 </td>
         </tr>
     );

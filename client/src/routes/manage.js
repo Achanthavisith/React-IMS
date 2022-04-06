@@ -1,6 +1,8 @@
 import { Form, Button } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import PostProducts from '../components/PostProducts';
+import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
 import { UserContext } from '../context/context';
@@ -26,11 +28,6 @@ export default function Manage() {
     const [editProductName, setEditedProductName] = useState();
     const [filter, setFilter] = useState("");
     // set state of editing and adding into the 
-    const [addFormData, setAddFormData] = useState({
-        name:"",
-        quantity:"",
-        category:""
-    });
     const [editFormData, setEditFormData] = useState({
         name:"",
         quantity:"",
@@ -92,8 +89,6 @@ export default function Manage() {
         setName("");
         setQuantity("");
         setCategory("");
-        setNewCategory("");
-        setRemoveCategory("");
     };
 
     //get categories data from mongodb input to array
@@ -154,23 +149,7 @@ export default function Manage() {
             setValidated(false);
             clearState();
         };
-        
-        const fieldName = event.target.name;
-        const fieldValue = event.target.value;
-        const newFormData = { ...addFormData};
-        newFormData[fieldName] = fieldValue;
-
-        setAddFormData(newFormData);
-
-        const newProduct = {
-            name: addFormData.name,
-            quantity: addFormData.quantity,
-            category: addFormData.category,
-        };
-        const newProducts = [...products, newProduct];
-        setAllProducts(newProducts);
         setRefresh(refresh + 1);
-        setRefresh(0);
     };
 
     //newcategory form submit handler
@@ -196,7 +175,6 @@ export default function Manage() {
             })
             setCategoryValidated(false);
             setRefresh(refresh + 1);
-            setRefresh(0);
             clearState();
         };
     };
@@ -217,10 +195,27 @@ export default function Manage() {
                 axios.delete("http://localhost:5000/api/categories/delete", {data: {category: removeCategory}})
             }
             setRemoveCategoryValidated(false);
-            setRemoveCategory("");
             setRefresh(refresh + 1);
+            setRemoveCategory("");
         };
     };
+
+    const [groupDelete, setGroupDelete] = useState("");
+
+    function productsDeleteHandler(event) {
+        event.preventDefault();
+        const myArray = groupDelete.split(",");
+
+        if(window.confirm('Are you sure you want to delete these products?')) {
+            for (let i = 0; i < myArray.length; i++) {
+                const product = myArray[i];
+                    axios.delete("http://localhost:5000/api/products/delete", {data: {name: product}})
+            }
+        }
+        setRefresh(refresh+1);
+        setGroupDelete("");
+
+    }
 
 
     return (
@@ -249,7 +244,7 @@ export default function Manage() {
                                                         <Form.Control.Feedback type="invalid" className="mb-3">
                                                             Please provide a category name.
                                                         </Form.Control.Feedback>
-                                                        <Button className="mb-3" type="submit">ADD</Button>
+                                                        <Button className="mb-3 btn-sm" type="submit">ADD</Button>
                                                     </Form.Group>
                                     </Form>
                                     <Form noValidate validated={removeCategoryValidated} onSubmit={deleteCategorySubmit}>
@@ -271,7 +266,7 @@ export default function Manage() {
                                                     Please select a category.
                                                 </Form.Control.Feedback>
                                             </Form.Group>
-                                            <Button className="mb-3 btn-danger" type="submit">DELETE</Button>
+                                            <Button className="mb-3 btn-danger btn-sm" type="submit">DELETE</Button>
                                     </Form>
                                 </>
                             ) 
@@ -331,7 +326,7 @@ export default function Manage() {
                                             Please select a category.
                                         </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Button className="mb-3" type="submit">ADD</Button>
+                                    <Button className="mb-3 btn-sm" type="submit">ADD</Button>
                                 </Form>
                             )
                         }
@@ -355,6 +350,30 @@ export default function Manage() {
                         <h6>Category filter:</h6> {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)} 
                         <br></br>
                         <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setFilter("")}>Remove Filter</Button>
+                        <br></br>
+
+                        {user ? (
+                                <div>
+                                    {user.role === "admin" && "manager" ?  
+                                        (
+                                            <div>
+                                                <h6 className="pt-4">Group delete:</h6>
+                                                <Form onSubmit={productsDeleteHandler}>
+                                                        <Form.Group className="pt-1">
+                                                            <Form.Control 
+                                                                type ="text"
+                                                                name="products" 
+                                                                placeholder="Separate products by a comma" 
+                                                                className="form-control"
+                                                                value={groupDelete}
+                                                                onChange={(e) => setGroupDelete(e.target.value)}
+                                                                required
+                                                            />
+                                                        </Form.Group>
+                                                        <Button className="mt-2 btn-sm btn-danger" type="submit">DELETE</Button>
+                                                </Form>
+                                            </div>) : (<div></div>)}
+                                </div>) : (<div></div>)}
                     </div>
 
             <form onSubmit={handleEditFormSubmit}>
