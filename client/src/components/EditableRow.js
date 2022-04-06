@@ -18,7 +18,7 @@ const EditableRow = ({editFormData, handleEditFormChange}) => {
             if(regMatch.test(product.quantity) === false) {
                 alert('QUANTITY MUST BE A NUMBER');
             } else if(product.category === '') {
-                alert('SELECT A CATEGORY');
+                alert('SELECT A CATEGORY TO DELETE');
             } else {
                 await axios.put("http://localhost:5000/api/products/update", 
                 product)
@@ -78,9 +78,8 @@ useEffect(() => {
                     
                     </td>
                     <td>
-                <button type = "submit" className="m-1 btn-primary btn-sm" onClick= {onSave}> Save</button>
-                <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Delete</button>
-                <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Done</button>
+                <button type = "submit" onClick= {onSave}> Save</button>
+                <button type = "submit" onClick= {onDelete}> Delete</button>
                 </td>
         </tr>
     );
