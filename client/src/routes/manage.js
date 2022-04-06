@@ -1,8 +1,6 @@
 import { Form, Button } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import PostProducts from '../components/PostProducts';
-import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
 import { UserContext } from '../context/context';
@@ -48,18 +46,6 @@ export default function Manage() {
     //keep track of our buttons
     const [toggle, setToggle] = useState(false);
     const [refresh, setRefresh] = useState(0);
-
-    const handleAddFormChange = (event) => {
-        event.preventDefault();
-        
-        const fieldName = event.target.getAttribute('name');
-        const fieldValue = event.target.value;
-
-        const newFormData = { ...addFormData};
-        newFormData[fieldName] = fieldValue;
-
-        setAddFormData(newFormData);
-    };
 
     const handleEditFormChange = (event) => {
         event.preventDefault();
@@ -133,7 +119,7 @@ export default function Manage() {
     //useeffect to render our collections data
     useEffect(() => {
         getCategories();
-    }, [refresh, toggle]);
+    }, [refresh]);
 
     useEffect(() => {
         getProducts();
@@ -215,7 +201,7 @@ export default function Manage() {
         };
     };
 
-    const deleteCategorySubmit = async (event) => {
+    const deleteCategorySubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -228,9 +214,11 @@ export default function Manage() {
             
             if(window.confirm('Are you sure you want to delete category: ' + removeCategory)) {
                 //  console.log(product);
-                await axios.delete("http://localhost:5000/api/categories/delete", {data: {category: removeCategory}})
+                axios.delete("http://localhost:5000/api/categories/delete", {data: {category: removeCategory}})
             }
             setRemoveCategoryValidated(false);
+            setRemoveCategory("");
+            setRefresh(refresh + 1);
         };
     };
 
