@@ -3,7 +3,6 @@ const router = express.Router();
 const productModel = require('../models/productModel');
 const userModel = require('../models/userModel');
 const categoryModel = require('../models/categoryModel');
-const { findOne } = require('../models/productModel');
 
 //add product route
 router.post('/addProduct', (req, res) => {
@@ -11,6 +10,7 @@ router.post('/addProduct', (req, res) => {
         name: req.body.name,
         quantity: req.body.quantity,
         category: req.body.category,
+        usage: req.body.usage
     });
     //save product
     productModel.findOne({name: newProduct.name} , (err, existing) => {
