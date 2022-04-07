@@ -354,7 +354,7 @@ export default function Manage() {
         </div>)
         :
         (<div className="py-1 m-3">
-            LOGGED OUT
+            Logged out.
         </div>)}
         <div className="product-container"> 
                     <div className = "py-2">
