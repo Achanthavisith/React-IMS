@@ -399,7 +399,7 @@ export default function Manage() {
                     </thead>
                     <tbody>
                             {products.filter(product => {
-                                return product.category.toLowerCase().includes(filter.toLowerCase());
+                                return product.category.includes(filter);
                             }).map((product) => (
                                 <React.Fragment key={product.name}>
                                     {editProductName === product.name ? (
