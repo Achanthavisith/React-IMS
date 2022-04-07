@@ -95,7 +95,7 @@ router.get("/products", async (req, res) => {
 
 //get users
 router.get("/users", async (req, res) => {
-	const users = await userModel.find({}, 'email')
+	const users = await userModel.find({}, 'email role',)
 	res.send(users)
 })
 
