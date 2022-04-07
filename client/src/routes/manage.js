@@ -359,9 +359,13 @@ export default function Manage() {
         </div>)}
         <div className="container"> 
                     <div className = "py-2">
-                        <h6>Category filter:</h6> {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setCatFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)} 
+                        <label className="m-1">Category filter:</label> 
+                        <br></br>
+
+                        {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setCatFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)}
                         <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setCatFilter("")}>Remove Filter</Button>
                         <br></br>
+
                         <label className="m-1">Search Product: </label>
                         <input 
                             className = 'form-control'
