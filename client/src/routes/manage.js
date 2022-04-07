@@ -143,6 +143,7 @@ export default function Manage() {
                 name, 
                 quantity, 
                 category, 
+                usage: 0
             }; 
             await axios.post("http://localhost:5000/api/addProduct", 
                 product)
