@@ -60,7 +60,7 @@ useEffect(() => {
                 </input> 
                 </td>
                 <td > 
-            <input type = "text" required = "required" placeholder=" Edit Product Quantity" name="quantity" onChange={handleEditFormChange} value= {editFormData.quantity}>
+            <input type = "text" required = "required" placeholder=" Edit Product Quantity" name="quantity" onChange={handleEditFormChange.quantity} defaultValue= {editFormData.quantity}>
                 </input> 
                 </td>
                 <td > 
@@ -71,9 +71,10 @@ useEffect(() => {
                     value={category}
                     className="form-control"
                     onChange={(e) => setCategory(e.target.value)}
+                    
                     >
-                    <option value="" >- - -</option>
-                    {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category} </option>)}
+                    <option id = "defaut" value = ""> - - - </option>
+                    {categories.map((categoryOption) => <option  value={categoryOption.category} key={categoryOption._id}>{categoryOption.category} </option>)}
                 </Form.Control>
                 
                 </td>
