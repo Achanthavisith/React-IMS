@@ -25,7 +25,8 @@ export default function Manage() {
     const [removeCategory, setRemoveCategory] = useState("");
     const [product, setProducts] = useState("");
     const [editProductName, setEditedProductName] = useState();
-    const [filter, setFilter] = useState("");
+    const [catFilter, setCatFilter] = useState("");
+    const [nameSearch, setNameSearch] = useState("");
     // set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
         name:"",
@@ -356,19 +357,25 @@ export default function Manage() {
         (<div className="py-1 m-3">
             Logged out.
         </div>)}
-        <div className="product-container"> 
+        <div className="container"> 
                     <div className = "py-2">
-                        <h6>Category filter:</h6> {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)} 
+                        <h6>Category filter:</h6> {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setCatFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)} 
+                        <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setCatFilter("")}>Remove Filter</Button>
                         <br></br>
-                        <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setFilter("")}>Remove Filter</Button>
-                        <br></br>
+                        <label className="m-1">Search Product: </label>
+                        <input 
+                            className = 'form-control'
+                            type = "text" 
+                            placeholder = "Name of product"  
+                            onChange= {(e) => setNameSearch(e.target.value)}>
+                        </input>
 
                         {user ? (
                                 <div>
                                     {user.role === "admin" && "manager" ?  
                                         (
                                             <div>
-                                                <h6 className="pt-4">Group delete:</h6>
+                                                <Form.Label className="m-1">Group delete:</Form.Label>
                                                 <Form onSubmit={productsDeleteHandler}>
                                                         <Form.Group className="pt-1">
                                                             <Form.Control 
@@ -398,8 +405,13 @@ export default function Manage() {
                         </tr>
                     </thead>
                     <tbody>
-                            {products.filter(product => {
-                                return product.category.includes(filter);
+                            {products
+                            .filter(product => {
+                                    return (product.category.includes(catFilter)
+                                )
+                            }).filter(product => {
+                                return (product.name.toLowerCase().includes(nameSearch.toLocaleLowerCase())
+                            )
                             }).map((product) => (
                                 <React.Fragment key={product.name}>
                                     {editProductName === product.name ? (
