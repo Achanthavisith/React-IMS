@@ -62,6 +62,7 @@ export default function Manage() {
     }
 
     const handleEditFormSubmit = (event) => {
+        
         event.preventDefault();
         const editedProduct = {
             name: editFormData.name,
@@ -69,7 +70,7 @@ export default function Manage() {
             category: editFormData.category,
         }
         const newProduct = [...products];
-
+    
         const index = products.findIndex((product) => product.name === editProductName)
         newProduct[index] = editedProduct;
         

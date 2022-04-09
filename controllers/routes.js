@@ -38,6 +38,7 @@ router.post('/addUser', (req, res) => {
         password: req.body.password,
         role: req.body.role,
     });
+
     //check if user already exists
     userModel.findOne({email: newUser.email} , (err, existing) => {
         if (existing == null) {
@@ -99,6 +100,13 @@ router.get("/users", async (req, res) => {
 	res.send(users)
 })
 
+
+//get only roles from users 
+router.get("/user/roles", async (req, res) => {
+	const roles = await userModel.find({}, 'role')
+    res.send(roles)
+})
+
 //get specific product name
 router.get("/products/name", async (req, res) => {
 	const products = await productModel.findOne({
@@ -138,6 +146,17 @@ router.put("/products/update", async (req, res) => {
     
     
     let doc = await productModel.findOneAndUpdate(filter, update, {
+        new: true
+    });
+})
+
+//update a user
+router.put("/user/update", async (req, res) => {
+    const filter = { name: req.body.email  };
+    const update = { email: req.body.email, role: req.body.role };
+    
+    
+    let doc = await userModel.findOneAndUpdate(filter, update, {
         new: true
     });
 })
