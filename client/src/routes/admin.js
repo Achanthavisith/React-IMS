@@ -191,83 +191,77 @@ export default function Admin() {
                     {user.role === 'admin' ? 
                     
                     (
-                        
-                    <div >
+                    <div>
                         <React.Fragment>
                             <div style={loginStyle}>
-                        <Form onSubmit={editUserSubmit}>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Select user:</Form.Label>
-                                        <Form.Control 
-                                            required
-                                            as="select"
-                                            id="category"
-                                            type="select"
-                                            value={adminUser}
-                                            className="form-control"
-                                            onChange={(e) => setAdminUser(e.target.value)}
-                                            //onChange={handleAddFormChange}
-                                        >
-                                            <option value="" >- - -</option>
-                                            {users.map((usersOption) => <option value={usersOption.email} key={usersOption._id}>{usersOption.email}</option>)}
-                                        </Form.Control>
-                                    </Form.Group>
+                                <Form onSubmit={editUserSubmit}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Select user:</Form.Label>
+                                                <Form.Control 
+                                                    required
+                                                    as="select"
+                                                    id="category"
+                                                    type="select"
+                                                    value={adminUser}
+                                                    className="form-control"
+                                                    onChange={(e) => setAdminUser(e.target.value)}
+                                                    //onChange={handleAddFormChange}
+                                                >
+                                                    <option value="" >- - -</option>
+                                                    {users.map((usersOption) => <option value={usersOption.email} key={usersOption._id}>{usersOption.email}</option>)}
+                                                </Form.Control>
+                                            </Form.Group>
 
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Select role:</Form.Label>
-                                        <Form.Control 
-                                            required
-                                            as="select"
-                                            id="user"
-                                            type="select"
-                                            value={role}
-                                            className="form-control"
-                                            onChange={(e) => setRole(e.target.value)}
-                                            //onChange={handleAddFormChange}
-                                        >
-                                            <option value="" >- - -</option>
-                                            <option value="manager" >manager</option>
-                                            <option value="user" >user</option>
-                                            <option value="admin"> admin</option>
-                                        </Form.Control>
-                                    </Form.Group>
-                                    <Button className="mb-3" type="submit">EDIT</Button>
-                            </Form>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Select role:</Form.Label>
+                                                <Form.Control 
+                                                    required
+                                                    as="select"
+                                                    id="user"
+                                                    type="select"
+                                                    value={role}
+                                                    className="form-control"
+                                                    onChange={(e) => setRole(e.target.value)}
+                                                    //onChange={handleAddFormChange}
+                                                >
+                                                    <option value="" >- - -</option>
+                                                    <option value="manager" >manager</option>
+                                                    <option value="user" >user</option>
+                                                    <option value="admin"> admin</option>
+                                                </Form.Control>
+                                            </Form.Group>
+                                            <Button className="mb-3" type="submit">EDIT</Button>
+                                    </Form>
                             </div>
-                            <div>
-                           
+                        <div>
                             <div className= "container">
-             <form onSubmit={handleEditFormSubmit}>
-                <table>
-                    <thead>
-                        <tr>
-                        <th>UserEmail</th>
-                        <th>Role</th>
-                        <th>Admin Buttons</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            {users.map((users) => (
-                                <React.Fragment key={users._id}>
-                                   
-                                        <EditableRowUser editFormDataUser={editFormDataUser} handleEditFormChange ={handleEditFormChangeUser}/>
-                            
-                                </React.Fragment>
-                            ))}
-                    </tbody>
-                </table>
-            </form>
-        </div>
+                                <form onSubmit={handleEditFormSubmit}>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                            <th>UserEmail</th>
+                                            <th>Role</th>
+                                            <th>Admin Buttons</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                {users.map((users) => (
+                                                    <React.Fragment key={users._id}>
+
+                                                            <EditableRowUser editFormDataUser={editFormDataUser} handleEditFormChange ={handleEditFormChangeUser}/>
+                                                
+                                                    </React.Fragment>
+                                                ))}
+                                        </tbody>
+                                    </table>
+                                </form>
                             </div>
+                        </div>
                             </React.Fragment>
                     
                     </div>
-          
                     )
                     :
-                    (
-              <div></div>
-                )
                     (<div>
                         Not an Admin
                     </div>)
