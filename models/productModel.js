@@ -12,6 +12,10 @@ const productModel = new mongoose.Schema({
     category: {
         type: 'String',
         required: true,
+    },
+    usage: {
+        type: 'number',
+        required: true,
     }
 });
 

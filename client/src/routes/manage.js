@@ -1,7 +1,6 @@
 import { Form, Button } from 'react-bootstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import PostProducts from '../components/PostProducts';
 import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
@@ -26,7 +25,8 @@ export default function Manage() {
     const [removeCategory, setRemoveCategory] = useState("");
     const [product, setProducts] = useState("");
     const [editProductName, setEditedProductName] = useState();
-    const [filter, setFilter] = useState("");
+    const [catFilter, setCatFilter] = useState("");
+    const [nameSearch, setNameSearch] = useState("");
     // set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
         name:"",
@@ -49,22 +49,10 @@ export default function Manage() {
     const [toggle, setToggle] = useState(false);
     const [refresh, setRefresh] = useState(0);
 
-    const handleAddFormChange = (event) => {
-        event.preventDefault();
-        
-        const fieldName = event.target.getAttribute('name');
-        const fieldValue = event.target.value;
-
-        const newFormData = { ...addFormData};
-        newFormData[fieldName] = fieldValue;
-
-        setAddFormData(newFormData);
-    };
-
     const handleEditFormChange = (event) => {
         event.preventDefault();
 
-        const fieldName = event.target.getAttrribute('_id');
+        const fieldName = event.target.getAttribute('name');
         const fieldValue = event.target.value;
 
         const newFormData = {...editFormData};
@@ -107,8 +95,6 @@ export default function Manage() {
         setName("");
         setQuantity("");
         setCategory("");
-        setNewCategory("");
-        setRemoveCategory("");
     };
 
     //get categories data from mongodb input to array
@@ -134,7 +120,7 @@ export default function Manage() {
     //useeffect to render our collections data
     useEffect(() => {
         getCategories();
-    }, [refresh, toggle]);
+    }, [refresh]);
 
     useEffect(() => {
         getProducts();
@@ -158,6 +144,7 @@ export default function Manage() {
                 name, 
                 quantity, 
                 category, 
+                usage: 0
             }; 
             await axios.post("http://localhost:5000/api/addProduct", 
                 product)
@@ -169,7 +156,6 @@ export default function Manage() {
             setValidated(false);
             clearState();
         };
-        
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
         const newFormData = { ...addFormData};
@@ -177,15 +163,7 @@ export default function Manage() {
 
         setAddFormData(newFormData);
 
-        const newProduct = {
-            name: addFormData.name,
-            quantity: addFormData.quantity,
-            category: addFormData.category,
-        };
-        const newProducts = [...products, newProduct];
-        setAllProducts(newProducts);
         setRefresh(refresh + 1);
-        setRefresh(0);
     };
 
     //newcategory form submit handler
@@ -211,12 +189,11 @@ export default function Manage() {
             })
             setCategoryValidated(false);
             setRefresh(refresh + 1);
-            setRefresh(0);
             clearState();
         };
     };
 
-    const deleteCategorySubmit = async (event) => {
+    const deleteCategorySubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -229,11 +206,30 @@ export default function Manage() {
             
             if(window.confirm('Are you sure you want to delete category: ' + removeCategory)) {
                 //  console.log(product);
-                await axios.delete("http://localhost:5000/api/categories/delete", {data: {category: removeCategory}})
+                axios.delete("http://localhost:5000/api/categories/delete", {data: {category: removeCategory}})
             }
             setRemoveCategoryValidated(false);
+            setRefresh(refresh + 1);
+            setRemoveCategory("");
         };
     };
+
+    const [groupDelete, setGroupDelete] = useState("");
+
+    function productsDeleteHandler(event) {
+        event.preventDefault();
+        const myArray = groupDelete.split(",");
+
+        if(window.confirm('Are you sure you want to delete these products?')) {
+            for (let i = 0; i < myArray.length; i++) {
+                const product = myArray[i];
+                    axios.delete("http://localhost:5000/api/products/delete", {data: {name: product}})
+            }
+        }
+        setRefresh(refresh+1);
+        setGroupDelete("");
+
+    }
 
 
     return (
@@ -262,7 +258,7 @@ export default function Manage() {
                                                         <Form.Control.Feedback type="invalid" className="mb-3">
                                                             Please provide a category name.
                                                         </Form.Control.Feedback>
-                                                        <Button className="mb-3" type="submit">ADD</Button>
+                                                        <Button className="mb-3 btn-sm" type="submit">ADD</Button>
                                                     </Form.Group>
                                     </Form>
                                     <Form noValidate validated={removeCategoryValidated} onSubmit={deleteCategorySubmit}>
@@ -284,7 +280,7 @@ export default function Manage() {
                                                     Please select a category.
                                                 </Form.Control.Feedback>
                                             </Form.Group>
-                                            <Button className="mb-3 btn-danger" type="submit">DELETE</Button>
+                                            <Button className="mb-3 btn-danger btn-sm" type="submit">DELETE</Button>
                                     </Form>
                                 </>
                             ) 
@@ -344,7 +340,7 @@ export default function Manage() {
                                             Please select a category.
                                         </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Button className="mb-3" type="submit">ADD</Button>
+                                    <Button className="mb-3 btn-sm" type="submit">ADD</Button>
                                 </Form>
                             )
                         }
@@ -361,13 +357,47 @@ export default function Manage() {
         </div>)
         :
         (<div className="py-1 m-3">
-            LOGGED OUT
+            Logged out.
         </div>)}
-        <div className="product-container"> 
+        <div className="container"> 
                     <div className = "py-2">
-                        <h6>Category filter:</h6> {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)} 
+                        <label className="m-1">Category filter:</label> 
                         <br></br>
-                        <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setFilter("")}>Remove Filter</Button>
+
+                        {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setCatFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)}
+                        <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setCatFilter("")}>Remove Filter</Button>
+                        <br></br>
+
+                        <label className="m-1">Search Product: </label>
+                        <input 
+                            className = 'form-control'
+                            type = "text" 
+                            placeholder = "Name of product"  
+                            onChange= {(e) => setNameSearch(e.target.value)}>
+                        </input>
+
+                        {user ? (
+                                <div>
+                                    {user.role === "admin" && "manager" ?  
+                                        (
+                                            <div>
+                                                <Form.Label className="m-1">Group delete:</Form.Label>
+                                                <Form onSubmit={productsDeleteHandler}>
+                                                        <Form.Group className="pt-1">
+                                                            <Form.Control 
+                                                                type ="text"
+                                                                name="products" 
+                                                                placeholder="Separate products by a comma" 
+                                                                className="form-control"
+                                                                value={groupDelete}
+                                                                onChange={(e) => setGroupDelete(e.target.value)}
+                                                                required
+                                                            />
+                                                        </Form.Group>
+                                                        <Button className="mt-2 btn-sm btn-danger" type="submit">DELETE</Button>
+                                                </Form>
+                                            </div>) : (<div></div>)}
+                                </div>) : (<div></div>)}
                     </div>
 
             <form onSubmit={handleEditFormSubmit}>
@@ -381,8 +411,13 @@ export default function Manage() {
                         </tr>
                     </thead>
                     <tbody>
-                            {products.filter(product => {
-                                return product.category.toLowerCase().includes(filter.toLowerCase());
+                            {products
+                            .filter(product => {
+                                    return (product.category.includes(catFilter)
+                                )
+                            }).filter(product => {
+                                return (product.name.toLowerCase().includes(nameSearch.toLocaleLowerCase())
+                            )
                             }).map((product) => (
                                 <React.Fragment key={product.name}>
                                     {editProductName === product.name ? (

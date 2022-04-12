@@ -67,7 +67,6 @@ export default function Login() {
             if (toggle === false) {
                 await axios.post('http://localhost:5000/api/login', user)
                 .then (response => {
-                    alert('user logged in successfully: ' + user.email);
                     setUser(response.data);
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }).catch((err) => {
@@ -89,7 +88,7 @@ export default function Login() {
     return (
         <div style={loginStyle}>
             {user ? 
-            ((<Button className="form-control mb-3 btn-danger" style={{fontSize: 15, fontWeight: 'bold'}} onClick={logOut}>Logout</Button>))
+            ((<Button className="form-control mb-3 btn-lg btn-danger" style={{fontSize: 15, fontWeight: 'bold'}} onClick={logOut}>Logout</Button>))
             :
             (<Form className="container" onSubmit={onSubmit}>
                 <h2>User login:</h2>
