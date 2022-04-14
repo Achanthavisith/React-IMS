@@ -34,7 +34,7 @@ const EditableUserRow = ({editFormData, handleEditFormChange}) => {
     return (
         <tr>
             <td > 
-                <input readOnly type = "text" required placeholder=" Edit Product Name" name = "name"  value= {editFormData.email}>
+                <input readOnly type = "text" required placeholder=" Edit Product Name" name = "name"  value= {editFormData.email} onChange = {handleEditFormChange}>
                     </input> 
                     </td>
                     <td > 

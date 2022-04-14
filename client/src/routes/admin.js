@@ -8,12 +8,14 @@ export default function Admin() {
 //set states
     const {user} = useContext(UserContext);
     const [users, setUsers] = useState([]);
-    const [edituserName, setEditedUserName] = useState();
+    const [editUserName, setEditedUserName] = useState();
+    const [editUserRole, setEditedUserRole] = useState();
     const [editUser, setEditUser] = useState();
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
     });
+    const [refresh, setRefresh] = useState(0);
 
      //get Users data from mongodb input to array
     const getUsers = () => {
@@ -53,6 +55,23 @@ export default function Admin() {
         }
         setEditFormData(formValues);
     };
+    const handleEditFormSubmit = (event) => {
+        
+        event.preventDefault();
+        const editedUsers = {
+            email: editFormData.email,
+            role: editFormData.role,
+        }
+        const newUsers = [...users];
+    
+        const index = users.findIndex((users) => users.role === editUserRole)
+        newUsers[index] = editedUsers;
+        
+        setUsers(newUsers);
+        setEditedUserRole(null);
+        setRefresh(refresh + 1);
+    }
+
 
 
     return (
@@ -66,7 +85,7 @@ export default function Admin() {
                     
                     (
                     <div>
-                        <form>
+                        <form onSubmit={handleEditFormSubmit}>
                         <table>
                             <thead>
                                 <tr>

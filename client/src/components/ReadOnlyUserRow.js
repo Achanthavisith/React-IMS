@@ -15,7 +15,7 @@ const ReadOnlyRowUser = ({users, handleEditClick}) => {
                     (<div>
                         {user.role === 'admin' && 'manager' ? 
                     (<div>
-                        <button type = "button" onClick={(event) => handleEditClick(event, users)}>
+                        <button type = "button" className="m-1 btn-primary btn-sm" onClick={(event) => handleEditClick(event, users)}>
                             Edit
                         </button>
                     </div>)
