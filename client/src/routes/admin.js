@@ -2,12 +2,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from '../context/context';
 import axios from 'axios';
 import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
+import EditableUserRow from '../components/EditableUserRow'
 
 export default function Admin() {
 //set states
     const {user} = useContext(UserContext);
     const [users, setUsers] = useState([]);
-    const [edituserName, setEditedUserName] = useState();
+    const [editUser, setEditUser] = useState();
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
@@ -27,10 +28,21 @@ export default function Admin() {
         getUsers();
     }, []);
 
-    //set state of edit form with this click
+    const handleEditFormChange = (event) => {
+        event.preventDefault();
+
+        const fieldName = event.target.getAttribute('email');
+        const fieldValue = event.target.value;
+
+        const newFormData = {...editFormData};
+        newFormData[fieldName] = fieldValue;
+
+        setEditFormData(newFormData);
+    }
+
     const handleEditClick = (event, users)=> {
         event.preventDefault();
-        setEditedUserName(users.email);
+        setEditUser(users.email);
 
         const formValues = { 
             email: users.email,
@@ -39,9 +51,8 @@ export default function Admin() {
         setEditFormData(formValues);
     };
 
+
     return (
-        
-        
             <div>
                 {user ? 
                 (<div className="py-1 m-3">
@@ -62,7 +73,11 @@ export default function Admin() {
                             <tbody>
                             {users.map((users) => (
                                 <React.Fragment key={users.email}>
-                                        <ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>
+                                    {editUser === users.email ? 
+                                    (<EditableUserRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>)
+                                    : 
+                                    (<ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>)
+                                    }
                                 </React.Fragment>
                             ))}
                             </tbody>
