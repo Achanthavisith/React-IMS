@@ -1,81 +1,124 @@
-import React, { useEffect, useState } from 'react';
-import '../components/PostProduct.css';
+import React, { useContext, useState, useEffect } from "react";
+import { UserContext } from '../context/context';
 import axios from 'axios';
-import { Form, } from 'react-bootstrap';
+import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
+import EditableRowUser from "../components/EditableRowUser";
 
-const EditableRowUser = ({editFormData, handleEditFormChange}) => {
+export default function Admin() {
+//set states
+    const {user} = useContext(UserContext);
+    const [users, setUsers] = useState([]);
+    const [editUserRole, setEditedUserRole] = useState();
+    const [editUserEmail, setEditedUserEmail] = useState();
+    const [editFormData, setEditFormData] = useState({
+        email:"",
+        role:"",
+    });
+    const [refresh, setRefresh] = useState(0);
 
+     //get Users data from mongodb input to array
+    const getUsers = () => {
+        axios.get("http://localhost:5000/api/users")
+        .then((response) => {
+            const data = response.data;
+            setUsers(data);
+        })
+        .catch(error => console.error(error));
+    }
 
-    //setState
+    useEffect(() => {
+        getUsers();
+    }, []);
 
-    const [role, setRole] = useState("");
+    const handleEditClick = (event, users)=> {
+        event.preventDefault();
+        setEditedUserEmail(users.email);
 
-    // Making non required for delete, but required for update
-     async function  onSave() {
-            const user = { 
-                email: editFormData.email, 
-                role: editFormData.role, 
-            }; 
-            console.log(user + "works");
-                await axios.put("http://localhost:5000/api/user/update", 
-                user)
-                
-            .then((res) => {
-                
-                alert('User: ' + editFormData.email + ' was updated');
-            }).catch((err) => {
-                alert('Error')
-            })
-        };
+        const formValues = { 
+            email: users.email,
+            role: users.role,
+        }
+        setEditFormData(formValues);
+    };
 
-    async function onDelete() {
-        if(window.confirm('Are you sure you want to delete')) {
-                await axios.delete("http://localhost:5000/api/user/delete", {data: {email: editFormData.email}})
-            }
-        };
+    const handleEditFormChange = (event) => {
+        event.preventDefault();
 
+        const fieldName = event.target.getAttribute('email');
+        const fieldValue = event.target.value;
+
+        const newFormData = {...editFormData};
+        newFormData[fieldName] = fieldValue;
+
+        setEditFormData(newFormData);
+    }
+
+    const handleEditFormSubmit = (event) => {
+        
+        event.preventDefault();
+        const editedUsers = {
+            email: editFormData.email,
+            role: editFormData.role,
+        }
+        const newUsers = [...users];
+    
+        const index = users.findIndex((users) => users.role === editUserRole)
+        newUsers[index] = editedUsers;
+        
+        setUsers(newUsers);
+        setEditedUserRole(null);
+        setRefresh(refresh + 1);
+    }
 
     return (
-        <tr>
-            <td > 
-                <input type = "text" required placeholder=" Edit User Email" name = "email"  value= {editFormData.email} onChange = {handleEditFormChange}>
-                    </input> 
-                    </td>
-                    <td > 
-                
-                <Form.Control 
-                        as="select"
-                        id="role"
-                        type="select"
-                        className="form-control"
-                        value = {role}
-                        onChange={ (e) => setRole(e.target.value)}
-                        >
-                        <option value="" >- - -</option>
-                        <option value="user" >User</option>
-                        <option value="manager" >Manager</option>
-                        
-                    </Form.Control>
+        
+        
+            <div>
+                {user ? 
+                (<div className="py-1 m-3">
+                    Logged in: {JSON.stringify(user.user)}
+                    {user.role === 'admin' ? 
                     
-                    </td>
-                    <td>
-                <button type = "submit" className="m-1 btn-primary btn-sm" onClick= {onSave}> Save</button>
-                <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Delete</button>
-                </td>
-        </tr>
+                    (
+                    <div>
+                        <form onSubmit={handleEditFormSubmit}>
+                        <table>
+                            <thead>
+                                <tr>
+                                <th>E-mail</th>
+                                <th>Role</th>
+                                <th>Admin Buttons</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {users.map((users) => (
+                                <React.Fragment key={users.email}>
+                                    {editUserRole === users.role ? (
+                                        <EditableRowUser editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>
+                                    ) : ( 
+                            
+                                    <ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>
+                             
+                                )}
+                                </React.Fragment>
+                            ))}
+                            </tbody>
+                        </table>
+                        </form>
+                    </div>
+                    )
+                    :
+                    (<div>
+                        Not an Admin
+                    </div>)
+                    
+                    }</div>)
+                :
+                (<div className="py-1 m-3">
+                    Logged out.
+                </div>)
+                }
+            </div>
+        
     );
-};
-
-
-// <input required = "" placeholder=" Edit Product Category" name="category"  value= {editFormData.name}> 
-//</input> 
-/*
-
-*/
-// AROUND 39:20 in video is where left off and need to work the button into actually editing and saving stuff 
-
-// https://www.youtube.com/watch?v=dYjdzpZv5yc
-
-//<input type = "text" required placeholder=" Edit User Role" name="role" onChange={handleEditFormChange} value= {editFormData.role}> </input>
-
-export default EditableRowUser;
+    }
