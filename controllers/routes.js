@@ -139,6 +139,16 @@ router.delete("/products/delete", async (req, res) => {
     )
 })
 
+//delete specific user
+router.delete("/user/delete", async (req, res) => {
+    const user = await userModel.deleteOne(
+        {
+            email: req.body.email,
+            
+        }
+    )
+})
+
 //update a product
 router.put("/products/update", async (req, res) => {
     const filter = { name: req.body.name  };
@@ -152,8 +162,8 @@ router.put("/products/update", async (req, res) => {
 
 //update a user
 router.put("/user/update", async (req, res) => {
-    const filter = { name: req.body.email  };
-    const update = { email: req.body.email, role: req.body.role };
+    const filter = { email: req.body.email  };
+    const update = { role: req.body.role };
     
     
     let doc = await userModel.findOneAndUpdate(filter, update, {
