@@ -2,19 +2,18 @@ import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from '../context/context';
 import axios from 'axios';
 import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
-import EditableRowUser from "../components/EditableRowUser";
+import EditableUserRow from '../components/EditableUserRow'
 
 export default function Admin() {
 //set states
     const {user} = useContext(UserContext);
     const [users, setUsers] = useState([]);
-    const [editUserRole, setEditedUserRole] = useState();
-    const [editUserEmail, setEditedUserEmail] = useState();
+    const [edituserName, setEditedUserName] = useState();
+    const [editUser, setEditUser] = useState();
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
     });
-    const [refresh, setRefresh] = useState(0);
 
      //get Users data from mongodb input to array
     const getUsers = () => {
@@ -30,17 +29,7 @@ export default function Admin() {
         getUsers();
     }, []);
 
-    const handleEditClick = (event, users)=> {
-        event.preventDefault();
-        setEditedUserEmail(users.email);
-
-        const formValues = { 
-            email: users.email,
-            role: users.role,
-        }
-        setEditFormData(formValues);
-    };
-
+    //set state of edit form with this click
     const handleEditFormChange = (event) => {
         event.preventDefault();
 
@@ -53,22 +42,18 @@ export default function Admin() {
         setEditFormData(newFormData);
     }
 
-    const handleEditFormSubmit = (event) => {
-        
+    const handleEditClick = (event, users)=> {
         event.preventDefault();
-        const editedUsers = {
-            email: editFormData.email,
-            role: editFormData.role,
+        setEditedUserName(users.email);
+        setEditUser(users.email);
+
+        const formValues = { 
+            email: users.email,
+            role: users.role,
         }
-        const newUsers = [...users];
-    
-        const index = users.findIndex((users) => users.role === editUserRole)
-        newUsers[index] = editedUsers;
-        
-        setUsers(newUsers);
-        setEditedUserRole(null);
-        setRefresh(refresh + 1);
-    }
+        setEditFormData(formValues);
+    };
+
 
     return (
         
@@ -81,7 +66,7 @@ export default function Admin() {
                     
                     (
                     <div>
-                        <form onSubmit={handleEditFormSubmit}>
+                        <form>
                         <table>
                             <thead>
                                 <tr>
@@ -93,13 +78,11 @@ export default function Admin() {
                             <tbody>
                             {users.map((users) => (
                                 <React.Fragment key={users.email}>
-                                    {editUserRole === users.role ? (
-                                        <EditableRowUser editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>
-                                    ) : ( 
-                            
-                                    <ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>
-                             
-                                )}
+                                    {editUser === users.email ? 
+                                    (<EditableUserRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>)
+                                    : 
+                                    (<ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>)
+                                    }
                                 </React.Fragment>
                             ))}
                             </tbody>
