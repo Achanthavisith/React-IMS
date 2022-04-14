@@ -26,6 +26,7 @@ export default function Manage() {
     const [product, setProducts] = useState("");
     const [editProductName, setEditedProductName] = useState();
     const [catFilter, setCatFilter] = useState("");
+    const [quantityFilter, setQuantityFilter] = useState("");
     const [nameSearch, setNameSearch] = useState("");
     // set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
@@ -376,6 +377,16 @@ export default function Manage() {
                             onChange= {(e) => setNameSearch(e.target.value)}>
                         </input>
 
+                        <label className="m-1">Check quantities less than: </label>
+                        <input 
+                            className = 'form-control'
+                            type = "number" 
+                            placeholder = "quantity"  
+                            onChange= {(e) => setQuantityFilter(e.target.value)}>
+                        </input>
+
+
+
                         {user ? (
                                 <div>
                                     {user.role === "admin" && "manager" ?  
@@ -413,11 +424,16 @@ export default function Manage() {
                     <tbody>
                             {products
                             .filter(product => {
-                                    return (product.category.includes(catFilter)
-                                )
+                                if (quantityFilter) {
+                                    return (product.quantity <= quantityFilter)
+                                } else {
+                                    return (product.quantity > null)
+                                }
+                            })
+                            .filter(product => {
+                                    return (product.category.includes(catFilter))
                             }).filter(product => {
-                                return (product.name.toLowerCase().includes(nameSearch.toLocaleLowerCase())
-                            )
+                                return (product.name.toLowerCase().includes(nameSearch.toLocaleLowerCase()))
                             }).map((product) => (
                                 <React.Fragment key={product.name}>
                                     {editProductName === product.name ? (

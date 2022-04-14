@@ -27,6 +27,7 @@ export default function Admin() {
         getUsers();
     }, []);
 
+    //set state of edit form with this click
     const handleEditClick = (event, users)=> {
         event.preventDefault();
         setEditedUserName(users.email);
@@ -61,9 +62,7 @@ export default function Admin() {
                             <tbody>
                             {users.map((users) => (
                                 <React.Fragment key={users.email}>
-                                    
                                         <ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>
-                
                                 </React.Fragment>
                             ))}
                             </tbody>
