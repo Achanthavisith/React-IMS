@@ -23,7 +23,7 @@ export default function Manage() {
     const [category, setCategory] = useState("");
     const [newCategory, setNewCategory] = useState("");
     const [removeCategory, setRemoveCategory] = useState("");
-    const [product, setProducts] = useState("");
+    const [product, setProduct] = useState("");
     const [editProductName, setEditedProductName] = useState();
     const [catFilter, setCatFilter] = useState("");
     const [quantityFilter, setQuantityFilter] = useState("");
@@ -75,9 +75,8 @@ export default function Manage() {
         const index = products.findIndex((product) => product.name === editProductName)
         newProduct[index] = editedProduct;
         
-        setProducts(newProduct);
+        setProduct(newProduct);
         setEditedProductName(null);
-        setRefresh(refresh + 1);
     }
 
     const handleEditClick = (event, product)=> {
@@ -125,7 +124,7 @@ export default function Manage() {
 
     useEffect(() => {
         getProducts();
-    }, [refresh]);
+    }, [refresh,product]);
     
 
     //sumbit handler for add product form

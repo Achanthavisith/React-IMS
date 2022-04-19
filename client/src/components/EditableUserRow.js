@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../components/PostProduct.css';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
