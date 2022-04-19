@@ -5,18 +5,18 @@ import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
 import EditableUserRow from '../components/EditableUserRow'
 
 export default function Admin() {
-//set states
+    //set user context on whos logged in
     const {user} = useContext(UserContext);
+
+    //set states
     const [users, setUsers] = useState([]);
     const [editUserName, setEditedUserName] = useState();
-    const [editUserRole, setEditedUserRole] = useState();
     const [editUser, setEditUser] = useState();
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
     });
     const [refresh, setRefresh] = useState(0);
-
      //get Users data from mongodb input to array
     const getUsers = () => {
         axios.get("http://localhost:5000/api/users")
@@ -29,7 +29,8 @@ export default function Admin() {
 
     useEffect(() => {
         getUsers();
-    }, []);
+    
+    }, [refresh]);
 
     //set state of edit form with this click
     const handleEditFormChange = (event) => {
@@ -43,6 +44,22 @@ export default function Admin() {
 
         setEditFormData(newFormData);
     }
+    const handleEditFormSubmit = (event) => {
+        
+      //  event.preventDefault();
+        const editedUsers = {
+            email: editFormData.email,
+            role: editFormData.role,
+        }
+        const newUsers = [...users];
+    
+        const index = users.findIndex((users) => users.email === editUserName)
+        newUsers[index] = editedUsers;
+        
+        setUsers(newUsers);
+        setEditedUserName(null);
+        setRefresh(refresh + 1);
+    }
 
     const handleEditClick = (event, users)=> {
         event.preventDefault();
@@ -55,22 +72,7 @@ export default function Admin() {
         }
         setEditFormData(formValues);
     };
-    const handleEditFormSubmit = (event) => {
-        
-        event.preventDefault();
-        const editedUsers = {
-            email: editFormData.email,
-            role: editFormData.role,
-        }
-        const newUsers = [...users];
-    
-        const index = users.findIndex((users) => users.role === editUserRole)
-        newUsers[index] = editedUsers;
-        
-        setUsers(newUsers);
-        setEditedUserRole(null);
-        setRefresh(refresh + 1);
-    }
+
 
 
 
