@@ -10,7 +10,7 @@ export default function Admin() {
 
     //set states
     const [users, setUsers] = useState([]);
-    const [editUser, setEditUser] = useState();
+    const [editUser, setEditedUser] = useState();
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
@@ -31,18 +31,7 @@ export default function Admin() {
     
     }, [refresh]);
 
-    //set state of edit form with this click
-    const handleEditFormChange = (event) => {
-        event.preventDefault();
 
-        const fieldName = event.target.getAttribute('email');
-        const fieldValue = event.target.value;
-
-        const newFormData = {...editFormData};
-        newFormData[fieldName] = fieldValue;
-
-        setEditFormData(newFormData);
-    }
     const handleEditFormSubmit = (event) => {
         
       //  event.preventDefault();
@@ -52,11 +41,11 @@ export default function Admin() {
         }
         const newUsers = [...users];
     
-        const index = users.findIndex((users) => users.email === editUserName)
+        const index = users.findIndex((users) => users.email === editUser)
         newUsers[index] = editedUsers;
         
         setUsers(newUsers);
-        setEditedUserName(null);
+        setEditedUser(null);
         setRefresh(refresh + 1);
     }
 
@@ -74,7 +63,7 @@ export default function Admin() {
 
     const handleEditClick = (event, users)=> {
         event.preventDefault();
-        setEditUser(users.email);
+        setEditedUser(users.email);
 
         const formValues = { 
             email: users.email,
@@ -85,7 +74,7 @@ export default function Admin() {
 
 
     return (
-            <div>
+            <div className="container">
                 {user ? 
                 (<div className="py-1 m-3">
                     Logged in: {JSON.stringify(user.user)}
