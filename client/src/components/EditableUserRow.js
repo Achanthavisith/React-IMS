@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import '../components/PostProduct.css';
 import axios from 'axios';
@@ -39,7 +40,7 @@ const EditableUserRow = ({editFormData, handleEditFormChange}) => {
                         >
                         <option value="" >- - -</option>
                         <option value="user" >User</option>
-                        <option value="Manager" >Manager</option>
+                        <option value="manager" >Manager</option>
                     </Form.Control>
                     
                     </td>

@@ -38,10 +38,18 @@
    # 
 #}
 
- 
-DELETE  http://localhost:5000/api/products/delete
+PUT http://localhost:5000/api/user/update
 Content-Type: application/json
 
-{
-   "name": "34545"
+{ 
+   "email": "user@user",
+   "role": "manager"
 }
+
+
+#DELETE  http://localhost:5000/api/products/delete
+#Content-Type: application/json
+#
+#{
+#   "name": "34545"
+#}

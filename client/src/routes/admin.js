@@ -5,15 +5,17 @@ import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
 import EditableUserRow from '../components/EditableUserRow'
 
 export default function Admin() {
-//set states
+    //set user context on whos logged in
     const {user} = useContext(UserContext);
+
+    //set states
     const [users, setUsers] = useState([]);
     const [editUser, setEditUser] = useState();
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
     });
-
+    const [refresh, setRefresh] = useState(0);
      //get Users data from mongodb input to array
     const getUsers = () => {
         axios.get("http://localhost:5000/api/users")
@@ -26,7 +28,37 @@ export default function Admin() {
 
     useEffect(() => {
         getUsers();
-    }, []);
+    
+    }, [refresh]);
+
+    //set state of edit form with this click
+    const handleEditFormChange = (event) => {
+        event.preventDefault();
+
+        const fieldName = event.target.getAttribute('email');
+        const fieldValue = event.target.value;
+
+        const newFormData = {...editFormData};
+        newFormData[fieldName] = fieldValue;
+
+        setEditFormData(newFormData);
+    }
+    const handleEditFormSubmit = (event) => {
+        
+      //  event.preventDefault();
+        const editedUsers = {
+            email: editFormData.email,
+            role: editFormData.role,
+        }
+        const newUsers = [...users];
+    
+        const index = users.findIndex((users) => users.email === editUserName)
+        newUsers[index] = editedUsers;
+        
+        setUsers(newUsers);
+        setEditedUserName(null);
+        setRefresh(refresh + 1);
+    }
 
     const handleEditFormChange = (event) => {
         event.preventDefault();
@@ -61,7 +93,7 @@ export default function Admin() {
                     
                     (
                     <div>
-                        <form>
+                        <form onSubmit={handleEditFormSubmit}>
                         <table>
                             <thead>
                                 <tr>

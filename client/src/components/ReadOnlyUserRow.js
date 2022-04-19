@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import '../components/PostProduct.css'
 import { UserContext } from '../context/context';
 
-const ReadOnlyUserRow = ({users, handleEditClick}) => {
+const ReadOnlyRowUser = ({users, handleEditClick}) => {
     const {user} = useContext(UserContext);
 
     return (
@@ -15,7 +15,7 @@ const ReadOnlyUserRow = ({users, handleEditClick}) => {
                     (<div>
                         {user.role === 'admin' && 'manager' ? 
                     (<div>
-                        <button type = "button" className="btn-primary btn-sm m-1 rounded" onClick={(event) => handleEditClick(event, users)}>
+                        <button type = "button" className="m-1 btn-primary btn-sm" onClick={(event) => handleEditClick(event, users)}>
                             Edit
                         </button>
                     </div>)
@@ -35,4 +35,4 @@ const ReadOnlyUserRow = ({users, handleEditClick}) => {
     );
 }
 
-export default ReadOnlyUserRow;
+export default ReadOnlyRowUser;
