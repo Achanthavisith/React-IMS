@@ -9,9 +9,12 @@ const EditableUserRow = ({editFormData, handleEditFormChange}) => {
     // Making non required for delete, but required for update
     async function onSave() {
             const user = { 
-                name: editFormData.name, 
+                email: editFormData.email, 
                 role: role, 
             }; 
+
+            await axios.put("http://localhost:5000/api/user/update", 
+                user)
         };
 
     async function onDelete() {
