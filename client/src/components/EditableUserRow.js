@@ -1,20 +1,27 @@
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import '../components/PostProduct.css';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
+import { UserContext } from '../context/context';
 
 const EditableUserRow = ({editFormData, handleEditFormChange}) => {
 
     // Making non required for delete, but required for update
     async function onSave() {
-            const user = { 
+            const editUser = { 
                 email: editFormData.email, 
                 role: role, 
             }; 
 
-            await axios.put("http://localhost:5000/api/user/update", 
-                user)
+            if(editUser.email === user.user) {
+                alert('Cannot edit logged in user.');
+            } else if(editUser.email === 'admin@admin') {
+                alert('Cannot edit admin.');
+            }else {
+                await axios.put("http://localhost:5000/api/user/update", 
+                editUser);
+            }
         };
 
     async function onDelete() {
@@ -25,6 +32,7 @@ const EditableUserRow = ({editFormData, handleEditFormChange}) => {
 
     //Setting states
     const [role, setRole] = useState("");
+    const {user} = useContext(UserContext);
 
     return (
         <tr>

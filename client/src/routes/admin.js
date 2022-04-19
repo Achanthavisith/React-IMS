@@ -34,7 +34,7 @@ export default function Admin() {
 
     const handleEditFormSubmit = (event) => {
         
-      //  event.preventDefault();
+        event.preventDefault();
         const editedUsers = {
             email: editFormData.email,
             role: editFormData.role,
