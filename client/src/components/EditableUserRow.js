@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Form } from 'react-bootstrap';
 import { UserContext } from '../context/context';
 
-const EditableUserRow = ({editFormData, handleEditFormChange}) => {
+const EditableUserRow = ({editFormData, handleCancelEdit}) => {
 
     // Making non required for delete, but required for update
     async function onSave() {
@@ -58,6 +58,7 @@ const EditableUserRow = ({editFormData, handleEditFormChange}) => {
                     <td>
                 <button type = "submit" className="m-1 btn-primary btn-sm" onClick= {onSave}> Save</button>
                 <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Delete</button>
+                <button type = "cancel" className="m-1 btn-secondary btn-sm" onClick= {handleCancelEdit}>cancel</button>
                 </td>
         </tr>
     );

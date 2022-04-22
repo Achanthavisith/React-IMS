@@ -1,5 +1,5 @@
 import { Form, Button } from 'react-bootstrap';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
@@ -15,6 +15,7 @@ const loginStyle = {
 };
 
 export default function Manage() {
+    
     //user context
     const {user} = useContext(UserContext);
     //set states
@@ -28,6 +29,9 @@ export default function Manage() {
     const [catFilter, setCatFilter] = useState("");
     const [quantityFilter, setQuantityFilter] = useState("");
     const [nameSearch, setNameSearch] = useState("");
+
+    const[productToDelete, setProductToDelete] = useState('')
+
     // set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
         name:"",
@@ -77,6 +81,16 @@ export default function Manage() {
         
         setProduct(newProduct);
         setEditedProductName(null);
+    }
+
+    const handleClickHide = () => {
+        setEditedProductName(null);
+    }
+
+    const handleAddGroupDelete = () => {
+        setGroupDelete(groupDelete.concat(productToDelete));
+        setProductToDelete('')
+        console.log(groupDelete)
     }
 
     const handleEditClick = (event, product)=> {
@@ -214,23 +228,24 @@ export default function Manage() {
         };
     };
 
-    const [groupDelete, setGroupDelete] = useState("");
+    const [groupDelete, setGroupDelete] = useState([]);
 
     function productsDeleteHandler(event) {
         event.preventDefault();
-        const myArray = groupDelete.split(",");
 
-        if(window.confirm('Are you sure you want to delete these products?')) {
-            for (let i = 0; i < myArray.length; i++) {
-                const product = myArray[i];
+        if (groupDelete.length === 0) {
+            window.alert('there is no products to delete')
+        }
+        else if (window.confirm('Are you sure you want to delete these products?')) {
+            for (let i = 0; i < groupDelete.length; i++) {
+                const product = groupDelete[i];
                     axios.delete("http://localhost:5000/api/products/delete", {data: {name: product}})
             }
+            setGroupDelete([])
         }
         setRefresh(refresh+1);
-        setGroupDelete("");
 
     }
-
 
     return (
         
@@ -387,27 +402,36 @@ export default function Manage() {
 
 
                         {user ? (
+
                                 <div>
-                                    {user.role === "admin" && "manager" ?  
+                                    {user.role === "admin" && "manager" 
+                                    ?  
                                         (
                                             <div>
-                                                <Form.Label className="m-1">Group delete:</Form.Label>
+                                                <Form.Label className="m-1">Group delete: </Form.Label>
+                                                { groupDelete.map((product) => 
+                                                    <div>{product}</div>)
+                                                    }
                                                 <Form onSubmit={productsDeleteHandler}>
                                                         <Form.Group className="pt-1">
                                                             <Form.Control 
                                                                 type ="text"
                                                                 name="products" 
-                                                                placeholder="Separate products by a comma" 
+                                                                placeholder="Enter product to group delete" 
                                                                 className="form-control"
-                                                                value={groupDelete}
-                                                                onChange={(e) => setGroupDelete(e.target.value)}
-                                                                required
+                                                                value={productToDelete}
+                                                                onChange={(e) => setProductToDelete(e.target.value)}
                                                             />
                                                         </Form.Group>
-                                                        <Button className="mt-2 btn-sm btn-danger" type="submit">DELETE</Button>
+                                                        <Button className="m-2 btn-sm btn-primary" onClick={(handleAddGroupDelete)}>Add to be deleted</Button>
+                                                        <Button className="m-2 btn-sm btn-danger" type= "submit">Group Delete</Button>
+                                                        <Button className="m-2 btn-sm btn-danger" onClick= {() => setGroupDelete([])}>clear delete</Button>
                                                 </Form>
-                                            </div>) : (<div></div>)}
-                                </div>) : (<div></div>)}
+                                            </div>) 
+                                    : 
+                                        (<div></div>) }
+                                </div> ) 
+                            : (<div> </div>) }
                     </div>
 
             <form onSubmit={handleEditFormSubmit}>
@@ -436,7 +460,7 @@ export default function Manage() {
                             }).map((product) => (
                                 <React.Fragment key={product.name}>
                                     {editProductName === product.name ? (
-                                        <EditableRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>
+                                        <EditableRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange} handleEditableRowCancel = {handleClickHide}/>
                                     ) : (
                                         <ReadOnlyRow product={product} handleEditClick = {handleEditClick}/>
                                     )}

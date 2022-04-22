@@ -32,6 +32,10 @@ export default function Admin() {
     }, [refresh]);
 
 
+    const handleCancelEdit = () => {
+        setEditedUser(null);
+    }
+
     const handleEditFormSubmit = (event) => {
         
         event.preventDefault();
@@ -95,9 +99,9 @@ export default function Admin() {
                             {users.map((users) => (
                                 <React.Fragment key={users.email}>
                                     {editUser === users.email ? 
-                                    (<EditableUserRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>)
+                                    (<EditableUserRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange} handleCancelEdit = {handleCancelEdit}/>)
                                     : 
-                                    (<ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>)
+                                    (<ReadOnlyUserRow users={users} handleEditClick = {handleEditClick} />)
                                     }
                                 </React.Fragment>
                             ))}
