@@ -225,7 +225,6 @@ export default function Manage() {
             event.preventDefault(); 
             
             if(window.confirm('Are you sure you want to delete category: ' + removeCategory)) {
-                //  console.log(product);
                 axios.delete("http://localhost:5000/api/categories/delete", {data: {category: removeCategory}})
             }
             setRemoveCategoryValidated(false);
@@ -256,7 +255,7 @@ export default function Manage() {
         {user ? 
             (
             <div>
-                {user.role === 'admin' && 'manager' ? 
+                {user.role === ('admin' || 'manager') ? 
                     (
                         <div>
                             <h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
@@ -316,7 +315,6 @@ export default function Manage() {
                                                     className="form-control"
                                                     value={name}
                                                     onChange={(e) => setName(e.target.value)}
-                                                // onChange={handleAddFormChange}
                                                     required
                                                     />
                                                 <Form.Control.Feedback type="invalid">
@@ -333,7 +331,6 @@ export default function Manage() {
                                                     className="form-control"
                                                     value={quantity}
                                                     onChange={(e) => setQuantity(e.target.value)}
-                                                // onChange={handleAddFormChange}
                                                     required
                                                 />
                                                 <Form.Control.Feedback type="invalid">
@@ -351,7 +348,6 @@ export default function Manage() {
                                                     value={category}
                                                     className="form-control"
                                                     onChange={(e) => setCategory(e.target.value)}
-                                                    //onChange={handleAddFormChange}
                                                 >
                                                     <option value="" >- - -</option>
                                                     {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
@@ -419,7 +415,7 @@ export default function Manage() {
                         {user ? (
 
                                 <div>
-                                    {user.role === "admin" && "manager" 
+                                    {user.role === ("admin" || "manager") 
                                     ?  
                                         (
                                             <div>

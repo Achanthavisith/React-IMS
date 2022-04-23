@@ -16,7 +16,7 @@ const ReadOnlyRow = ({product, handleEditClick}) => {
                 <td>
                     {user ? 
                     (<div>
-                        {user.role === 'admin' && 'manager' ? 
+                        {user.role === ("admin" || "manager") ? 
                     (<div>
                         { addGroup ? 
                         (<div>
