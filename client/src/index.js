@@ -24,10 +24,11 @@ ReactDOM.render(
       <Route path="/" element={<App />}>
       <Route
         index
-        element={
-          <main style={{ padding: "1rem" }}>
-            <p>stuff</p>
-          </main>
+        element={ 
+          <Home style={{ padding: "1rem" }}>
+      
+      
+          </Home>
         }
       />
         <Route path="manage" element={<Manage />}/>
