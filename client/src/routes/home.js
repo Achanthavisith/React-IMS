@@ -1,7 +1,4 @@
-import { Button, Container, Form } from 'react-bootstrap';
-import { useState, useContext } from 'react';
-import axios from 'axios';
-import { UserContext } from '../context/context';
+
 import Carousel from 'react-bootstrap/Carousel'
 import Card from 'react-bootstrap/Card'
 
@@ -35,40 +32,36 @@ export default function Home() {
     </Card.Text>
   </Card.Body>
   
-  <Carousel variant="dark"
+<Carousel variant="dark"
   border = 'black'
-style={slideshow}
- interval = {7000}
- class = "border border-primary"
+  style={slideshow}
+  interval = {7000}
+  class = "border border-primary"
 >
   <Carousel.Item interval={null}>
-  <div className="h-128">
-      <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/567-5675046_transparent-inventory-clipart-cartoon-inventory-png-png-download_800x355.png" alt="First slide" className="h-full" />
-    </div>
-    <Carousel.Caption>
-    </Carousel.Caption>
+      <div className="h-128">
+          <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/567-5675046_transparent-inventory-clipart-cartoon-inventory-png-png-download_800x355.png" alt="First slide" className="h-full" />
+      </div>
   </Carousel.Item>
-  <Carousel.Item interval={null}>
-  <div className="h-128">
-      <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/Inventory-PNG-Image_800x355.png"
-      alt="Second slide" className="h-full" />
-    </div>
-    <Carousel.Caption>
-    </Carousel.Caption>
-  </Carousel.Item>
-  <Carousel.Item interval={null}>
-  <div className="h-128">
-      <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/inventory_800x355.png"
-      alt="Third slide" className="h-full" />
-    </div>
-    <Carousel.Caption>
-    </Carousel.Caption>
-  </Carousel.Item>
+    <Carousel.Item interval={null}>
+      <div className="h-128">
+        <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/Inventory-PNG-Image_800x355.png"
+        alt="Second slide" className="h-full" />
+      </div>
+    </Carousel.Item>
+
+        <Carousel.Item interval={null}>
+          <div className="h-128">
+            <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/inventory_800x355.png"
+            alt="Third slide" className="h-full" />
+          </div>
+    </Carousel.Item>
+
 </Carousel>
   <Card.Footer className="text-muted">A React based Application</Card.Footer>
 </Card>
 
 
-      </div>
+      </div>  
     );
 }
