@@ -31,7 +31,7 @@ export default function Manage() {
     const [catFilter, setCatFilter] = useState("");
     const [quantityFilter, setQuantityFilter] = useState("");
     const [nameSearch, setNameSearch] = useState("");
-    const[productToDelete, setProductToDelete] = useState('')
+    const [groupDelete, setGroupDelete] = useState([]);
 
     // set state of editing and adding into the 
     const [addFormData, setAddFormData] = useState({
@@ -212,6 +212,7 @@ export default function Manage() {
         };
     };
 
+    //delete category submit
     const deleteCategorySubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -233,8 +234,6 @@ export default function Manage() {
         };
     };
 
-    const [groupDelete, setGroupDelete] = useState([]);
-
     function productsDeleteHandler(event) {
         event.preventDefault();
 
@@ -249,7 +248,6 @@ export default function Manage() {
             setGroupDelete([])
         }
         setRefresh(refresh+1);
-
     }
 
     return (
