@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
 import '../components/PostProduct.css'
-import { addButtonContext } from '../context/addButtonContext';
 import { UserContext } from '../context/context';
 
 const ReadOnlyRow = ({product, handleEditClick}) => {
     const {user} = useContext(UserContext);
-    const {addGroup} = useContext(addButtonContext);
 
     return (
         
@@ -18,19 +16,9 @@ const ReadOnlyRow = ({product, handleEditClick}) => {
                     (<div>
                         {user.role === 'admin' && 'manager' ? 
                     (<div>
-                        { addGroup ? 
-                        (<div>
-                            <button className="btn-primary btn-sm m-1 rounded" onClick={(event) => handleEditClick(event, product)}>
-                                Add
-                            </button>
-                        </div>)
-                        :
-                        (<div> 
-                            <button className="btn-primary btn-sm m-1 rounded" onClick={(event) => handleEditClick(event, product)}>
-                                Edit
-                            </button>
-                        </div>)}
-    
+                        <button type = "button" className="btn-primary btn-sm m-1 rounded" onClick={(event) => handleEditClick(event, product)}>
+                            Edit
+                        </button>
                     </div>)
                     :
                     (<div>

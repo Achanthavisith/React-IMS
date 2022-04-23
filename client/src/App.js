@@ -1,10 +1,9 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import './App.css';
-import { Link, Outlet, } from "react-router-dom";
+import { Link, Outlet} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
 import { UserContext } from './context/context';
-import { addButtonContext } from './context/addButtonContext';
 
 const navbarLinks = {
   padding: 20,
@@ -31,8 +30,6 @@ function App() {
 
   const providerValue = useMemo(() => ({user, setUser}), [user, setUser]);
 
-  const [addGroup, setAddGroup] = useState(null);
-  const buttonProviderValue = useMemo(() => ({addGroup, setAddGroup}), [addGroup, setAddGroup]);
 
   return (
     <div>
@@ -44,11 +41,8 @@ function App() {
             <Link to="/login" style={navbarLinks}>Login/Logout</Link>
         </Navbar>
       </div>
-
       <UserContext.Provider value={providerValue}>
-        <addButtonContext.Provider value = {buttonProviderValue}>
-          <Outlet />
-        </addButtonContext.Provider>
+        <Outlet />
       </UserContext.Provider>
       <div>
       

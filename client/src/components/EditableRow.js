@@ -3,7 +3,8 @@ import '../components/PostProduct.css';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
 
-const EditableRow = ({editFormData, handleEditFormChange,handleEditableRowCancel}) => {
+const EditableRow = ({editFormData, handleEditFormChange}) => {
+
     // Making non required for delete, but required for update
     async function onSave() {
             const product = { 
@@ -79,7 +80,6 @@ useEffect(() => {
                     <td>
                 <button type = "submit" className="m-1 btn-primary btn-sm" onClick= {onSave}> Save</button>
                 <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Delete</button>
-                <button type = "cancel" className="m-1 btn-secondary btn-sm" onClick= {handleEditableRowCancel}>cancel</button>
                 </td>
         </tr>
     );

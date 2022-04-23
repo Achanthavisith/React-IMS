@@ -1,45 +1,40 @@
-
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../components/PostProduct.css';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
-import { UserContext } from '../context/context';
 
-const EditableUserRow = ({editFormData, handleCancelEdit}) => {
+const EditableUserRow = ({editFormData, handleEditFormChange}) => {
 
     // Making non required for delete, but required for update
     async function onSave() {
-            const editUser = { 
+            const user = { 
                 email: editFormData.email, 
                 role: role, 
-            }; 
-
-            if(editUser.email === user.user) {
-                alert('Cannot edit logged in user.');
-            } else if(editUser.email === 'admin@admin') {
-                alert('Cannot edit admin.');
-            }else if(editUser.role === '') {
-                alert('Select a role.');
-            }else{
+            };
                 await axios.put("http://localhost:5000/api/user/update", 
-                editUser);
-            }
+                user)
+                
+            .then((res) => {
+                
+                alert('User: ' + editFormData.email + ' was updated');
+            }).catch((err) => {
+                alert('Error')
+            })
         };
 
     async function onDelete() {
         if(window.confirm('Are you sure you want to delete')) {
-                await axios.delete("http://localhost:5000/api/products/delete", {data: {email: editFormData.email}})
+                await axios.delete("http://localhost:5000/api/user/delete", {data: {email: editFormData.email}})
             }
         };
 
     //Setting states
     const [role, setRole] = useState("");
-    const {user} = useContext(UserContext);
 
     return (
         <tr>
             <td > 
-                <input readOnly type = "text" required placeholder=" Edit Product Name" name = "name"  value= {editFormData.email}>
+                <input readOnly type = "text" required placeholder=" Edit Product Name" name = "name"  value= {editFormData.email} onChange = {handleEditFormChange}>
                     </input> 
                     </td>
                     <td > 
@@ -60,7 +55,6 @@ const EditableUserRow = ({editFormData, handleCancelEdit}) => {
                     <td>
                 <button type = "submit" className="m-1 btn-primary btn-sm" onClick= {onSave}> Save</button>
                 <button type = "submit" className="m-1 btn-danger btn-sm" onClick= {onDelete}> Delete</button>
-                <button type = "cancel" className="m-1 btn-secondary btn-sm" onClick= {handleCancelEdit}>cancel</button>
                 </td>
         </tr>
     );
