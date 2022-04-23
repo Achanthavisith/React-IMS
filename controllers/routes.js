@@ -172,7 +172,7 @@ router.put("/user/update", async (req, res) => {
 })
 //update a user email
 router.put("/user/update/email", async (req, res) => {
-    const filter = { email: req.body.email  };
+    const filter = { _id: req.body._id  };
     const update = { email: req.body.email };
     
     
