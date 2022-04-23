@@ -20,7 +20,7 @@ export default function Home() {
     return (
         <div>
             <Card className="text-center">
-  <Card.Header>Welcome to our Inventory Manager, </Card.Header>
+  <Card.Header>Welcome to our Inventory Manager, {JSON.stringify(user.user)} </Card.Header>
   <Card.Body>
     <Card.Title>Special title treatment</Card.Title>
     <Card.Text>
