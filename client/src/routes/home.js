@@ -50,7 +50,7 @@ style={slideshow}
   </Carousel.Item>
   <Carousel.Item interval={null}>
   <div className="h-128">
-      <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/images_800x355.png"
+      <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/Inventory-PNG-Image_800x355.png"
       alt="Second slide" className="h-full" />
     </div>
     <Carousel.Caption>
