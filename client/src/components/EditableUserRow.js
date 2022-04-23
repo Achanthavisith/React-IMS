@@ -66,14 +66,4 @@ const EditableUserRow = ({editFormData, handleCancelEdit}) => {
     );
 };
 
-
-// <input required = "" placeholder=" Edit Product Category" name="category"  value= {editFormData.name}>
-//</input> 
-/*
-
-*/
-// AROUND 39:20 in video is where left off and need to work the button into actually editing and saving stuff 
-
-// https://www.youtube.com/watch?v=dYjdzpZv5yc
-
 export default EditableUserRow;
