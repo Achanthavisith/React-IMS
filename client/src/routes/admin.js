@@ -4,6 +4,8 @@ import axios from 'axios';
 import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
 import EditableUserRow from '../components/EditableUserRow'
 
+
+
 export default function Admin() {
     //set user context on whos logged in
     const {user} = useContext(UserContext);
@@ -11,6 +13,8 @@ export default function Admin() {
     //set states
     const [users, setUsers] = useState([]);
     const [editUser, setEditedUser] = useState();
+    const [password, setNewPassword] = useState("");
+    const [email, setNewEmail] = useState("");
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
@@ -54,6 +58,7 @@ export default function Admin() {
         setRefresh(refresh + 1);
     }
 
+
     const handleEditFormChange = (event) => {
         event.preventDefault();
 
@@ -77,10 +82,39 @@ export default function Admin() {
         setEditFormData(formValues);
     };
 
+    async function onSubmitPassword(event) {
+        event.preventDefault();
+        const editUser = { 
+            email: JSON.stringify(user.user),
+            password: password, 
+        }; 
+        console.log(editUser.email + " " + editUser.password)
+        await axios.put("http://localhost:5000/api/user/update/password", 
+        editUser)
+        
+    .then((res) => {
+        alert('User Password Updated: ');
+    }).catch((err) => {
+        alert('Error')
+    })
+        
+    };
+
+    const loginStyle = {
+        font: '15px arial sans',
+        margin: 'auto',
+        width: '40%',
+        padding: '5px',
+        marginTop: ' 5px'
+    };
+
+
 
     return (
             <div className="container">
+
                 {user ? 
+
                 (<div className="py-1 m-3">
                     Logged in: {JSON.stringify(user.user)}
                     {user.role === 'admin' ? 
@@ -112,8 +146,17 @@ export default function Admin() {
                     </div>
                     )
                     :
-                    (<div>
-                        Not an Admin
+                    (<div className= "container " style={loginStyle}>
+                        <form >
+                            <label className="m-1 fw-bold" > Input your new email: </label>
+                            <input className = "form-control" id="changeEmailInput" onChange={(e) => setNewEmail(e.target.value)}></input>
+                            <button className ="m-1 btn-sm btn-danger">Submit Email</button>
+                            <div></div>
+                            <label className="m-1 fw-bold">Input your new password: </label>
+                            <input className = "form-control" id="changePasswordInput" onChange={(e) => setNewPassword(e.target.value)}></input>
+                            <button onClick={onSubmitPassword} className ="m-1 btn-sm btn-danger">Submit Password</button>
+                       
+                        </form>
                     </div>)
                     
                     }</div>)

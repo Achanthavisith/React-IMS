@@ -38,12 +38,12 @@
    # 
 #}
 
-PUT http://localhost:5000/api/user/update
+PUT http://localhost:5000/api/user/update/password
 Content-Type: application/json
 
 { 
    "email": "user@user",
-   "role": "manager"
+   "password": "manager"
 }
 
 
