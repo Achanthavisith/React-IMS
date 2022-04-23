@@ -10,6 +10,7 @@ router.post('/addProduct', (req, res) => {
         name: req.body.name,
         quantity: req.body.quantity,
         category: req.body.category,
+        usage: req.body.usage
     });
     //save product
     productModel.findOne({name: newProduct.name} , (err, existing) => {
@@ -37,6 +38,7 @@ router.post('/addUser', (req, res) => {
         password: req.body.password,
         role: req.body.role,
     });
+
     //check if user already exists
     userModel.findOne({email: newUser.email} , (err, existing) => {
         if (existing == null) {
@@ -94,8 +96,23 @@ router.get("/products", async (req, res) => {
 
 //get users
 router.get("/users", async (req, res) => {
-	const users = await userModel.find()
+	const users = await userModel.find({}, 'email role',)
 	res.send(users)
+})
+
+
+//get only roles from users 
+router.get("/user/roles", async (req, res) => {
+	const roles = await userModel.find({}, 'role')
+    res.send(roles)
+})
+
+//get specific product name
+router.get("/products/name", async (req, res) => {
+	const products = await productModel.findOne({
+        name: req.body.name,
+    })
+    res.send(products)
 })
 
 //get specific user param
@@ -106,12 +123,61 @@ router.post("/login", async (req, res) => {
     })
 
     if(user) {
-        return res.status(200).json({status: 'ok', user: true, role: user.role});
+        return res.status(200).json({status: 'ok', user: user.email, role: user.role});
     } else{
         res.status(400).json({status: 'error', user:false});
     }
 })
 
+//delete specific product
+router.delete("/products/delete", async (req, res) => {
+    const product = await productModel.deleteOne(
+        {
+            name: req.body.name,
+            
+        }
+    )
+})
 
+//delete specific user
+router.delete("/user/delete", async (req, res) => {
+    const user = await userModel.deleteOne(
+        {
+            email: req.body.email,
+            
+        }
+    )
+})
+
+//update a product
+router.put("/products/update", async (req, res) => {
+    const filter = { name: req.body.name  };
+    const update = { quantity: req.body.quantity, category: req.body.category };
+    
+    
+    let doc = await productModel.findOneAndUpdate(filter, update, {
+        new: true
+    });
+})
+
+//update a user
+router.put("/user/update", async (req, res) => {
+    const filter = { email: req.body.email  };
+    const update = { role: req.body.role };
+    
+    
+    let doc = await userModel.findOneAndUpdate(filter, update, {
+        new: true
+    });
+})
+
+//delete category
+router.delete("/categories/delete", async (req, res) => {
+    const category = await categoryModel.deleteOne(
+        {
+            category: req.body.category
+        }
+    )
+})
 
 module.exports = router;

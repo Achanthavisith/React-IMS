@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import './App.css';
-import { Link, Outlet, Navigate } from "react-router-dom";
+import { Link, Outlet, } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavbarBrand } from 'react-bootstrap'
-import auth from './context/auth'
+import { UserContext } from './context/context';
+import { addButtonContext } from './context/addButtonContext';
 
 const navbarLinks = {
   padding: 20,
@@ -20,24 +21,38 @@ const navbar = {
   padding: 10,
 }
 
-function RequireAuth({ children, redirectTo }) {
-  let isAuthenticated = auth.isAuthenticated();
-  return isAuthenticated ? children : <Navigate to={redirectTo} />;
-}
 
 function App() {
+  const [user, setUser] = useState(null);
+    useEffect(() => {
+      const currentUser = localStorage.getItem("user");
+      setUser(JSON.parse(currentUser));
+    },[]);
+
+  const providerValue = useMemo(() => ({user, setUser}), [user, setUser]);
+
+  const [addGroup, setAddGroup] = useState(null);
+  const buttonProviderValue = useMemo(() => ({addGroup, setAddGroup}), [addGroup, setAddGroup]);
+
   return (
     <div>
       <div style={navbar}>
-        <RequireAuth redirectTo='/login'>
         <Navbar sticky="top">
             <NavbarBrand as={Link} to='/'>Inventory Manager</NavbarBrand>
             <Link to="/manage" style={navbarLinks}>Manage</Link>
             <Link to="/admin" style={navbarLinks}>Admin</Link>
+            <Link to="/login" style={navbarLinks}>Login/Logout</Link>
         </Navbar>
-        </RequireAuth>
       </div>
-      <Outlet />
+
+      <UserContext.Provider value={providerValue}>
+        <addButtonContext.Provider value = {buttonProviderValue}>
+          <Outlet />
+        </addButtonContext.Provider>
+      </UserContext.Provider>
+      <div>
+      
+      </div>
     </div>
   );
 }

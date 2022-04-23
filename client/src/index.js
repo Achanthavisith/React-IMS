@@ -10,19 +10,44 @@ import {
 import Manage from './routes/manage';
 import Admin from './routes/admin';
 import Login from './routes/login';
+import Home from './routes/home';
 import reportWebVitals from './reportWebVitals';
+import EditableRow from './components/EditableRow';
+import ReadOnlyRow from './components/ReadOnlyRow';
 
 ReactDOM.render(
   <React.StrictMode>
+    
     <BrowserRouter>
+
     <Routes>
-      <Route path="login" element={<Login />} />
       <Route path="/" element={<App />}>
+      <Route
+        index
+        element={
+          <main style={{ padding: "1rem" }}>
+            <p>stuff</p>
+          </main>
+        }
+      />
         <Route path="manage" element={<Manage />}/>
         <Route path="admin" element={<Admin />} />
+        <Route path="login" element={<Login />} />
+        <Route
+        index
+        element={ 
+          <Home style={{ padding: "1rem" }}>
+      
+      
+          </Home>
+        }
+      />
       </Route>
+      
     </Routes>
+    
   </BrowserRouter>
+  
   </React.StrictMode>,
   document.getElementById('root')
 );

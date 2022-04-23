@@ -1,8 +1,7 @@
 import { Button, Form } from 'react-bootstrap';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useState, useContext } from 'react';
 import axios from 'axios';
-import auth from '../context/auth'
+import { UserContext } from '../context/context';
 
 export default function Login() {
 
@@ -12,15 +11,15 @@ export default function Login() {
         margin: 'auto',
         width: '40%',
         padding: '5px',
-        marginTop: ' 200px'
+        marginTop: ' 10px'
     }
 
     //boolean use state
     const [toggle, setToggle] = useState(false);
-
      //set states
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const {user, setUser} = useContext(UserContext);
 
 
      //set states back to empty method
@@ -29,7 +28,6 @@ export default function Login() {
         setPassword("");
     };
 
-    const navigate = useNavigate();
     //handlesubmit
     const onSubmit = async (event) => { 
         event.preventDefault(); 
@@ -67,15 +65,10 @@ export default function Login() {
             }
 
             if (toggle === false) {
-                console.log('button clicked');
-
                 await axios.post('http://localhost:5000/api/login', user)
                 .then (response => {
-                    alert('user logged in successfully: ' + user.email);
-                    console.log(response.data);
-                    auth.login(() => {
-                        navigate('/');
-                    })
+                    setUser(response.data);
+                    localStorage.setItem("user", JSON.stringify(response.data));
                 }).catch((err) => {
                     if (err.response) {
                         alert('Please Check your login credentials.');
@@ -87,9 +80,17 @@ export default function Login() {
             }
     };
 
+    function logOut() {
+        setUser(null);
+        localStorage.clear();
+    }
+
     return (
         <div style={loginStyle}>
-            <Form className="container" onSubmit={onSubmit}>
+            {user ? 
+            ((<Button className="form-control mb-3 btn-lg btn-danger" style={{fontSize: 15, fontWeight: 'bold'}} onClick={logOut}>Logout</Button>))
+            :
+            (<Form className="container" onSubmit={onSubmit}>
                 <h2>User login:</h2>
                 <Form.Group className="mb-3">
                     <Form.Label>Email: </Form.Label>
@@ -124,7 +125,8 @@ export default function Login() {
                 : 
                 (<Button style={{fontSize: 15, fontWeight: 'bold'}} onClick={(e) => setToggle(true)}>Not a user?</Button>)
                 }
-            </Form>
+            </Form>)
+            }
         </div>
     );
 }
