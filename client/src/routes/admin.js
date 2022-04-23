@@ -10,14 +10,14 @@ export default function Admin() {
 
     //set states
     const [users, setUsers] = useState([]);
-    const [editUserName, setEditedUserName] = useState();
-    const [editUser, setEditUser] = useState();
+    const [editUser, setEditedUser] = useState();
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
     });
     const [refresh, setRefresh] = useState(0);
      //get Users data from mongodb input to array
+
     const getUsers = () => {
         axios.get("http://localhost:5000/api/users")
         .then((response) => {
@@ -32,7 +32,28 @@ export default function Admin() {
     
     }, [refresh]);
 
-    //set state of edit form with this click
+
+    const handleCancelEdit = () => {
+        setEditedUser(null);
+    }
+
+    const handleEditFormSubmit = (event) => {
+        
+        event.preventDefault();
+        const editedUsers = {
+            email: editFormData.email,
+            role: editFormData.role,
+        }
+        const newUsers = [...users];
+    
+        const index = users.findIndex((users) => users.email === editUser)
+        newUsers[index] = editedUsers;
+        
+        setUsers(newUsers);
+        setEditedUser(null);
+        setRefresh(refresh + 1);
+    }
+
     const handleEditFormChange = (event) => {
         event.preventDefault();
 
@@ -44,27 +65,10 @@ export default function Admin() {
 
         setEditFormData(newFormData);
     }
-    const handleEditFormSubmit = (event) => {
-        
-      //  event.preventDefault();
-        const editedUsers = {
-            email: editFormData.email,
-            role: editFormData.role,
-        }
-        const newUsers = [...users];
-    
-        const index = users.findIndex((users) => users.email === editUserName)
-        newUsers[index] = editedUsers;
-        
-        setUsers(newUsers);
-        setEditedUserName(null);
-        setRefresh(refresh + 1);
-    }
 
     const handleEditClick = (event, users)=> {
         event.preventDefault();
-        setEditedUserName(users.email);
-        setEditUser(users.email);
+        setEditedUser(users.email);
 
         const formValues = { 
             email: users.email,
@@ -74,12 +78,8 @@ export default function Admin() {
     };
 
 
-
-
     return (
-        
-        
-            <div>
+            <div className="container">
                 {user ? 
                 (<div className="py-1 m-3">
                     Logged in: {JSON.stringify(user.user)}
@@ -100,9 +100,9 @@ export default function Admin() {
                             {users.map((users) => (
                                 <React.Fragment key={users.email}>
                                     {editUser === users.email ? 
-                                    (<EditableUserRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange}/>)
+                                    (<EditableUserRow editFormData={editFormData} handleEditFormChange ={handleEditFormChange} handleCancelEdit = {handleCancelEdit}/>)
                                     : 
-                                    (<ReadOnlyUserRow users={users} handleEditClick = {handleEditClick}/>)
+                                    (<ReadOnlyUserRow users={users} handleEditClick = {handleEditClick} />)
                                     }
                                 </React.Fragment>
                             ))}
