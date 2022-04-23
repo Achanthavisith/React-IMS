@@ -170,6 +170,27 @@ router.put("/user/update", async (req, res) => {
         new: true
     });
 })
+//update a user email
+router.put("/user/update/email", async (req, res) => {
+    const filter = { email: req.body.email  };
+    const update = { email: req.body.email };
+    
+    
+    let doc = await userModel.findOneAndUpdate(filter, update, {
+        new: true
+    });
+})
+
+//update a user password
+router.put("/user/update/password", async (req, res) => {
+    const filter = { email: req.body.email  };
+    const update = { password: req.body.password };
+    
+    
+    let doc = await userModel.findOneAndUpdate(filter, update, {
+        new: true
+    });
+})
 
 //delete category
 router.delete("/categories/delete", async (req, res) => {
