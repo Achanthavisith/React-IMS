@@ -17,6 +17,7 @@ export default function Admin() {
     });
     const [refresh, setRefresh] = useState(0);
      //get Users data from mongodb input to array
+
     const getUsers = () => {
         axios.get("http://localhost:5000/api/users")
         .then((response) => {
