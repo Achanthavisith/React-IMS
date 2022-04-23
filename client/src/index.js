@@ -12,8 +12,6 @@ import Admin from './routes/admin';
 import Login from './routes/login';
 import Home from './routes/home';
 import reportWebVitals from './reportWebVitals';
-import EditableRow from './components/EditableRow';
-import ReadOnlyRow from './components/ReadOnlyRow';
 
 ReactDOM.render(
   <React.StrictMode>
