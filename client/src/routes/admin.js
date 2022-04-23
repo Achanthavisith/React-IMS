@@ -82,23 +82,45 @@ export default function Admin() {
         setEditFormData(formValues);
     };
 
-    async function onSubmitPassword(event) {
-        event.preventDefault();
+    async function onSubmitPassword() {
         const editUser = { 
-            email: JSON.stringify(user.user),
-            password: password, 
+            email: user.user,
+            password: password 
         }; 
-        console.log(editUser.email + " " + editUser.password)
+       console.log(editUser.email + " " + editUser.password)
         await axios.put("http://localhost:5000/api/user/update/password", 
         editUser)
         
     .then((res) => {
         alert('User Password Updated: ');
     }).catch((err) => {
-        alert('Error')
+        alert('Error');
     })
-        
+    
+   setNewPassword("");
+    setRefresh(refresh + 1);
     };
+
+    async function onSubmitEmail(event) {
+        event.preventDefault()
+        const editUser = { 
+            _id : user._id,
+            email: email
+        }; 
+        console.log(editUser._id + " " + editUser.email)
+        await axios.put("http://localhost:5000/api/user/update/email", 
+        editUser)
+        
+    .then((res) => {
+        alert('User Email Updated: ');
+    }).catch((err) => {
+        alert('Error');
+    })
+    
+   setNewEmail("");
+    setRefresh(refresh + 1);
+    };
+
 
     const loginStyle = {
         font: '15px arial sans',
@@ -149,8 +171,8 @@ export default function Admin() {
                     (<div className= "container " style={loginStyle}>
                         <form >
                             <label className="m-1 fw-bold" > Input your new email: </label>
-                            <input className = "form-control" id="changeEmailInput" onChange={(e) => setNewEmail(e.target.value)}></input>
-                            <button className ="m-1 btn-sm btn-danger">Submit Email</button>
+                            <input  className = "form-control" id="changeEmailInput" onChange={(e) => setNewEmail(e.target.value)}></input>
+                            <button onClick = {onSubmitEmail} className ="m-1 btn-sm btn-danger">Submit Email</button>
                             <div></div>
                             <label className="m-1 fw-bold">Input your new password: </label>
                             <input className = "form-control" id="changePasswordInput" onChange={(e) => setNewPassword(e.target.value)}></input>
