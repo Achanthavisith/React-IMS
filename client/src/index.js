@@ -17,6 +17,14 @@ ReactDOM.render(
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
+      <Route
+        index
+        element={
+          <main style={{ padding: "1rem" }}>
+            <p>stuff</p>
+          </main>
+        }
+      />
         <Route path="manage" element={<Manage />}/>
         <Route path="admin" element={<Admin />} />
         <Route path="login" element={<Login />} />

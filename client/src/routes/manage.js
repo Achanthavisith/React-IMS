@@ -1,10 +1,11 @@
 import { Form, Button } from 'react-bootstrap';
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, } from 'react';
 import axios from 'axios';
 import '../components/PostProduct.css'
 import ReadOnlyRow from '../components/ReadOnlyRow';
 import EditableRow from '../components/EditableRow';
 import { UserContext } from '../context/context';
+import { addButtonContext } from '../context/addButtonContext';
 
 const loginStyle = {
     font: '15px arial sans',
@@ -18,6 +19,7 @@ export default function Manage() {
     
     //user context
     const {user} = useContext(UserContext);
+    const {addGroup, setAddGroup} = useContext(addButtonContext);
     //set states
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState("");
@@ -29,7 +31,6 @@ export default function Manage() {
     const [catFilter, setCatFilter] = useState("");
     const [quantityFilter, setQuantityFilter] = useState("");
     const [nameSearch, setNameSearch] = useState("");
-
     const[productToDelete, setProductToDelete] = useState('')
 
     // set state of editing and adding into the 
@@ -54,6 +55,7 @@ export default function Manage() {
     const [toggle, setToggle] = useState(false);
     const [refresh, setRefresh] = useState(0);
 
+    //formchange for product rows
     const handleEditFormChange = (event) => {
         event.preventDefault();
 
@@ -66,6 +68,7 @@ export default function Manage() {
         setEditFormData(newFormData);
     }
 
+    //form submit states and reset edited row
     const handleEditFormSubmit = (event) => {
         
         event.preventDefault();
@@ -83,28 +86,32 @@ export default function Manage() {
         setEditedProductName(null);
     }
 
+    //hide button for rows
     const handleClickHide = () => {
         setEditedProductName(null);
     }
 
-    const handleAddGroupDelete = () => {
-        setGroupDelete(groupDelete.concat(productToDelete));
-        setProductToDelete('')
-        console.log(groupDelete)
-    }
-
+    //handle edit click and setstates for form
     const handleEditClick = (event, product)=> {
         event.preventDefault();
-        setEditedProductName(product.name);
-
+        
         const formValues = { 
             name: product.name,
             quantity: product.quantity,
             category: product.category,
         }
+
+        if (addGroup) {
+            setEditedProductName(null);
+            setGroupDelete(groupDelete.concat(product.name));
+        } else {
+            setEditedProductName(product.name);
+        }
+
         setEditFormData(formValues);
     };
 
+    //clear states
     const clearState = () => {
         setName("");
         setQuantity("");
@@ -248,156 +255,168 @@ export default function Manage() {
     }
 
     return (
-        
+        //break into components next time...
         <React.Fragment>
         {user ? 
-        (<div>
-            {user.role === 'admin' && 'manager' ? 
-                (<div>
-                    <h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
-                    <div style={loginStyle}>
-                        {toggle ? 
-                            ( 
-                                <>
-                                    <Form noValidate validated={categoryValidated} onSubmit={addCategorySubmit}>
+            (
+            <div>
+                {user.role === 'admin' && 'manager' ? 
+                    (
+                        <div>
+                            <h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
+                            <div style={loginStyle}>
+                                {toggle ? 
+                                    ( 
+                                        <>
+                                            <Form noValidate validated={categoryValidated} onSubmit={addCategorySubmit}>
+                                                            <Form.Group className="mb-3">
+                                                                <Form.Label>New Category: </Form.Label>
+                                                                <Form.Control
+                                                                    type="text"
+                                                                    name="category"
+                                                                    placeholder="category"
+                                                                    className="form-control mb-3"
+                                                                    value={newCategory}
+                                                                    onChange={(e) => setNewCategory(e.target.value)}
+                                                                    required />
+                                                                <Form.Control.Feedback type="invalid" className="mb-3">
+                                                                    Please provide a category name.
+                                                                </Form.Control.Feedback>
+                                                                <Button className="mb-3 btn-sm" type="submit">ADD</Button>
+                                                            </Form.Group>
+                                            </Form>
+                                            <Form noValidate validated={removeCategoryValidated} onSubmit={deleteCategorySubmit}>
                                                     <Form.Group className="mb-3">
-                                                        <Form.Label>New Category: </Form.Label>
+                                                        <Form.Label>Delete Category:</Form.Label>
                                                         <Form.Control
-                                                            type="text"
-                                                            name="category"
-                                                            placeholder="category"
-                                                            className="form-control mb-3"
-                                                            value={newCategory}
-                                                            onChange={(e) => setNewCategory(e.target.value)}
-                                                            required />
-                                                        <Form.Control.Feedback type="invalid" className="mb-3">
-                                                            Please provide a category name.
+                                                            required
+                                                            as="select"
+                                                            id="category"
+                                                            type="select"
+                                                            value={removeCategory}
+                                                            className="form-control"
+                                                            onChange={(e) => setRemoveCategory(e.target.value)}
+                                                        >
+                                                            <option value="">- - -</option>
+                                                            {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
+                                                        </Form.Control>
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Please select a category.
                                                         </Form.Control.Feedback>
-                                                        <Button className="mb-3 btn-sm" type="submit">ADD</Button>
                                                     </Form.Group>
-                                    </Form>
-                                    <Form noValidate validated={removeCategoryValidated} onSubmit={deleteCategorySubmit}>
+                                                    <Button className="mb-3 btn-danger btn-sm" type="submit">DELETE</Button>
+                                            </Form>
+                                        </>
+                                    ) 
+                                    : 
+                                    (
+                                        <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                             <Form.Group className="mb-3">
-                                                <Form.Label>Delete Category:</Form.Label>
-                                                <Form.Control
+                                                <Form.Label>Product Name: </Form.Label>
+                                                <Form.Control 
+                                                    type = "text"
+                                                    name="product" 
+                                                    placeholder="Product" 
+                                                    className="form-control"
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                // onChange={handleAddFormChange}
+                                                    required
+                                                    />
+                                                <Form.Control.Feedback type="invalid">
+                                                        Please provide a product name.
+                                                </Form.Control.Feedback>
+                                            </Form.Group>
+                            
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Quantity: </Form.Label>
+                                                <Form.Control 
+                                                    type = "number"
+                                                    name="quantity" 
+                                                    placeholder="quantity" 
+                                                    className="form-control"
+                                                    value={quantity}
+                                                    onChange={(e) => setQuantity(e.target.value)}
+                                                // onChange={handleAddFormChange}
+                                                    required
+                                                />
+                                                <Form.Control.Feedback type="invalid">
+                                                    Please provide a quantity.
+                                                </Form.Control.Feedback>
+                                            </Form.Group>
+                            
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Category:</Form.Label>
+                                                <Form.Control 
                                                     required
                                                     as="select"
                                                     id="category"
                                                     type="select"
-                                                    value={removeCategory}
+                                                    value={category}
                                                     className="form-control"
-                                                    onChange={(e) => setRemoveCategory(e.target.value)}
+                                                    onChange={(e) => setCategory(e.target.value)}
+                                                    //onChange={handleAddFormChange}
                                                 >
-                                                    <option value="">- - -</option>
+                                                    <option value="" >- - -</option>
                                                     {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
                                                 </Form.Control>
                                                 <Form.Control.Feedback type="invalid">
                                                     Please select a category.
                                                 </Form.Control.Feedback>
                                             </Form.Group>
-                                            <Button className="mb-3 btn-danger btn-sm" type="submit">DELETE</Button>
-                                    </Form>
-                                </>
-                            ) 
+                                            <Button className="mb-3 btn-sm" type="submit">ADD</Button>
+                                        </Form>
+                                    )
+                                }
+            
+                                {toggle ? 
+                                    (
+                                        <Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(false)}>ADD PRODUCT</Button>
+                                    ) 
+                                : 
+                                    (
+                                        <Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(true)}>NEW CATEGORY?</Button>
+                                    )
+                                }
+            
+                            </div>
+                        </div>) 
                         : 
-                            (
-                                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Product Name: </Form.Label>
-                                        <Form.Control 
-                                            type = "text"
-                                            name="product" 
-                                            placeholder="Product" 
-                                            className="form-control"
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                        // onChange={handleAddFormChange}
-                                            required
-                                            />
-                                        <Form.Control.Feedback type="invalid">
-                                                Please provide a product name.
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                    
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Quantity: </Form.Label>
-                                        <Form.Control 
-                                            type = "number"
-                                            name="quantity" 
-                                            placeholder="quantity" 
-                                            className="form-control"
-                                            value={quantity}
-                                            onChange={(e) => setQuantity(e.target.value)}
-                                        // onChange={handleAddFormChange}
-                                            required
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            Please provide a quantity.
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                    
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Category:</Form.Label>
-                                        <Form.Control 
-                                            required
-                                            as="select"
-                                            id="category"
-                                            type="select"
-                                            value={category}
-                                            className="form-control"
-                                            onChange={(e) => setCategory(e.target.value)}
-                                            //onChange={handleAddFormChange}
-                                        >
-                                            <option value="" >- - -</option>
-                                            {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
-                                        </Form.Control>
-                                        <Form.Control.Feedback type="invalid">
-                                            Please select a category.
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Button className="mb-3 btn-sm" type="submit">ADD</Button>
-                                </Form>
-                            )
+                        <div className="py-1 m-3">CANNONT MANAGE/NOT ADMIN</div>
                         }
-    
-                        {toggle ? (<Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(false)}>ADD PRODUCT</Button>) 
-                        : 
-                        (<Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(true)}>NEW CATEGORY?</Button>)
-                        }
-    
-                        </div>
-                    </div>) 
-                : 
-                <div className="py-1 m-3">CANNONT MANAGE/NOT ADMIN</div>}
-        </div>)
+                </div>
+            )
         :
-        (<div className="py-1 m-3">
-            Logged out.
-        </div>)}
+            (
+                <div className="py-1 m-3">
+                    Logged out.
+                </div>
+            )
+        }
         <div className="container"> 
                     <div className = "py-2">
-                        <label className="m-1">Category filter:</label> 
+                        <label className="m-1 fw-bold">Category filter:</label> 
                         <br></br>
 
                         {categories.map((categoryOption) => <Button className ="m-1 btn-sm" onClick={(e) => setCatFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</Button>)}
-                        <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setCatFilter("")}>Remove Filter</Button>
+                            <Button className ="m-1 btn-sm btn-danger" onClick={(e) => setCatFilter("")}>Remove Filter</Button>
                         <br></br>
 
-                        <label className="m-1">Search Product: </label>
-                        <input 
-                            className = 'form-control'
-                            type = "text" 
-                            placeholder = "Name of product"  
-                            onChange= {(e) => setNameSearch(e.target.value)}>
-                        </input>
+                        <label className="m-1 fw-bold">Search Product: </label>
+                            <input 
+                                className = 'form-control'
+                                type = "text" 
+                                placeholder = "Name of product"  
+                                onChange= {(e) => setNameSearch(e.target.value)}>
+                            </input>
 
-                        <label className="m-1">Check quantities less than: </label>
-                        <input 
-                            className = 'form-control'
-                            type = "number" 
-                            placeholder = "quantity"  
-                            onChange= {(e) => setQuantityFilter(e.target.value)}>
-                        </input>
+                        <label className="m-1 fw-bold">Check quantities less than: </label>
+                            <input 
+                                className = 'form-control'
+                                type = "number" 
+                                placeholder = "quantity"  
+                                onChange= {(e) => setQuantityFilter(e.target.value)}>
+                            </input>
 
 
 
@@ -408,24 +427,22 @@ export default function Manage() {
                                     ?  
                                         (
                                             <div>
-                                                <Form.Label className="m-1">Group delete: </Form.Label>
-                                                { groupDelete.map((product) => 
-                                                    <div>{product}</div>)
+                                                <Form.Label className="m-1 fw-bold">Group delete: </Form.Label>
+                                                    {groupDelete.map((product) => 
+                                                        <div className="m-1" key={product}>{product}</div>)
                                                     }
                                                 <Form onSubmit={productsDeleteHandler}>
-                                                        <Form.Group className="pt-1">
-                                                            <Form.Control 
-                                                                type ="text"
-                                                                name="products" 
-                                                                placeholder="Enter product to group delete" 
-                                                                className="form-control"
-                                                                value={productToDelete}
-                                                                onChange={(e) => setProductToDelete(e.target.value)}
-                                                            />
-                                                        </Form.Group>
-                                                        <Button className="m-2 btn-sm btn-primary" onClick={(handleAddGroupDelete)}>Add to be deleted</Button>
-                                                        <Button className="m-2 btn-sm btn-danger" type= "submit">Group Delete</Button>
-                                                        <Button className="m-2 btn-sm btn-danger" onClick= {() => setGroupDelete([])}>clear delete</Button>
+                                                        {addGroup ? 
+                                                            (<div>
+                                                                <Button className="m-1 btn-sm btn-danger" onClick= {() => setGroupDelete([])}>clear delete</Button>
+                                                                <Button className="m-1 btn-sm btn-danger" type="submit">Group Delete</Button>
+                                                                <Button className="m-1 btn-sm btn-secondary" onClick={() => setAddGroup(false)}>cancel</Button>
+                                                            </div>) 
+                                                        :   (<div>
+                                                                <Button className="m-1 btn-sm btn-primary" onClick={() => setAddGroup(true)}>Add to be deleted</Button>
+                                                            </div>)
+                                                        }   
+
                                                 </Form>
                                             </div>) 
                                     : 
