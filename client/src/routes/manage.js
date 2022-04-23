@@ -296,7 +296,6 @@ export default function Manage() {
                                             className="form-control"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
-                                        // onChange={handleAddFormChange}
                                             required
                                             />
                                         <Form.Control.Feedback type="invalid">
@@ -313,7 +312,6 @@ export default function Manage() {
                                             className="form-control"
                                             value={quantity}
                                             onChange={(e) => setQuantity(e.target.value)}
-                                        // onChange={handleAddFormChange}
                                             required
                                         />
                                         <Form.Control.Feedback type="invalid">
@@ -331,7 +329,6 @@ export default function Manage() {
                                             value={category}
                                             className="form-control"
                                             onChange={(e) => setCategory(e.target.value)}
-                                            //onChange={handleAddFormChange}
                                         >
                                             <option value="" >- - -</option>
                                             {categories.map((categoryOption) => <option value={categoryOption.category} key={categoryOption._id}>{categoryOption.category}</option>)}
