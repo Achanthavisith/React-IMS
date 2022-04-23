@@ -18,7 +18,9 @@ const EditableUserRow = ({editFormData, handleCancelEdit}) => {
                 alert('Cannot edit logged in user.');
             } else if(editUser.email === 'admin@admin') {
                 alert('Cannot edit admin.');
-            }else {
+            }else if(editUser.role === '') {
+                alert('Select a role.');
+            }else{
                 await axios.put("http://localhost:5000/api/user/update", 
                 editUser);
             }

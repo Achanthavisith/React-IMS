@@ -170,7 +170,6 @@ export default function Manage() {
             await axios.post("http://localhost:5000/api/addProduct", 
                 product)
             .then((res) => {
-                alert('Product Created: ' + name);
             }).catch((err) => {
                 alert('Product already exists')
             })
@@ -204,7 +203,6 @@ export default function Manage() {
             await axios.post("http://localhost:5000/api/addCategory", 
                 Category)
             .then((res) => {
-                alert('Category Created: ' + newCategory);
             }).catch((err) => {
                 alert('category already exists')
             })
