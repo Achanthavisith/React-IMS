@@ -26,9 +26,17 @@ const EditableUserRow = ({editFormData, handleCancelEdit}) => {
         };
 
     async function onDelete() {
-        if(window.confirm('Are you sure you want to delete')) {
+        const editUser = { 
+            email: editFormData.email, 
+            role: role, 
+        }; 
+        if(editUser.email === user.user) {
+            alert('Cannot delete logged in user.');
+        } else {
+            if(window.confirm('Are you sure you want to delete')) {
                 await axios.delete("http://localhost:5000/api/user/delete", {data: {email: editFormData.email}})
             }
+        }
         };
 
     //Setting states
