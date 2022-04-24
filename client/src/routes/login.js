@@ -116,7 +116,7 @@ export default function Login() {
                         />
                 </Form.Group>
 
-                {toggle ? (<Button className="form-control mb-3" type="submit">Register</Button>) 
+                {toggle ? (<Button className="form-control mb-3 btn-secondary" type="submit">Register</Button>) 
                 : 
                 (<Button className="form-control mb-3" type="submit">Login</Button>)
                 }
