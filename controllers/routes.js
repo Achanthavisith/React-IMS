@@ -123,7 +123,7 @@ router.post("/login", async (req, res) => {
     })
 
     if(user) {
-        return res.status(200).json({status: 'ok', user: user.email, role: user.role});
+        return res.status(200).json({userId: user._id, status: 'ok', user: user.email, role: user.role});
     } else{
         res.status(400).json({status: 'error', user:false});
     }
@@ -164,16 +164,6 @@ router.put("/products/update", async (req, res) => {
 router.put("/user/update", async (req, res) => {
     const filter = { email: req.body.email  };
     const update = { role: req.body.role };
-    
-    
-    let doc = await userModel.findOneAndUpdate(filter, update, {
-        new: true
-    });
-})
-//update a user email
-router.put("/user/update/email", async (req, res) => {
-    const filter = { _id: req.body._id  };
-    const update = { email: req.body.email };
     
     
     let doc = await userModel.findOneAndUpdate(filter, update, {

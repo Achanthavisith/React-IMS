@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from '../context/context';
 import axios from 'axios';
 import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
-import EditableUserRow from '../components/EditableUserRow'
+import EditableUserRow from '../components/EditableUserRow';
+import { Form} from 'react-bootstrap';
 
 
 
@@ -14,14 +15,14 @@ export default function Admin() {
     const [users, setUsers] = useState([]);
     const [editUser, setEditedUser] = useState();
     const [password, setNewPassword] = useState("");
-    const [email, setNewEmail] = useState("");
     const [editFormData, setEditFormData] = useState({
         email:"",
         role:"",
     });
+        //used to refresh field
     const [refresh, setRefresh] = useState(0);
-     //get Users data from mongodb input to array
 
+        //gets the users
     const getUsers = () => {
         axios.get("http://localhost:5000/api/users")
         .then((response) => {
@@ -40,7 +41,7 @@ export default function Admin() {
     const handleCancelEdit = () => {
         setEditedUser(null);
     }
-
+    // submits edited data form
     const handleEditFormSubmit = (event) => {
         
         event.preventDefault();
@@ -58,7 +59,7 @@ export default function Admin() {
         setRefresh(refresh + 1);
     }
 
-
+        //Stores edit data that is being changed
     const handleEditFormChange = (event) => {
         event.preventDefault();
 
@@ -70,7 +71,7 @@ export default function Admin() {
 
         setEditFormData(newFormData);
     }
-
+    //Changes admin buttons to edit and delete when admin is logged in and clicks 
     const handleEditClick = (event, users)=> {
         event.preventDefault();
         setEditedUser(users.email);
@@ -82,44 +83,33 @@ export default function Admin() {
         setEditFormData(formValues);
     };
 
+        //Updates logged in Users password
     async function onSubmitPassword() {
         const editUser = { 
             email: user.user,
             password: password 
         }; 
-       console.log(editUser.email + " " + editUser.password)
-        await axios.put("http://localhost:5000/api/user/update/password", 
-        editUser)
+        if( editUser.password !== "" )
+        {
+            await axios.put("http://localhost:5000/api/user/update/password", 
+            editUser)
+            .then((res) => {
+                alert('User Password Updated: ');
+            }).catch((err) => {
+                alert('Error');
+            })
+        }
+        else{
+            alert("Password Field can not be empty")
+        }
+      
         
-    .then((res) => {
-        alert('User Password Updated: ');
-    }).catch((err) => {
-        alert('Error');
-    })
+    
     
    setNewPassword("");
     setRefresh(refresh + 1);
     };
 
-    async function onSubmitEmail(event) {
-        event.preventDefault()
-        const editUser = { 
-            _id : user._id,
-            email: email
-        }; 
-        console.log(editUser._id + " " + editUser.email)
-        await axios.put("http://localhost:5000/api/user/update/email", 
-        editUser)
-        
-    .then((res) => {
-        alert('User Email Updated: ');
-    }).catch((err) => {
-        alert('Error');
-    })
-    
-   setNewEmail("");
-    setRefresh(refresh + 1);
-    };
 
 
     const loginStyle = {
@@ -168,17 +158,21 @@ export default function Admin() {
                     </div>
                     )
                     :
-                    (<div className= "container " style={loginStyle}>
-                        <form >
-                            <label className="m-1 fw-bold" > Input your new email: </label>
-                            <input  className = "form-control" id="changeEmailInput" onChange={(e) => setNewEmail(e.target.value)}></input>
-                            <button onClick = {onSubmitEmail} className ="m-1 btn-sm btn-danger">Submit Email</button>
-                            <div></div>
-                            <label className="m-1 fw-bold">Input your new password: </label>
-                            <input className = "form-control" id="changePasswordInput" onChange={(e) => setNewPassword(e.target.value)}></input>
-                            <button onClick={onSubmitPassword} className ="m-1 btn-sm btn-danger">Submit Password</button>
-                       
-                        </form>
+                    (<div  style={loginStyle}>
+                    
+                        <Form  >
+                <Form.Group className="mb-3">
+                    <Form.Label>Input your new password:</Form.Label>
+                    <Form.Control 
+                        type="password" 
+                        name="password" 
+                        className="form-control"
+                        value={password}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <button onClick={onSubmitPassword} className ="m-1 btn-sm btn-danger center">Submit Password</button>
+                </Form.Group>
+                </Form>
                     </div>)
                     
                     }</div>)
