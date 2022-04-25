@@ -1,5 +1,7 @@
 # React-IMS
-React/JavaScript inventory management system 
+React/JavaScript inventory management system
+
+To view web app: https://react-inventory-system.herokuapp.com/ 
 
 Items needed
 Node.js , Go to nodejs.org download latest version 
