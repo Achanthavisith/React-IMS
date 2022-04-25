@@ -39,7 +39,7 @@ export default function Home() {
   border = 'black'
   style={slideshow}
   interval = {7000}
-  class = "border border-primary"
+  className = "border border-primary"
 >
   <Carousel.Item interval={null}>
       <div className="h-128">

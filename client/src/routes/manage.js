@@ -103,11 +103,16 @@ export default function Manage() {
 
         if (addGroup) {
             setEditedProductName(null);
-            setGroupDelete(groupDelete.concat(product.name));
+            if(groupDelete.includes(product.name)) {
+                alert("Product is already set to be deleted.");
+            } else if (groupDelete.length === 5) {
+                alert("Max group delete is 5");
+            } else {
+                setGroupDelete(groupDelete.concat(product.name));
+            }
         } else {
             setEditedProductName(product.name);
         }
-
         setEditFormData(formValues);
     };
 
@@ -233,20 +238,16 @@ export default function Manage() {
         };
     };
 
-    function productsDeleteHandler(event) {
-        event.preventDefault();
+    function productsDeleteHandler(product) {
 
         if (groupDelete.length === 0) {
             window.alert('there is no products to delete')
-        }
-        else if (window.confirm('Are you sure you want to delete these products?')) {
+        } else if (window.confirm('Are you sure you want to delete these products?')) {
             for (let i = 0; i < groupDelete.length; i++) {
                 const product = groupDelete[i];
                     axios.delete("/api/products/delete", {data: {name: product}})
             }
-            setGroupDelete([])
         }
-        setRefresh(refresh+1);
     }
 
     return (
@@ -419,7 +420,7 @@ export default function Manage() {
                                     ?  
                                         (
                                             <div>
-                                                <Form.Label className="m-1 fw-bold">Group delete: </Form.Label>
+                                                <Form.Label className="m-1 fw-bold">Group delete (Up to 5): </Form.Label>
                                                     {groupDelete.map((product) => 
                                                         <div className="m-1" key={product}>{product}</div>)
                                                     }

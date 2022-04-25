@@ -13,8 +13,6 @@ dotenv.config();
 // Create a new express application named 'app'
 const app = express();
 
-app.use('/', express.static(path.join(__dirname, '/client/build')));
-
 // Set our backend port to be either an environment variable or port 5000
 const port = process.env.PORT || 5000;
 
@@ -56,6 +54,14 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
         res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
 };
+
+app.use('/', express.static(path.join(__dirname, '/client/build')));
+
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
+console.log('REACT_APP_ENVIRONMENT => ', process.env.NODE_ENV);
 
 
 // Configure our server to listen on the port defiend by our port variable
