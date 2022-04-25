@@ -20,7 +20,7 @@ const EditableUserRow = ({editFormData, handleCancelEdit}) => {
             else if(editUser.role === '') {
                 alert('Select a role.');
             }else{
-                await axios.put("https://react-inventory-system.herokuapp.com/api/user/update", 
+                await axios.put("http://localhost:5000/api/user/update", 
                 editUser);
             }
         };
@@ -34,7 +34,7 @@ const EditableUserRow = ({editFormData, handleCancelEdit}) => {
             alert('Cannot delete logged in user.');
         } else {
             if(window.confirm('Are you sure you want to delete')) {
-                await axios.delete("https://react-inventory-system.herokuapp.com/api/user/delete", {data: {email: editFormData.email}})
+                await axios.delete("http://localhost:5000/api/user/delete", {data: {email: editFormData.email}})
             }
         }
         };
