@@ -3,7 +3,8 @@ React/JavaScript inventory management system
 
 To view web app: 
 https://react-inventory-system.herokuapp.com/ 
-Credentials: admin@admin    Password: admin
+Credentials: 
+admin@admin    Password: admin
 
 For development:
 
