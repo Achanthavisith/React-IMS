@@ -42,7 +42,7 @@ export default function Login() {
         //if register is clicked when submitted
         if (toggle === true) {
             //call api to post user
-            await axios.post("http://localhost:5000/api/addUser", user)
+            await axios.post("https://react-inventory-system.herokuapp.com/api/addUser", user)
             .then (response => {
                 //crude validation to check if submitted email is empty
                 if (user.email === "") {
@@ -65,7 +65,7 @@ export default function Login() {
             }
 
             if (toggle === false) {
-                await axios.post('http://localhost:5000/api/login', user)
+                await axios.post('https://react-inventory-system.herokuapp.com/api/login', user)
                 .then (response => {
                     setUser(response.data);
                     localStorage.setItem("user", JSON.stringify(response.data));

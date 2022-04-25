@@ -120,7 +120,7 @@ export default function Manage() {
 
     //get categories data from mongodb input to array
     const getCategories = () => {
-        axios.get("http://localhost:5000/api/categories")
+        axios.get("https://react-inventory-system.herokuapp.com/api/categories")
         .then((response) => {
             const data = response.data;
             setCategories(data);
@@ -130,7 +130,7 @@ export default function Manage() {
 
     //get products data from mongodb input to array
     const getProducts = () => {
-        axios.get("http://localhost:5000/api/products")
+        axios.get("https://react-inventory-system.herokuapp.com/api/products")
         .then((response) => {
             const data = response.data;
             setAllProducts(data);
@@ -167,7 +167,7 @@ export default function Manage() {
                 category, 
                 usage: 0
             }; 
-            await axios.post("http://localhost:5000/api/addProduct", 
+            await axios.post("https://react-inventory-system.herokuapp.com/api/addProduct", 
                 product)
             .then((res) => {
             }).catch((err) => {
@@ -200,7 +200,7 @@ export default function Manage() {
             const Category = { 
                 category: newCategory, 
             }; 
-            await axios.post("http://localhost:5000/api/addCategory", 
+            await axios.post("https://react-inventory-system.herokuapp.com/api/addCategory", 
                 Category)
             .then((res) => {
             }).catch((err) => {
@@ -225,7 +225,7 @@ export default function Manage() {
             event.preventDefault(); 
             
             if(window.confirm('Are you sure you want to delete category: ' + removeCategory)) {
-                axios.delete("http://localhost:5000/api/categories/delete", {data: {category: removeCategory}})
+                axios.delete("https://react-inventory-system.herokuapp.com/api/categories/delete", {data: {category: removeCategory}})
             }
             setRemoveCategoryValidated(false);
             setRefresh(refresh + 1);
@@ -242,7 +242,7 @@ export default function Manage() {
         else if (window.confirm('Are you sure you want to delete these products?')) {
             for (let i = 0; i < groupDelete.length; i++) {
                 const product = groupDelete[i];
-                    axios.delete("http://localhost:5000/api/products/delete", {data: {name: product}})
+                    axios.delete("https://react-inventory-system.herokuapp.com/api/products/delete", {data: {name: product}})
             }
             setGroupDelete([])
         }

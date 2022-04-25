@@ -41,7 +41,7 @@ connection.once('open', () => {
     console.log("DB connected.");
 });
 // Require Route
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     res.json({ message: "Welcome to from server." });
 });
 

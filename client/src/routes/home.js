@@ -40,19 +40,19 @@ export default function Home() {
 >
   <Carousel.Item interval={null}>
       <div className="h-128">
-          <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/567-5675046_transparent-inventory-clipart-cartoon-inventory-png-png-download_800x355.png" alt="First slide" className="h-full" />
+          <img src="" alt="First slide" className="h-full" />
       </div>
   </Carousel.Item>
     <Carousel.Item interval={null}>
       <div className="h-128">
-        <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/Inventory-PNG-Image_800x355.png"
+        <img src=""
         alt="Second slide" className="h-full" />
       </div>
     </Carousel.Item>
 
         <Carousel.Item interval={null}>
           <div className="h-128">
-            <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/inventory_800x355.png"
+            <img src=""
             alt="Third slide" className="h-full" />
           </div>
     </Carousel.Item>

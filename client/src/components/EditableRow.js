@@ -19,7 +19,7 @@ const EditableRow = ({editFormData, handleEditFormChange,handleEditableRowCancel
             } else if(product.category === '') {
                 alert('SELECT A CATEGORY');
             } else {
-                await axios.put("http://localhost:5000/api/products/update", 
+                await axios.put("https://react-inventory-system.herokuapp.com/api/products/update", 
                 product)
             .then((res) => {
                 alert('Product Updated: ' + editFormData.name);
@@ -30,7 +30,7 @@ const EditableRow = ({editFormData, handleEditFormChange,handleEditableRowCancel
 
     async function onDelete() {
         if(window.confirm('Are you sure you want to delete')) {
-                await axios.delete("http://localhost:5000/api/products/delete", {data: {name: editFormData.name}})
+                await axios.delete("https://react-inventory-system.herokuapp.com/api/products/delete", {data: {name: editFormData.name}})
             }
         };
 
@@ -40,7 +40,7 @@ const EditableRow = ({editFormData, handleEditFormChange,handleEditableRowCancel
 
 //get categories data from mongodb input to array
 const getCategories = () => {
-    axios.get("http://localhost:5000/api/categories")
+    axios.get("https://react-inventory-system.herokuapp.com/api/categories")
     .then((response) => {
         const data = response.data;
         setCategories(data);
