@@ -3,7 +3,7 @@ React/JavaScript inventory management system
 
 To view web app: https://react-inventory-system.herokuapp.com/ 
 
-Items needed
+For development:
 Node.js , Go to nodejs.org download latest version 
 Visual Studio Code editor, or any ide with a terminal built in
 
