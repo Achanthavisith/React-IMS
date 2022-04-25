@@ -13,6 +13,8 @@ dotenv.config();
 // Create a new express application named 'app'
 const app = express();
 
+app.use('/', express.static(path.join(__dirname, '/client/build')));
+
 // Set our backend port to be either an environment variable or port 5000
 const port = process.env.PORT || 5000;
 
@@ -40,27 +42,21 @@ connection.once('open', () => {
     console.log("DB connected.");
 });
 // Require Route
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     res.json({ message: "Welcome to from server." });
 });
 
+app.use('/api', routerUrls);
+
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.use('/', express.static(path.join(__dirname, '/client/build')));
 
     app.get('*', function (req, res) {
         res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
 };
 
-// Catch any bad requests
-// app.get('*', (req, res) => {
-//     res.status(200).json({
-//         msg: 'Catch All'
-//     });
-// });
-
-app.use('/api', routerUrls);
 
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));

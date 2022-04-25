@@ -1,6 +1,9 @@
 
 import Carousel from 'react-bootstrap/Carousel'
 import Card from 'react-bootstrap/Card'
+import pic1 from '../images/pic1.png'
+import pic2 from '../images/pic2.png'
+import pic3 from '../images/pic3.png'
 
 
 export default function Home() {
@@ -40,19 +43,21 @@ export default function Home() {
 >
   <Carousel.Item interval={null}>
       <div className="h-128">
-          <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/567-5675046_transparent-inventory-clipart-cartoon-inventory-png-png-download_800x355.png" alt="First slide" className="h-full" />
+          <img src={pic1}  width={500} height={300} alt="First slide" className="h-full"/>
       </div>
   </Carousel.Item>
     <Carousel.Item interval={null}>
       <div className="h-128">
-        <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/Inventory-PNG-Image_800x355.png"
+        <img src={pic2}
+        width={400} height={300}
         alt="Second slide" className="h-full" />
       </div>
     </Carousel.Item>
 
         <Carousel.Item interval={null}>
           <div className="h-128">
-            <img src="https://www.simpleimageresizer.com/_uploads/photos/c2326972/inventory_800x355.png"
+            <img src={pic3}
+            width={400} height={300}
             alt="Third slide" className="h-full" />
           </div>
     </Carousel.Item>

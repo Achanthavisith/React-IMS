@@ -24,7 +24,7 @@ export default function Admin() {
 
         //gets the users
     const getUsers = () => {
-        axios.get("http://localhost:5000/api/users")
+        axios.get("/api/users")
         .then((response) => {
             const data = response.data;
             setUsers(data);
@@ -91,7 +91,7 @@ export default function Admin() {
         }; 
         if( editUser.password !== "" )
         {
-            await axios.put("http://localhost:5000/api/user/update/password", 
+            await axios.put("/api/user/update/password", 
             editUser)
             .then((res) => {
                 alert('User Password Updated: ');
@@ -102,11 +102,10 @@ export default function Admin() {
         else{
             alert("Password Field can not be empty")
         }
-      
         
     
     
-   setNewPassword("");
+    setNewPassword("");
     setRefresh(refresh + 1);
     };
 
