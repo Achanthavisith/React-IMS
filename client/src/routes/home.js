@@ -29,7 +29,7 @@ export default function Home() {
             <Card className="text-center">
   <Card.Header  >Welcome to our Inventory Manager </Card.Header>
   <Card.Body>
-    <Card.Title>If an account its not made, login with the login tab!</Card.Title>
+    <Card.Title>If an account is not made, visit the login tab!</Card.Title>
     <Card.Text>
       Application created by Andrew Chanthavisith and Caleb Coussan
     </Card.Text>

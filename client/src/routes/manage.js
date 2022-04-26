@@ -256,7 +256,7 @@ export default function Manage() {
         {user ? 
             (
             <div>
-                {user.role === ('admin' || 'manager') ? 
+                {user.role === 'admin' || user.role === 'manager' ? 
                     (
                         <div>
                             <h4 style={{textAlign: 'center', padding: '10px'}}>ADD:</h4>
@@ -416,7 +416,7 @@ export default function Manage() {
                         {user ? (
 
                                 <div>
-                                    {user.role === ("admin" || "manager") 
+                                    {user.role === 'admin' || user.role === 'manager' 
                                     ?  
                                         (
                                             <div>

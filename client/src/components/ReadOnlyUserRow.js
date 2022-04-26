@@ -14,7 +14,7 @@ const ReadOnlyRowUser = ({users, handleEditClick}) => {
                 <td>
                     {user ? 
                     (<div>
-                        {user.role === 'admin' && 'manager' ? 
+                        {user.role === 'admin' || user.role === 'manager' ? 
                     (<div>
                         <button type = "button" className="m-1 btn-primary btn-sm" onClick={(event) => handleEditClick(event, users)}>
                             Edit
