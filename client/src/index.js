@@ -7,6 +7,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import View from './routes/view';
 import Manage from './routes/manage';
 import Admin from './routes/admin';
 import Login from './routes/login';
@@ -29,6 +30,7 @@ ReactDOM.render(
           </Home>
         }
       />
+        <Route path="view" element={<View />}/>
         <Route path="manage" element={<Manage />}/>
         <Route path="admin" element={<Admin />} />
         <Route path="login" element={<Login />} />

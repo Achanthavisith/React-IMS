@@ -39,6 +39,7 @@ function App() {
       <div style={navbar}>
         <Navbar sticky="top">
             <NavbarBrand as={Link} to='/'>Inventory Manager</NavbarBrand>
+            <Link to="/view" style={navbarLinks}>View</Link>
             <Link to="/manage" style={navbarLinks}>Manage</Link>
             <Link to="/admin" style={navbarLinks}>Admin</Link>
             <Link to="/login" style={navbarLinks}>Login/Logout</Link>
