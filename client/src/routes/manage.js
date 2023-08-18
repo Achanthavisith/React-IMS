@@ -77,7 +77,9 @@ export default function Manage() {
     };
     const newProduct = [...products];
 
-    const index = products.findIndex((product) => product.name === editProductName);
+    const index = products.findIndex(
+      (product) => product.name === editProductName
+    );
     newProduct[index] = editedProduct;
 
     setProduct(newProduct);
@@ -124,7 +126,7 @@ export default function Manage() {
   //get categories data from mongodb input to array
   const getCategories = () => {
     axios
-      .get("http://localhost:5000/api/categories")
+      .get("http://localhost:8000/api/categories")
       .then((response) => {
         const data = response.data;
         setCategories(data);
@@ -135,7 +137,7 @@ export default function Manage() {
   //get products data from mongodb input to array
   const getProducts = () => {
     axios
-      .get("http://localhost:5000/api/products")
+      .get("http://localhost:8000/api/products")
       .then((response) => {
         const data = response.data;
         setAllProducts(data);
@@ -228,8 +230,14 @@ export default function Manage() {
     if (form.checkValidity() === true) {
       event.preventDefault();
 
-      if (window.confirm("Are you sure you want to delete category: " + removeCategory)) {
-        axios.delete("http://localhost:5000/api/categories/delete", { data: { category: removeCategory } });
+      if (
+        window.confirm(
+          "Are you sure you want to delete category: " + removeCategory
+        )
+      ) {
+        axios.delete("http://localhost:5000/api/categories/delete", {
+          data: { category: removeCategory },
+        });
       }
       setRemoveCategoryValidated(false);
       setRefresh(refresh + 1);
@@ -240,10 +248,14 @@ export default function Manage() {
   function productsDeleteHandler(product) {
     if (groupDelete.length === 0) {
       window.alert("there is no products to delete");
-    } else if (window.confirm("Are you sure you want to delete these products?")) {
+    } else if (
+      window.confirm("Are you sure you want to delete these products?")
+    ) {
       for (let i = 0; i < groupDelete.length; i++) {
         const product = groupDelete[i];
-        axios.delete("http://localhost:5000/api/products/delete", { data: { name: product } });
+        axios.delete("http://localhost:5000/api/products/delete", {
+          data: { name: product },
+        });
       }
     }
   }
@@ -259,10 +271,22 @@ export default function Manage() {
               <div style={loginStyle}>
                 {toggle ? (
                   <>
-                    <Form noValidate validated={categoryValidated} onSubmit={addCategorySubmit}>
+                    <Form
+                      noValidate
+                      validated={categoryValidated}
+                      onSubmit={addCategorySubmit}
+                    >
                       <Form.Group className="mb-3">
                         <Form.Label>New Category: </Form.Label>
-                        <Form.Control type="text" name="category" placeholder="category" className="form-control mb-3" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} required />
+                        <Form.Control
+                          type="text"
+                          name="category"
+                          placeholder="category"
+                          className="form-control mb-3"
+                          value={newCategory}
+                          onChange={(e) => setNewCategory(e.target.value)}
+                          required
+                        />
                         <Form.Control.Feedback type="invalid" className="mb-3">
                           Please provide a category name.
                         </Form.Control.Feedback>
@@ -271,18 +295,35 @@ export default function Manage() {
                         </Button>
                       </Form.Group>
                     </Form>
-                    <Form noValidate validated={removeCategoryValidated} onSubmit={deleteCategorySubmit}>
+                    <Form
+                      noValidate
+                      validated={removeCategoryValidated}
+                      onSubmit={deleteCategorySubmit}
+                    >
                       <Form.Group className="mb-3">
                         <Form.Label>Delete Category:</Form.Label>
-                        <Form.Control required as="select" id="category" type="select" value={removeCategory} className="form-control" onChange={(e) => setRemoveCategory(e.target.value)}>
+                        <Form.Control
+                          required
+                          as="select"
+                          id="category"
+                          type="select"
+                          value={removeCategory}
+                          className="form-control"
+                          onChange={(e) => setRemoveCategory(e.target.value)}
+                        >
                           <option value="">- - -</option>
                           {categories.map((categoryOption) => (
-                            <option value={categoryOption.category} key={categoryOption._id}>
+                            <option
+                              value={categoryOption.category}
+                              key={categoryOption._id}
+                            >
                               {categoryOption.category}
                             </option>
                           ))}
                         </Form.Control>
-                        <Form.Control.Feedback type="invalid">Please select a category.</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">
+                          Please select a category.
+                        </Form.Control.Feedback>
                       </Form.Group>
                       <Button className="mb-3 btn-danger btn-sm" type="submit">
                         DELETE
@@ -290,30 +331,67 @@ export default function Manage() {
                     </Form>
                   </>
                 ) : (
-                  <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                  <Form
+                    noValidate
+                    validated={validated}
+                    onSubmit={handleSubmit}
+                  >
                     <Form.Group className="mb-3">
                       <Form.Label>Product Name: </Form.Label>
-                      <Form.Control type="text" name="product" placeholder="Product" className="form-control" value={name} onChange={(e) => setName(e.target.value)} required />
-                      <Form.Control.Feedback type="invalid">Please provide a product name.</Form.Control.Feedback>
+                      <Form.Control
+                        type="text"
+                        name="product"
+                        placeholder="Product"
+                        className="form-control"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Please provide a product name.
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                       <Form.Label>Quantity: </Form.Label>
-                      <Form.Control type="number" name="quantity" placeholder="quantity" className="form-control" value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
-                      <Form.Control.Feedback type="invalid">Please provide a quantity.</Form.Control.Feedback>
+                      <Form.Control
+                        type="number"
+                        name="quantity"
+                        placeholder="quantity"
+                        className="form-control"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Please provide a quantity.
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                       <Form.Label>Category:</Form.Label>
-                      <Form.Control required as="select" id="category" type="select" value={category} className="form-control" onChange={(e) => setCategory(e.target.value)}>
+                      <Form.Control
+                        required
+                        as="select"
+                        id="category"
+                        type="select"
+                        value={category}
+                        className="form-control"
+                        onChange={(e) => setCategory(e.target.value)}
+                      >
                         <option value="">- - -</option>
                         {categories.map((categoryOption) => (
-                          <option value={categoryOption.category} key={categoryOption._id}>
+                          <option
+                            value={categoryOption.category}
+                            key={categoryOption._id}
+                          >
                             {categoryOption.category}
                           </option>
                         ))}
                       </Form.Control>
-                      <Form.Control.Feedback type="invalid">Please select a category.</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">
+                        Please select a category.
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Button className="mb-3 btn-sm" type="submit">
                       ADD
@@ -322,11 +400,21 @@ export default function Manage() {
                 )}
 
                 {toggle ? (
-                  <Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(false)}>
+                  <Button
+                    className="mb-3"
+                    size="sm"
+                    variant="secondary"
+                    onClick={(e) => setToggle(false)}
+                  >
                     ADD PRODUCT
                   </Button>
                 ) : (
-                  <Button className="mb-3" size="sm" variant="secondary" onClick={(e) => setToggle(true)}>
+                  <Button
+                    className="mb-3"
+                    size="sm"
+                    variant="secondary"
+                    onClick={(e) => setToggle(true)}
+                  >
                     NEW CATEGORY?
                   </Button>
                 )}
@@ -345,26 +433,46 @@ export default function Manage() {
           <br></br>
 
           {categories.map((categoryOption) => (
-            <Button className="m-1 btn-sm" onClick={(e) => setCatFilter(categoryOption.category)} value={categoryOption.category} key={categoryOption._id}>
+            <Button
+              className="m-1 btn-sm"
+              onClick={(e) => setCatFilter(categoryOption.category)}
+              value={categoryOption.category}
+              key={categoryOption._id}
+            >
               {categoryOption.category}
             </Button>
           ))}
-          <Button className="m-1 btn-sm btn-danger" onClick={(e) => setCatFilter("")}>
+          <Button
+            className="m-1 btn-sm btn-danger"
+            onClick={(e) => setCatFilter("")}
+          >
             Remove Filter
           </Button>
           <br></br>
 
           <label className="m-1 fw-bold">Search Product: </label>
-          <input className="form-control" type="text" placeholder="Name of product" onChange={(e) => setNameSearch(e.target.value)}></input>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Name of product"
+            onChange={(e) => setNameSearch(e.target.value)}
+          ></input>
 
           <label className="m-1 fw-bold">Check quantities less than: </label>
-          <input className="form-control" type="number" placeholder="quantity" onChange={(e) => setQuantityFilter(e.target.value)}></input>
+          <input
+            className="form-control"
+            type="number"
+            placeholder="quantity"
+            onChange={(e) => setQuantityFilter(e.target.value)}
+          ></input>
 
           {user ? (
             <div>
               {user.role === "admin" || user.role === "manager" ? (
                 <div>
-                  <Form.Label className="m-1 fw-bold">Group delete (Up to 5): </Form.Label>
+                  <Form.Label className="m-1 fw-bold">
+                    Group delete (Up to 5):{" "}
+                  </Form.Label>
                   {groupDelete.map((product) => (
                     <div className="m-1" key={product}>
                       {product}
@@ -373,19 +481,28 @@ export default function Manage() {
                   <Form onSubmit={productsDeleteHandler}>
                     {addGroup ? (
                       <div>
-                        <Button className="m-1 btn-sm btn-danger" onClick={() => setGroupDelete([])}>
+                        <Button
+                          className="m-1 btn-sm btn-danger"
+                          onClick={() => setGroupDelete([])}
+                        >
                           clear delete
                         </Button>
                         <Button className="m-1 btn-sm btn-danger" type="submit">
                           Group Delete
                         </Button>
-                        <Button className="m-1 btn-sm btn-secondary" onClick={() => setAddGroup(false)}>
+                        <Button
+                          className="m-1 btn-sm btn-secondary"
+                          onClick={() => setAddGroup(false)}
+                        >
                           cancel
                         </Button>
                       </div>
                     ) : (
                       <div>
-                        <Button className="m-1 btn-sm btn-primary" onClick={() => setAddGroup(true)}>
+                        <Button
+                          className="m-1 btn-sm btn-primary"
+                          onClick={() => setAddGroup(true)}
+                        >
                           Add to be deleted
                         </Button>
                       </div>
@@ -424,11 +541,24 @@ export default function Manage() {
                   return product.category.includes(catFilter);
                 })
                 .filter((product) => {
-                  return product.name.toLowerCase().includes(nameSearch.toLocaleLowerCase());
+                  return product.name
+                    .toLowerCase()
+                    .includes(nameSearch.toLocaleLowerCase());
                 })
                 .map((product) => (
                   <React.Fragment key={product.name}>
-                    {editProductName === product.name ? <EditableRow editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleEditableRowCancel={handleClickHide} /> : <ReadOnlyRow product={product} handleEditClick={handleEditClick} />}
+                    {editProductName === product.name ? (
+                      <EditableRow
+                        editFormData={editFormData}
+                        handleEditFormChange={handleEditFormChange}
+                        handleEditableRowCancel={handleClickHide}
+                      />
+                    ) : (
+                      <ReadOnlyRow
+                        product={product}
+                        handleEditClick={handleEditClick}
+                      />
+                    )}
                   </React.Fragment>
                 ))}
             </tbody>

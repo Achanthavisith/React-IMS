@@ -17,7 +17,7 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
     } else if (editUser.role === "") {
       alert("Select a role.");
     } else {
-      await axios.put("http://localhost:5000/api/user/update", editUser);
+      await axios.put("http://localhost:8000/api/user/update", editUser);
     }
   }
 
@@ -30,7 +30,9 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
       alert("Cannot delete logged in user.");
     } else {
       if (window.confirm("Are you sure you want to delete")) {
-        await axios.delete("http://localhost:5000/api/user/delete", { data: { email: editFormData.email } });
+        await axios.delete("http://localhost:8000/api/user/delete", {
+          data: { email: editFormData.email },
+        });
       }
     }
   }
@@ -42,10 +44,24 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
   return (
     <tr>
       <td>
-        <input readOnly type="text" required placeholder=" Edit Product Name" name="name" value={editFormData.email}></input>
+        <input
+          readOnly
+          type="text"
+          required
+          placeholder=" Edit Product Name"
+          name="name"
+          value={editFormData.email}
+        ></input>
       </td>
       <td>
-        <Form.Control as="select" id="category" type="select" value={role} className="form-control" onChange={(e) => setRole(e.target.value)}>
+        <Form.Control
+          as="select"
+          id="category"
+          type="select"
+          value={role}
+          className="form-control"
+          onChange={(e) => setRole(e.target.value)}
+        >
           <option value="">- - -</option>
           <option value="user">User</option>
           <option value="manager">Manager</option>
@@ -53,15 +69,27 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
         </Form.Control>
       </td>
       <td>
-        <button type="submit" className="m-1 btn-primary btn-sm" onClick={onSave}>
+        <button
+          type="submit"
+          className="m-1 btn-primary btn-sm"
+          onClick={onSave}
+        >
           {" "}
           Save
         </button>
-        <button type="submit" className="m-1 btn-danger btn-sm" onClick={onDelete}>
+        <button
+          type="submit"
+          className="m-1 btn-danger btn-sm"
+          onClick={onDelete}
+        >
           {" "}
           Delete
         </button>
-        <button type="cancel" className="m-1 btn-secondary btn-sm" onClick={handleCancelEdit}>
+        <button
+          type="cancel"
+          className="m-1 btn-secondary btn-sm"
+          onClick={handleCancelEdit}
+        >
           cancel
         </button>
       </td>

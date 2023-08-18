@@ -34,14 +34,14 @@ export default function Login() {
     const user = {
       email,
       password,
-      role: "user",
+      role: "admin",
     };
 
     //if register is clicked when submitted
     if (toggle === true) {
       //call api to post user
       await axios
-        .post("http://localhost:5000/api/addUser", user)
+        .post("http://localhost:8000/api/addUser", user)
         .then((response) => {
           //crude validation to check if submitted email is empty
           if (user.email === "") {
@@ -66,7 +66,7 @@ export default function Login() {
 
     if (toggle === false) {
       await axios
-        .post("http://localhost:5000/api/login", user)
+        .post("http://localhost:8000/api/login", user)
         .then((response) => {
           setUser(response.data);
           localStorage.setItem("user", JSON.stringify(response.data));
@@ -90,7 +90,11 @@ export default function Login() {
   return (
     <div style={loginStyle}>
       {user ? (
-        <Button className="form-control mb-3 btn-lg btn-danger" style={{ fontSize: 15, fontWeight: "bold" }} onClick={logOut}>
+        <Button
+          className="form-control mb-3 btn-lg btn-danger"
+          style={{ fontSize: 15, fontWeight: "bold" }}
+          onClick={logOut}
+        >
           Logout
         </Button>
       ) : (
@@ -98,12 +102,26 @@ export default function Login() {
           <h2>User login:</h2>
           <Form.Group className="mb-3">
             <Form.Label>Email: </Form.Label>
-            <Form.Control type="email" name="email" placeholder="Email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Password:</Form.Label>
-            <Form.Control type="password" name="password" placeholder="Password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </Form.Group>
 
           {toggle ? (
@@ -117,11 +135,17 @@ export default function Login() {
           )}
 
           {toggle ? (
-            <Button style={{ fontSize: 15, fontWeight: "bold" }} onClick={(e) => setToggle(false)}>
+            <Button
+              style={{ fontSize: 15, fontWeight: "bold" }}
+              onClick={(e) => setToggle(false)}
+            >
               Sign in
             </Button>
           ) : (
-            <Button style={{ fontSize: 15, fontWeight: "bold" }} onClick={(e) => setToggle(true)}>
+            <Button
+              style={{ fontSize: 15, fontWeight: "bold" }}
+              onClick={(e) => setToggle(true)}
+            >
               Not a user?
             </Button>
           )}

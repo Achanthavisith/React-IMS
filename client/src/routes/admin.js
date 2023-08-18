@@ -23,7 +23,7 @@ export default function Admin() {
   //gets the users
   const getUsers = () => {
     axios
-      .get("http://localhost:5000/api/users")
+      .get("http://localhost:8000/api/users")
       .then((response) => {
         const data = response.data;
         setUsers(data);
@@ -87,7 +87,7 @@ export default function Admin() {
     };
     if (editUser.password !== "") {
       await axios
-        .put("http://localhost:5000/api/user/update/password", editUser)
+        .put("http://localhost:8000/api/user/update/password", editUser)
         .then((res) => {
           alert("User Password Updated: ");
         })
@@ -128,7 +128,20 @@ export default function Admin() {
                   </thead>
                   <tbody>
                     {users.map((users) => (
-                      <React.Fragment key={users.email}>{editUser === users.email ? <EditableUserRow editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleCancelEdit={handleCancelEdit} /> : <ReadOnlyUserRow users={users} handleEditClick={handleEditClick} />}</React.Fragment>
+                      <React.Fragment key={users.email}>
+                        {editUser === users.email ? (
+                          <EditableUserRow
+                            editFormData={editFormData}
+                            handleEditFormChange={handleEditFormChange}
+                            handleCancelEdit={handleCancelEdit}
+                          />
+                        ) : (
+                          <ReadOnlyUserRow
+                            users={users}
+                            handleEditClick={handleEditClick}
+                          />
+                        )}
+                      </React.Fragment>
                     ))}
                   </tbody>
                 </table>
@@ -139,8 +152,17 @@ export default function Admin() {
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label>Input your new password:</Form.Label>
-                  <Form.Control type="password" name="password" className="form-control" value={password} onChange={(e) => setNewPassword(e.target.value)} />
-                  <button onClick={onSubmitPassword} className="m-1 btn-sm btn-danger center">
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  <button
+                    onClick={onSubmitPassword}
+                    className="m-1 btn-sm btn-danger center"
+                  >
                     Submit Password
                   </button>
                 </Form.Group>

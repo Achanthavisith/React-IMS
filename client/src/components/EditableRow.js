@@ -3,7 +3,11 @@ import "../components/PostProduct.css";
 import axios from "axios";
 import { Form } from "react-bootstrap";
 
-const EditableRow = ({ editFormData, handleEditFormChange, handleEditableRowCancel }) => {
+const EditableRow = ({
+  editFormData,
+  handleEditFormChange,
+  handleEditableRowCancel,
+}) => {
   // Making non required for delete, but required for update
   async function onSave() {
     const product = {
@@ -20,7 +24,7 @@ const EditableRow = ({ editFormData, handleEditFormChange, handleEditableRowCanc
       alert("SELECT A CATEGORY");
     } else {
       await axios
-        .put("http://localhost:5000/api/products/update", product)
+        .put("http://localhost:8000/api/products/update", product)
         .then((res) => {
           alert("Product Updated: " + editFormData.name);
         })
@@ -32,7 +36,9 @@ const EditableRow = ({ editFormData, handleEditFormChange, handleEditableRowCanc
 
   async function onDelete() {
     if (window.confirm("Are you sure you want to delete")) {
-      await axios.delete("http://localhost:5000/api/products/delete", { data: { name: editFormData.name } });
+      await axios.delete("http://localhost:8000/api/products/delete", {
+        data: { name: editFormData.name },
+      });
     }
   }
 
@@ -43,7 +49,7 @@ const EditableRow = ({ editFormData, handleEditFormChange, handleEditableRowCanc
   //get categories data from mongodb input to array
   const getCategories = () => {
     axios
-      .get("http://localhost:5000/api/categories")
+      .get("http://localhost:8000/api/categories")
       .then((response) => {
         const data = response.data;
         setCategories(data);
@@ -58,13 +64,34 @@ const EditableRow = ({ editFormData, handleEditFormChange, handleEditableRowCanc
   return (
     <tr>
       <td>
-        <input readOnly type="text" required placeholder=" Edit Product Name" name="name" value={editFormData.name}></input>
+        <input
+          readOnly
+          type="text"
+          required
+          placeholder=" Edit Product Name"
+          name="name"
+          value={editFormData.name}
+        ></input>
       </td>
       <td>
-        <input type="text" required placeholder=" Edit Product Quantity" name="quantity" onChange={handleEditFormChange} value={editFormData.quantity}></input>
+        <input
+          type="text"
+          required
+          placeholder=" Edit Product Quantity"
+          name="quantity"
+          onChange={handleEditFormChange}
+          value={editFormData.quantity}
+        ></input>
       </td>
       <td>
-        <Form.Control as="select" id="category" type="select" value={category} className="form-control" onChange={(e) => setCategory(e.target.value)}>
+        <Form.Control
+          as="select"
+          id="category"
+          type="select"
+          value={category}
+          className="form-control"
+          onChange={(e) => setCategory(e.target.value)}
+        >
           <option value="">- - -</option>
           {categories.map((categoryOption) => (
             <option value={categoryOption.category} key={categoryOption._id}>
@@ -74,15 +101,27 @@ const EditableRow = ({ editFormData, handleEditFormChange, handleEditableRowCanc
         </Form.Control>
       </td>
       <td>
-        <button type="submit" className="m-1 btn-primary btn-sm" onClick={onSave}>
+        <button
+          type="submit"
+          className="m-1 btn-primary btn-sm"
+          onClick={onSave}
+        >
           {" "}
           Save
         </button>
-        <button type="submit" className="m-1 btn-danger btn-sm" onClick={onDelete}>
+        <button
+          type="submit"
+          className="m-1 btn-danger btn-sm"
+          onClick={onDelete}
+        >
           {" "}
           Delete
         </button>
-        <button type="cancel" className="m-1 btn-secondary btn-sm" onClick={handleEditableRowCancel}>
+        <button
+          type="cancel"
+          className="m-1 btn-secondary btn-sm"
+          onClick={handleEditableRowCancel}
+        >
           cancel
         </button>
       </td>
