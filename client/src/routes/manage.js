@@ -174,7 +174,7 @@ export default function Manage() {
         usage: 0,
       };
       await axios
-        .post("http://localhost:5000/api/addProduct", product)
+        .post("http://localhost:8000/api/addProduct", product)
         .then((res) => {})
         .catch((err) => {
           alert("Product already exists");
@@ -207,7 +207,7 @@ export default function Manage() {
         category: newCategory,
       };
       await axios
-        .post("http://localhost:5000/api/addCategory", Category)
+        .post("http://localhost:8000/api/addCategory", Category)
         .then((res) => {})
         .catch((err) => {
           alert("category already exists");
@@ -235,7 +235,7 @@ export default function Manage() {
           "Are you sure you want to delete category: " + removeCategory
         )
       ) {
-        axios.delete("http://localhost:5000/api/categories/delete", {
+        axios.delete("http://localhost:8000/api/categories/delete", {
           data: { category: removeCategory },
         });
       }
@@ -253,7 +253,7 @@ export default function Manage() {
     ) {
       for (let i = 0; i < groupDelete.length; i++) {
         const product = groupDelete[i];
-        axios.delete("http://localhost:5000/api/products/delete", {
+        axios.delete("http://localhost:8000/api/products/delete", {
           data: { name: product },
         });
       }
