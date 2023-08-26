@@ -41,7 +41,7 @@ export default function Login() {
     if (toggle === true) {
       //call api to post user
       await axios
-        .post("http://localhost:8000/api/addUser", user)
+        .post("https://homeinventory-kzh9.onrender.com/api/addUser", user)
         .then((response) => {
           //crude validation to check if submitted email is empty
           if (user.email === "") {
@@ -66,7 +66,7 @@ export default function Login() {
 
     if (toggle === false) {
       await axios
-        .post("http://localhost:8000/api/login", user)
+        .post("https://homeinventory-kzh9.onrender.com/api/login", user)
         .then((response) => {
           setUser(response.data);
           localStorage.setItem("user", JSON.stringify(response.data));

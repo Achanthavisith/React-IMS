@@ -31,7 +31,7 @@ app.use(
 );
 
 // Configure the CORs middleware
-var allowedOrigins = ["http://localhost:3000"];
+var allowedOrigins = ["https://homeinventory-kzh9.onrender.com"];
 app.use(
   cors({
     origin: function (origin, callback) {

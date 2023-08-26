@@ -24,7 +24,10 @@ const EditableRow = ({
       alert("SELECT A CATEGORY");
     } else {
       await axios
-        .put("http://localhost:8000/api/products/update", product)
+        .put(
+          "https://homeinventory-kzh9.onrender.com/api/products/update",
+          product
+        )
         .catch((err) => {
           alert("Error");
         });
@@ -33,9 +36,12 @@ const EditableRow = ({
 
   async function onDelete() {
     if (window.confirm("Are you sure you want to delete")) {
-      await axios.delete("http://localhost:8000/api/products/delete", {
-        data: { name: editFormData.name },
-      });
+      await axios.delete(
+        "https://homeinventory-kzh9.onrender.com/api/products/delete",
+        {
+          data: { name: editFormData.name },
+        }
+      );
     }
   }
 
@@ -46,7 +52,7 @@ const EditableRow = ({
   //get categories data from mongodb input to array
   const getCategories = () => {
     axios
-      .get("http://localhost:8000/api/categories")
+      .get("https://homeinventory-kzh9.onrender.com/api/categories")
       .then((response) => {
         const data = response.data;
         setCategories(data);

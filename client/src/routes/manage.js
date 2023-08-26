@@ -126,7 +126,7 @@ export default function Manage() {
   //get categories data from mongodb input to array
   const getCategories = () => {
     axios
-      .get("http://localhost:8000/api/categories")
+      .get("https://homeinventory-kzh9.onrender.com/api/categories")
       .then((response) => {
         const data = response.data;
         setCategories(data);
@@ -137,7 +137,7 @@ export default function Manage() {
   //get products data from mongodb input to array
   const getProducts = () => {
     axios
-      .get("http://localhost:8000/api/products")
+      .get("https://homeinventory-kzh9.onrender.com/api/products")
       .then((response) => {
         const data = response.data;
         setAllProducts(data);
@@ -183,7 +183,7 @@ export default function Manage() {
         category,
       };
       await axios
-        .post("http://localhost:8000/api/addProduct", product)
+        .post("https://homeinventory-kzh9.onrender.com/api/addProduct", product)
         .catch((err) => {
           alert("Product already exists");
         });
@@ -215,7 +215,10 @@ export default function Manage() {
         category: newCategory,
       };
       await axios
-        .post("http://localhost:8000/api/addCategory", Category)
+        .post(
+          "https://homeinventory-kzh9.onrender.com/api/addCategory",
+          Category
+        )
         .then((res) => {})
         .catch((err) => {
           alert("category already exists");
@@ -243,9 +246,12 @@ export default function Manage() {
           "Are you sure you want to delete category: " + removeCategory
         )
       ) {
-        axios.delete("http://localhost:8000/api/categories/delete", {
-          data: { category: removeCategory },
-        });
+        axios.delete(
+          "https://homeinventory-kzh9.onrender.com/api/categories/delete",
+          {
+            data: { category: removeCategory },
+          }
+        );
       }
       setRemoveCategoryValidated(false);
       setRefresh(refresh + 1);
@@ -261,9 +267,12 @@ export default function Manage() {
     ) {
       for (let i = 0; i < groupDelete.length; i++) {
         const product = groupDelete[i];
-        axios.delete("http://localhost:8000/api/products/delete", {
-          data: { name: product },
-        });
+        axios.delete(
+          "https://homeinventory-kzh9.onrender.com/api/products/delete",
+          {
+            data: { name: product },
+          }
+        );
       }
     }
   }

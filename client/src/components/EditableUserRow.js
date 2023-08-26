@@ -17,7 +17,10 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
     } else if (editUser.role === "") {
       alert("Select a role.");
     } else {
-      await axios.put("http://localhost:8000/api/user/update", editUser);
+      await axios.put(
+        "https://homeinventory-kzh9.onrender.com/api/user/update",
+        editUser
+      );
     }
   }
 
@@ -30,9 +33,12 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
       alert("Cannot delete logged in user.");
     } else {
       if (window.confirm("Are you sure you want to delete")) {
-        await axios.delete("http://localhost:8000/api/user/delete", {
-          data: { email: editFormData.email },
-        });
+        await axios.delete(
+          "https://homeinventory-kzh9.onrender.com/api/user/delete",
+          {
+            data: { email: editFormData.email },
+          }
+        );
       }
     }
   }
