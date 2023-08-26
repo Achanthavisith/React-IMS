@@ -48,24 +48,6 @@ app.get("/api", (req, res) => {
 
 app.use("/api", routerUrls);
 
-// This middleware informs the express application to serve our compiled React files
-if (
-  process.env.NODE_ENV === "production" ||
-  process.env.NODE_ENV === "staging"
-) {
-  app.use("/", express.static(path.join(__dirname, "/client/build")));
-
-  app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "client/build", "index.html"));
-  });
-}
-
-app.use("/", express.static(path.join(__dirname, "/client/build")));
-
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
-});
-
 console.log("REACT_APP_ENVIRONMENT => ", process.env.NODE_ENV);
 
 // Configure our server to listen on the port defiend by our port variable
