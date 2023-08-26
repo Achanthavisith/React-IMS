@@ -1,5 +1,5 @@
 import { Form, Button } from "react-bootstrap";
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, Fragment } from "react";
 import axios from "axios";
 import "../components/PostProduct.css";
 import ReadOnlyRow from "../components/ReadOnlyRow";
@@ -147,12 +147,22 @@ export default function Manage() {
 
   //useeffect to render our collections data
   useEffect(() => {
-    getCategories();
+    setTimeout(function () {
+      getCategories();
+    }, 200);
   }, [refresh]);
 
   useEffect(() => {
-    getProducts();
-  }, [refresh, product]);
+    setTimeout(function () {
+      getProducts();
+    }, 300);
+  }, [refresh]);
+
+  useEffect(() => {
+    setTimeout(function () {
+      getProducts();
+    }, 300);
+  }, [product]);
 
   //sumbit handler for add product form
   const handleSubmit = async (event) => {
@@ -171,11 +181,9 @@ export default function Manage() {
         name,
         quantity,
         category,
-        usage: 0,
       };
       await axios
         .post("http://localhost:8000/api/addProduct", product)
-        .then((res) => {})
         .catch((err) => {
           alert("Product already exists");
         });
@@ -262,7 +270,7 @@ export default function Manage() {
 
   return (
     //break into components next time...
-    <React.Fragment>
+    <>
       {user ? (
         <div>
           {user.role === "admin" || user.role === "manager" ? (
@@ -546,7 +554,7 @@ export default function Manage() {
                     .includes(nameSearch.toLocaleLowerCase());
                 })
                 .map((product) => (
-                  <React.Fragment key={product.name}>
+                  <Fragment key={product.name}>
                     {editProductName === product.name ? (
                       <EditableRow
                         editFormData={editFormData}
@@ -559,12 +567,12 @@ export default function Manage() {
                         handleEditClick={handleEditClick}
                       />
                     )}
-                  </React.Fragment>
+                  </Fragment>
                 ))}
             </tbody>
           </table>
         </form>
       </div>
-    </React.Fragment>
+    </>
   );
 }

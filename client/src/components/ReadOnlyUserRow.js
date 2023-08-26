@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import "../components/PostProduct.css";
 import { UserContext } from "../context/context";
 
@@ -14,7 +14,11 @@ const ReadOnlyRowUser = ({ users, handleEditClick }) => {
           <div>
             {user.role === "admin" || user.role === "manager" ? (
               <div>
-                <button type="button" className="m-1 btn-primary btn-sm" onClick={(event) => handleEditClick(event, users)}>
+                <button
+                  type="button"
+                  className="m-1 btn-primary btn-sm"
+                  onClick={(event) => handleEditClick(event, users)}
+                >
                   Edit
                 </button>
               </div>

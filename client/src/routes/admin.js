@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, Fragment } from "react";
 import { UserContext } from "../context/context";
 import axios from "axios";
 import ReadOnlyUserRow from "../components/ReadOnlyUserRow";
@@ -32,7 +32,9 @@ export default function Admin() {
   };
 
   useEffect(() => {
-    getUsers();
+    setTimeout(function () {
+      getUsers();
+    }, 300);
   }, [refresh]);
 
   const handleCancelEdit = () => {
@@ -128,7 +130,7 @@ export default function Admin() {
                   </thead>
                   <tbody>
                     {users.map((users) => (
-                      <React.Fragment key={users.email}>
+                      <Fragment key={users.email}>
                         {editUser === users.email ? (
                           <EditableUserRow
                             editFormData={editFormData}
@@ -141,7 +143,7 @@ export default function Admin() {
                             handleEditClick={handleEditClick}
                           />
                         )}
-                      </React.Fragment>
+                      </Fragment>
                     ))}
                   </tbody>
                 </table>

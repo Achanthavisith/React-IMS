@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import "../components/PostProduct.css";
 import axios from "axios";
 import { Form } from "react-bootstrap";

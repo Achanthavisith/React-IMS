@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../components/PostProduct.css";
 import axios from "axios";
 import { Form } from "react-bootstrap";
@@ -25,9 +25,6 @@ const EditableRow = ({
     } else {
       await axios
         .put("http://localhost:8000/api/products/update", product)
-        .then((res) => {
-          alert("Product Updated: " + editFormData.name);
-        })
         .catch((err) => {
           alert("Error");
         });

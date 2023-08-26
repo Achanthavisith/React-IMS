@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import "../components/PostProduct.css";
 import { addButtonContext } from "../context/addButtonContext";
 import { UserContext } from "../context/context";
@@ -19,13 +19,19 @@ const ReadOnlyRow = ({ product, handleEditClick }) => {
               <div>
                 {addGroup ? (
                   <div>
-                    <button className="btn-primary btn-sm m-1 rounded" onClick={(event) => handleEditClick(event, product)}>
+                    <button
+                      className="btn-primary btn-sm m-1 rounded"
+                      onClick={(event) => handleEditClick(event, product)}
+                    >
                       Add
                     </button>
                   </div>
                 ) : (
                   <div>
-                    <button className="btn-primary btn-sm m-1 rounded" onClick={(event) => handleEditClick(event, product)}>
+                    <button
+                      className="btn-primary btn-sm m-1 rounded"
+                      onClick={(event) => handleEditClick(event, product)}
+                    >
                       Edit
                     </button>
                   </div>

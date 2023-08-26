@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import "./App.css";
 import { Link, Outlet } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
