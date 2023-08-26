@@ -527,7 +527,7 @@ export default function Manage() {
         </div>
 
         <form onSubmit={handleEditFormSubmit}>
-          <table>
+          <table style={{ margin: 50 }}>
             <thead>
               <tr>
                 <th>Product Name</th>
