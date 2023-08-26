@@ -126,7 +126,7 @@ export default function Manage() {
   //get categories data from mongodb input to array
   const getCategories = () => {
     axios
-      .get("https://homeinventory-kzh9.onrender.com/api/categories")
+      .get("https://homeinventory-api.onrender.com/api/categories")
       .then((response) => {
         const data = response.data;
         setCategories(data);
@@ -137,7 +137,7 @@ export default function Manage() {
   //get products data from mongodb input to array
   const getProducts = () => {
     axios
-      .get("https://homeinventory-kzh9.onrender.com/api/products")
+      .get("https://homeinventory-api.onrender.com/api/products")
       .then((response) => {
         const data = response.data;
         setAllProducts(data);
@@ -183,7 +183,7 @@ export default function Manage() {
         category,
       };
       await axios
-        .post("https://homeinventory-kzh9.onrender.com/api/addProduct", product)
+        .post("https://homeinventory-api.onrender.com/api/addProduct", product)
         .catch((err) => {
           alert("Product already exists");
         });
@@ -216,7 +216,7 @@ export default function Manage() {
       };
       await axios
         .post(
-          "https://homeinventory-kzh9.onrender.com/api/addCategory",
+          "https://homeinventory-api.onrender.com/api/addCategory",
           Category
         )
         .then((res) => {})
@@ -247,7 +247,7 @@ export default function Manage() {
         )
       ) {
         axios.delete(
-          "https://homeinventory-kzh9.onrender.com/api/categories/delete",
+          "https://homeinventory-api.onrender.com/api/categories/delete",
           {
             data: { category: removeCategory },
           }
@@ -268,7 +268,7 @@ export default function Manage() {
       for (let i = 0; i < groupDelete.length; i++) {
         const product = groupDelete[i];
         axios.delete(
-          "https://homeinventory-kzh9.onrender.com/api/products/delete",
+          "https://homeinventory-api.onrender.com/api/products/delete",
           {
             data: { name: product },
           }

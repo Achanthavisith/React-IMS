@@ -23,7 +23,7 @@ export default function Admin() {
   //gets the users
   const getUsers = () => {
     axios
-      .get("https://homeinventory-kzh9.onrender.com/api/users")
+      .get("https://homeinventory-api.onrender.com/api/users")
       .then((response) => {
         const data = response.data;
         setUsers(data);
@@ -90,7 +90,7 @@ export default function Admin() {
     if (editUser.password !== "") {
       await axios
         .put(
-          "https://homeinventory-kzh9.onrender.com/api/user/update/password",
+          "https://homeinventory-api.onrender.com/api/user/update/password",
           editUser
         )
         .then((res) => {

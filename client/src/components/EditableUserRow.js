@@ -18,7 +18,7 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
       alert("Select a role.");
     } else {
       await axios.put(
-        "https://homeinventory-kzh9.onrender.com/api/user/update",
+        "https://homeinventory-api.onrender.com/api/user/update",
         editUser
       );
     }
@@ -34,7 +34,7 @@ const EditableUserRow = ({ editFormData, handleCancelEdit }) => {
     } else {
       if (window.confirm("Are you sure you want to delete")) {
         await axios.delete(
-          "https://homeinventory-kzh9.onrender.com/api/user/delete",
+          "https://homeinventory-api.onrender.com/api/user/delete",
           {
             data: { email: editFormData.email },
           }

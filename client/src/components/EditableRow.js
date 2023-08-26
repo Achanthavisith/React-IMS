@@ -25,7 +25,7 @@ const EditableRow = ({
     } else {
       await axios
         .put(
-          "https://homeinventory-kzh9.onrender.com/api/products/update",
+          "https://homeinventory-api.onrender.com/api/products/update",
           product
         )
         .catch((err) => {
@@ -37,7 +37,7 @@ const EditableRow = ({
   async function onDelete() {
     if (window.confirm("Are you sure you want to delete")) {
       await axios.delete(
-        "https://homeinventory-kzh9.onrender.com/api/products/delete",
+        "https://homeinventory-api.onrender.com/api/products/delete",
         {
           data: { name: editFormData.name },
         }
@@ -52,7 +52,7 @@ const EditableRow = ({
   //get categories data from mongodb input to array
   const getCategories = () => {
     axios
-      .get("https://homeinventory-kzh9.onrender.com/api/categories")
+      .get("https://homeinventory-api.onrender.com/api/categories")
       .then((response) => {
         const data = response.data;
         setCategories(data);
