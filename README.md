@@ -2,18 +2,12 @@
 React/JavaScript inventory management system
 
 To view web app: 
-https://react-inventory-system.herokuapp.com/ 
-Credentials: 
-admin@admin    Password: admin
+https://homeinventory-kzh9.onrender.com/
 
 For development:
 
 Node.js , Go to nodejs.org download latest version 
 Visual Studio Code editor, or any ide with a terminal built in
-
-From download of master branch on github from this url  https://github.com/MendokusaiCode/React-IMS
-
-or copy this url and from Visual studio code and from new window click the "explorer" button in top left and click clone from github and insert the copied URL
 
 From project root directory type "npm install" within the terminal press enter
 
