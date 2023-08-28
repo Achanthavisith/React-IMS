@@ -41,7 +41,7 @@ export default function Login() {
     if (toggle === true) {
       //call api to post user
       await axios
-        .post("https://homeinventory-api.onrender.co,/api/addUser", user)
+        .post("https://homeinventory-api.onrender.com,/api/addUser", user)
         .then((response) => {
           //crude validation to check if submitted email is empty
           if (user.email === "") {
