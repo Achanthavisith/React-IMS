@@ -2,13 +2,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require("path");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const routerUrls = require("./controllers/routes");
-
-//config dotenv to access .env with DB address
-dotenv.config();
 
 // Create a new express application named 'app'
 const app = express();
