@@ -27,7 +27,6 @@ router.post("/addProduct", (req, res) => {
           res.end();
         });
     } else {
-      res.end();
       //return a status code for frontend
       return res.status(400).json({
         message: "already exists",
@@ -60,7 +59,6 @@ router.post("/addUser", (req, res) => {
         });
     } else {
       //return a status code for frontend
-      res.end();
       return res.status(400).json({
         message: "already exists",
       });
@@ -89,7 +87,6 @@ router.post("/addCategory", (req, res) => {
         });
     } else {
       //return a status code for frontend
-      res.end();
       return res.status(400).json({
         message: "already exists",
       });
