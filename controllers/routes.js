@@ -20,18 +20,20 @@ router.post("/addProduct", (req, res) => {
         .save()
         .then((data) => {
           res.json(data);
+          res.end();
         })
         .catch((err) => {
           res.json(err);
+          res.end();
         });
     } else {
+      res.end();
       //return a status code for frontend
       return res.status(400).json({
         message: "already exists",
       });
     }
   });
-  res.end();
 });
 
 //add user route
@@ -50,19 +52,20 @@ router.post("/addUser", (req, res) => {
         .save()
         .then((data) => {
           res.json(data);
+          res.end();
         })
         .catch((err) => {
           res.json(err);
+          res.end();
         });
     } else {
       //return a status code for frontend
+      res.end();
       return res.status(400).json({
         message: "already exists",
       });
     }
   });
-
-  res.end();
 });
 
 //add category route
@@ -78,19 +81,20 @@ router.post("/addCategory", (req, res) => {
         .save()
         .then((data) => {
           res.json(data);
+          res.end();
         })
         .catch((err) => {
           res.json(err);
+          res.end();
         });
     } else {
       //return a status code for frontend
+      res.end();
       return res.status(400).json({
         message: "already exists",
       });
     }
   });
-
-  res.end();
 });
 
 //get categories
@@ -147,7 +151,6 @@ router.post("/login", async (req, res) => {
   } else {
     res.status(400).json({ status: "error", user: false });
   }
-
   res.end();
 });
 
@@ -156,7 +159,6 @@ router.delete("/products/delete", async (req, res) => {
   const product = await productModel.deleteOne({
     name: req.body.name,
   });
-
   res.end();
 });
 
@@ -165,7 +167,6 @@ router.delete("/user/delete", async (req, res) => {
   const user = await userModel.deleteOne({
     email: req.body.email,
   });
-
   res.end();
 });
 
@@ -177,7 +178,6 @@ router.put("/products/update", async (req, res) => {
   let doc = await productModel.findOneAndUpdate(filter, update, {
     new: true,
   });
-
   res.end();
 });
 
@@ -189,7 +189,6 @@ router.put("/user/update", async (req, res) => {
   let doc = await userModel.findOneAndUpdate(filter, update, {
     new: true,
   });
-
   res.end();
 });
 
@@ -201,7 +200,6 @@ router.put("/user/update/password", async (req, res) => {
   let doc = await userModel.findOneAndUpdate(filter, update, {
     new: true,
   });
-
   res.end();
 });
 
@@ -210,7 +208,6 @@ router.delete("/categories/delete", async (req, res) => {
   const category = await categoryModel.deleteOne({
     category: req.body.category,
   });
-
   res.end();
 });
 

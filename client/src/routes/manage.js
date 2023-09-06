@@ -181,6 +181,7 @@ export default function Manage() {
         name,
         quantity,
         category,
+        usage: 0,
       };
       await axios
         .post("https://homeinventory-api.onrender.com/api/addProduct", product)
