@@ -24,7 +24,7 @@ const rateLimitMiddleware = setRateLimit({
   message: "You have exceeded your 50 requests per minute limit.",
   headers: true,
 });
-
+app.set('trust proxy', 1);
 app.use(rateLimitMiddleware);
 
 // Set our backend port to be either an environment variable or port 5000
