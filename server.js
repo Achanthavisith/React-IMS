@@ -8,7 +8,7 @@ const setRateLimit = require("express-rate-limit");
 
 // Create a new express application named 'app'
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", 2);
 
 // Configure the CORs middleware
 app.use(
@@ -24,7 +24,7 @@ const port = process.env.PORT || 8000;
 // This application level middleware prints incoming requests to the servers console, useful to see incoming requests
 app.use((req, res, next) => {
   console.log(`Request_Endpoint: ${req.method} ${req.url}`);
-  console.log("at ip: ", req.socket.remoteAddress);
+  console.log("at ip: ", req.ip);
   if (!req.ip) {
     console.error("Warning: request.ip is missing!");
     req.ip.replace(/:\d+[^:]*$/, "");
