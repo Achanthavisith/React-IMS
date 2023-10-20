@@ -36,8 +36,8 @@ app.use((req, res, next) => {
 //limit requests
 const rateLimitMiddleware = setRateLimit({
   windowMs: 60 * 1000,
-  max: 50,
-  message: "You have exceeded your 50 requests per minute limit.",
+  max: 25,
+  message: "You have exceeded your 25 requests per minute limit.",
   headers: true,
 });
 app.use(rateLimitMiddleware);
