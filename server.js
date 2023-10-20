@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const routerUrls = require("./controllers/routes");
+const setRateLimit = require("express-rate-limit");
 
 // Create a new express application named 'app'
 const app = express();
@@ -15,6 +16,16 @@ app.use(
     credentials: true,
   })
 );
+
+//limit requests
+const rateLimitMiddleware = setRateLimit({
+  windowMs: 60 * 1000,
+  max: 50,
+  message: "You have exceeded your 50 requests per minute limit.",
+  headers: true,
+});
+
+app.use(rateLimitMiddleware);
 
 // Set our backend port to be either an environment variable or port 5000
 const port = process.env.PORT || 8000;
@@ -36,7 +47,9 @@ app.use(
 app.use(express.json());
 
 //connect to DB
-mongoose.connect(process.env.URI);
+mongoose.connect(
+  "mongodb+srv://andrew:qL08Dau5EHoG7nA2@cluster0.a3fmw.mongodb.net/"
+);
 //display message when connected
 const connection = mongoose.connection;
 connection.once("open", () => {
