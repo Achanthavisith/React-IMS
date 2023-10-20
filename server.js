@@ -8,7 +8,7 @@ const setRateLimit = require("express-rate-limit");
 
 // Create a new express application named 'app'
 const app = express();
-app.set("trust proxy", 2);
+app.set("trust proxy", 3);
 
 // Configure the CORs middleware
 app.use(
