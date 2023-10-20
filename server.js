@@ -64,8 +64,6 @@ app.get("/api", (req, res) => {
   res.json({ message: "Welcome to from server." });
 });
 
-app.get('/ip', (request, response) => response.send(request.ip))
-
 app.use("/api", routerUrls);
 
 console.log("REACT_APP_ENVIRONMENT => ", process.env.NODE_ENV);
