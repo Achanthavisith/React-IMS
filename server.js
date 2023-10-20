@@ -39,7 +39,7 @@ const rateLimitMiddleware = setRateLimit({
   message: "You have exceeded your 50 requests per minute limit.",
   headers: true,
 });
-app.set("trust proxy", 1);
+app.set("trust proxy", 3);
 app.use(rateLimitMiddleware);
 
 // Configure the bodyParser middleware
