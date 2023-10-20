@@ -8,6 +8,14 @@ const routerUrls = require("./controllers/routes");
 // Create a new express application named 'app'
 const app = express();
 
+// Configure the CORs middleware
+app.use(
+  cors({
+    origin: "https://homeinventory-kzh9.onrender.com",
+    credentials: true,
+  })
+);
+
 // Set our backend port to be either an environment variable or port 5000
 const port = process.env.PORT || 8000;
 
@@ -25,24 +33,6 @@ app.use(
   })
 );
 
-// Configure the CORs middleware
-var allowedOrigins = ["https://homeinventory-kzh9.onrender.com"];
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin
-      // (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        var msg =
-          "The CORS policy for this site does not " +
-          "allow access from the specified Origin.";
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-  })
-);
 app.use(express.json());
 
 //connect to DB
