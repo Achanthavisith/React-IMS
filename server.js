@@ -19,7 +19,7 @@ app.use(
 
 //limit requests
 keyGenerator = (request, _response) => {
-  let ip = request.headers['x-forwarded-for'];
+  let ip = req.headers['x-forwarded-for'];
   console.log("current ip ", ip);
   if (!ip) {
     console.error("Warning: request.ip is missing!");
