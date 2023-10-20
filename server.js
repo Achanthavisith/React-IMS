@@ -18,6 +18,19 @@ app.use(
 );
 
 //limit requests
+keyGenerator = (request, _response) => {
+  if (!request.ip) {
+    console.error("Warning: request.ip is missing!");
+    return req.socket.remoteAddress;
+  }
+
+  console.log("Key generator running.");
+
+  return request.ip.replace(/:\d+[^:]*$/, "");
+};
+
+keyGenerator();
+
 const rateLimitMiddleware = setRateLimit({
   windowMs: 60 * 1000,
   max: 50,
