@@ -47,9 +47,7 @@ app.use(
 app.use(express.json());
 
 //connect to DB
-mongoose.connect(
-  "mongodb+srv://andrew:qL08Dau5EHoG7nA2@cluster0.a3fmw.mongodb.net/"
-);
+mongoose.connect(process.env.URI);
 //display message when connected
 const connection = mongoose.connection;
 connection.once("open", () => {
