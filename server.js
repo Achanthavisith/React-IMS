@@ -19,7 +19,9 @@ app.use(
 
 //limit requests
 keyGenerator = (request, _response) => {
-  if (!request.ip) {
+  let ip = request.headers['x-forwarded-for'];
+  if (!ip) {
+    console.log("current ip ", ip);
     console.error("Warning: request.ip is missing!");
     return req.socket.remoteAddress;
   }
