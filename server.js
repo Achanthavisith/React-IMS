@@ -17,39 +17,30 @@ app.use(
   })
 );
 
-//limit requests
-keyGenerator = (request, _response) => {
-  let ip = req.headers['x-forwarded-for'];
-  console.log("current ip ", ip);
-  if (!ip) {
-    console.error("Warning: request.ip is missing!");
-    return req.socket.remoteAddress;
-  }
-
-  console.log("Key generator running.");
-
-  return request.ip.replace(/:\d+[^:]*$/, "");
-};
-
-keyGenerator();
-
-const rateLimitMiddleware = setRateLimit({
-  windowMs: 60 * 1000,
-  max: 50,
-  message: "You have exceeded your 50 requests per minute limit.",
-  headers: true,
-});
-app.set('trust proxy', 1);
-app.use(rateLimitMiddleware);
-
 // Set our backend port to be either an environment variable or port 5000
 const port = process.env.PORT || 8000;
 
 // This application level middleware prints incoming requests to the servers console, useful to see incoming requests
 app.use((req, res, next) => {
   console.log(`Request_Endpoint: ${req.method} ${req.url}`);
+  console.log("at ip: ", req.socket.remoteAddress);
+  if (!req.ip) {
+    console.error("Warning: request.ip is missing!");
+    req.ip.replace(/:\d+[^:]*$/, "");
+  }
+
   next();
 });
+
+//limit requests
+const rateLimitMiddleware = setRateLimit({
+  windowMs: 60 * 1000,
+  max: 50,
+  message: "You have exceeded your 50 requests per minute limit.",
+  headers: true,
+});
+app.set("trust proxy", 1);
+app.use(rateLimitMiddleware);
 
 // Configure the bodyParser middleware
 app.use(bodyParser.json());
