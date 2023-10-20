@@ -8,6 +8,7 @@ const setRateLimit = require("express-rate-limit");
 
 // Create a new express application named 'app'
 const app = express();
+app.set("trust proxy", 1);
 
 // Configure the CORs middleware
 app.use(
@@ -39,7 +40,6 @@ const rateLimitMiddleware = setRateLimit({
   message: "You have exceeded your 50 requests per minute limit.",
   headers: true,
 });
-app.set("trust proxy", 2);
 app.use(rateLimitMiddleware);
 
 // Configure the bodyParser middleware
@@ -63,6 +63,8 @@ connection.once("open", () => {
 app.get("/api", (req, res) => {
   res.json({ message: "Welcome to from server." });
 });
+
+app.get('/ip', (request, response) => response.send(request.ip))
 
 app.use("/api", routerUrls);
 
